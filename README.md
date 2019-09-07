@@ -35,8 +35,8 @@ five_squared = Lathe.stats.expo(5,2)
 println(five_squared)
 julia > 25
 ```
-#### Lathe.stats.t_test(Sample Mean, General Mean(μ))
-Returns a p value, used to detect statistical significance between a variable in a population versus a general population.
+#### Lathe.stats.t_test(Sample Mean, General Mean)
+Returns a p value, used to detect statistical significance between a variable in a population versus μ.
 ```julia
 ```
 #### Lathe.stats.bay_ther()
