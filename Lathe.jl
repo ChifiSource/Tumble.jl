@@ -11,7 +11,6 @@ Thank you for your forks!
 <-----------Lathe.jl----------->
 ================================#
 module Lathe
-using DataFrames
 #================
 Stats
     Module
