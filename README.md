@@ -69,6 +69,7 @@ We can also do the same using the julia REPL using the Pkg module:
 ```
 **Note:** *The same can be done inside of Jupyter*
 # Lathe.stats
+## Standard Library
 #### Lathe.stats.variance(array)
 Returns the variance of an array.
 ```julia
@@ -77,6 +78,7 @@ var = Lathe.stats.standardize(array)
 println(var)
 julia > 3.1875
 ```
+#### Lathe.stats.confint()
 #### Lathe.stats.standardize(array)
 Returns the standard deviation of an array (**Note:** This does not standardize the array, but returns the standardized deviation of the array, for standard scaling see **Lathe.preprocess.standardscale**
 ```julia
@@ -93,12 +95,12 @@ five_squared = Lathe.stats.expo(5,2)
 println(five_squared)
 julia > 25
 ```
+## Inferential Statistics
 #### Lathe.stats.t_test(Sample Mean, General Mean)
 Returns a p value, used to detect statistical significance between a variable in a population versus μ.
 ```julia
 ```
+## Bayesian Statistics
 #### Lathe.stats.bay_ther()
-
-#### Lathe.stats.confint()
 # Lathe.preprocess
 # Lathe.model
