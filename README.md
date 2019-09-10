@@ -96,18 +96,26 @@ println(five_squared)
 julia > 25
 ```
 ## Inferential Statistics
-#### Lathe.stats.t_test(Sample Mean, General Mean)
+#### Lathe.stats.t_test(Sample, General)
 Returns a p value, used to detect statistical significance between a variable in a population versus μ.
 ```julia
-using Lathe: stats
-stats.t_test()
+julia> using Lathe: stats
+
+julia> stats.t_test(array,arrayt)
+-0.00554580351562448
+
+julia> using Lathe: stats
+
+julia> stats.t_test(array,arrayt)
+-0.00554580351562448
+
 ```
 ## Bayesian Statistics
 #### Lathe.stats.bay_ther(Probability, Prior, Evidence)
 Returns a percentage, takes 3 integers. Calculates probability using Bayesian inference.
 ```julia
-using Lathe: stats
-stats.bay_ther()
+julia> stats.bay_ther(55,50,5)
+30250.0
 ```
 # Lathe.preprocess
 # Lathe.model
