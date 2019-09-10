@@ -99,8 +99,15 @@ julia > 25
 #### Lathe.stats.t_test(Sample Mean, General Mean)
 Returns a p value, used to detect statistical significance between a variable in a population versus μ.
 ```julia
+using Lathe: stats
+stats.t_test()
 ```
 ## Bayesian Statistics
-#### Lathe.stats.bay_ther()
+#### Lathe.stats.bay_ther(Probability, Prior, Evidence)
+Returns a percentage, takes 3 integers. Calculates probability using Bayesian inference.
+```julia
+using Lathe: stats
+stats.bay_ther()
+```
 # Lathe.preprocess
 # Lathe.model
