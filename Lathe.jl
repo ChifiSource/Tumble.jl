@@ -11,6 +11,7 @@ Thank you for your forks!
 <-----------Lathe.jl----------->
 ================================#
 module Lathe
+using DataFrames
 #================
 Stats
     Module
@@ -64,8 +65,8 @@ function standarderror(data)
     return(ste)
 end
 #-------Inferential-----------__________
-#<----T Value---->
-function t_test(sample,general)
+#<----T Test---->
+function student_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
@@ -73,13 +74,19 @@ function t_test(sample,general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
-
-#<---- F-Test---->
-function f_test(array)
+#<---- T Value---->
+function t_value(array)
 
 end
+#<---- F-Test---->
+function f_test(sample,general)
+    totvariance = variance(general)
+    sampvar = variance(sample)
+    f =  sampvar / totvariance
+    #F Statistic = variance of the group means / mean of the within group variances.
+end
 #<----F-Value---->
-function f_stat(array)
+function f_value(array)
 
 end
 #-------Bayesian--------------___________
@@ -105,35 +112,27 @@ Predictive
     Learning
         Models
 ================#
-module predmodel
+module model
 #==
-Regression
-    Models
+Base
+    functions
 ==#
-#-----Regression-----------------_____________
-#<----Univariate Regression---->
-#==WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
-function UnivariateRegression{T<:AbstractFloat}(loss::UnivariateLoss,
-                                                X::StridedMatrix{T},
-                                                Y::StridedVector;
-                                                bias::Real=0.0)
-    d, n = size(X)
-    length(Y) == n || throw(DimensionMismatch())
-    UnivariateRegression{typeof(loss), T, typeof(X), typeof(Y)}(
-        loss, d, n, convert(T, bias), X, Y)
+function fit(model,x,y)
+    model(x,y)
 end
-#<----Linear Regression---->
-LinearRegression{T<:AbstractFloat}(X::StridedMatrix{T}, y::StridedVector{T}; bias::Real=0.0) =
-    UnivariateRegression(SqrLoss(), X, y; bias=bias)
-end
-#<----Logistic Regression---->
-LogisticRegression{T<:AbstractFloat}(X::StridedMatrix{T}, y::StridedVector; bias::Real=0.0) =
-    UnivariateRegression(LogisticLoss(), X, convert(Vector{T}, y); bias=bias)
-end
-WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP==#
+function predict(x)
 
-#----------------------------------------------
 end
+#=====
+Fluxxy
+    Uses Flux
+        For Advanced ML
+=====#
+module fluxxy
+using Flux
+
+end
+#----------------------------------------------
 #==
 This is the end of the main
 module, nothing is to be written
