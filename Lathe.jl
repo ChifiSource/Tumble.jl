@@ -25,8 +25,8 @@ function mean(array)
 end
 #<----Variance---->
 function variance(array)
-    mean = mean(array)
-    sq = sum(array) - mean
+    me = mean(array)
+    sq = sum(array) - me
     squared_mean = expo(sq,2)
     return(squared_mean)
 end
@@ -50,12 +50,12 @@ function expo(number,scalar)
 end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
-    n = length(data)
-    mean = sum(data)/n
-    std = standardize(data)
-    stderr = standarderror(data)
-    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
-    return (mean-interval, mean+interval)
+#    n = length(data)
+#    mean = sum(data)/n
+#    std = standardize(data)
+#    stderr = standarderror(data)
+#    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
+#    return (mean-interval, mean+interval)
 end
 #<----Standard Error---->
 function standarderror(data)
@@ -69,8 +69,8 @@ end
 function inf_sum(data,grdata)
     #Doing our calculations
     t = student_t(data,grdata)
-    f = f_test(samp,general)
-    low,high = confiints(data)
+    f = f_test(data,grdata)
+#    low,high = confiints(data)
     var = variance(data)
     grvar = variance(grdata)
     avg = mean(data)
@@ -81,16 +81,15 @@ function inf_sum(data,grdata)
     println("================")
     println("     Lathe.stats Inferential Summary")
     println("     _______________________________")
-    println(": ",gravg)
-    println("N: ",len(grdata))
+    println("N: ",length(grdata))
     println("x̅: ",avg)
     println("μ: ",gravg)
     println("s: ",sampstd)
     println("σ: ",grstd)
     println("var(X): ",var)
     println("σ2: ",grvar)
-    println("Low Confidence interval: ",low)
-    println("High Confidence interval: ",high)
+#    println("Low Confidence interval: ",low)
+#    println("High Confidence interval: ",high)
     println("α ",t)
     println("Fp: ",f)
     println("================")
@@ -113,7 +112,6 @@ function f_test(sample,general)
     totvariance = variance(general)
     sampvar = variance(sample)
     f =  sampvar / totvariance
-    #F Statistic = variance of the group means / mean of the within group variances.
 end
 #<----F-Value---->
 function f_value(array)
@@ -170,16 +168,8 @@ end
 function predict(x)
 
 end
-#=====
-Fluxxy
-    Uses Flux
-        For Advanced ML
-=====#
-module fluxxy
-using Flux
-
-end
 #----------------------------------------------
+end
 #==
 This is the end of the main
 module, nothing is to be written
