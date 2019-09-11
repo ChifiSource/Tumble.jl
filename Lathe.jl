@@ -65,6 +65,36 @@ function standarderror(data)
     return(ste)
 end
 #-------Inferential-----------__________
+#<----Inferential Summary---->
+function inf_sum(data,grdata)
+    #Doing our calculations
+    t = student_t(data,grdata)
+    f = f_test(samp,general)
+    low,high = confiints(data)
+    var = variance(data)
+    grvar = variance(grdata)
+    avg = mean(data)
+    gravg = mean(grdata)
+    sampstd = standardize(data)
+    grstd = standardize(grdata)
+    #Printing them out
+    println("================")
+    println("     Lathe.stats Inferential Summary")
+    println("     _______________________________")
+    println(": ",gravg)
+    println("N: ",len(grdata))
+    println("x̅: ",avg)
+    println("μ: ",gravg)
+    println("s: ",sampstd)
+    println("σ: ",grstd)
+    println("var(X): ",var)
+    println("σ2: ",grvar)
+    println("Low Confidence interval: ",low)
+    println("High Confidence interval: ",high)
+    println("α ",t)
+    println("Fp: ",f)
+    println("================")
+end
 #<----T Test---->
 function student_t(sample,general)
     sampmean = mean(sample)
@@ -96,7 +126,24 @@ function bay_ther(p,a,b)
     psterior = (p*(b|a) * p*(a)) / (p*b)
     return(psterior)
 end
-
+#-------Model Metrics--------____________
+function reg_sum(pred,gen)
+    println("================")
+    println("     Lathe.stats Regression Summary")
+    println("     _______________________________")
+    println(": ",gravg)
+    println("N: ",len(grdata))
+    println("x̅: ",avg)
+    println("μ: ",gravg)
+    println("s: ",)
+    println("Sample Variance: ",var)
+    println("Group Variance: ",grvar)
+    println("Low Confidence interval: ",low)
+    println("High Confidence interval: ",high)
+    println("Tp: ",t)
+    println("Fp: ",f)
+    println("================")
+end
 #---------------------------
 end
 #================
