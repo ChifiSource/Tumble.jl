@@ -115,7 +115,7 @@ println(five_squared)
 julia > 25
 ```
 ## Inferential Statistics
-#### Lathe.stats.t_test(Sample, General)
+#### Lathe.stats.student_t(Sample, General)
 Returns a p value, used to detect statistical significance between a variable in a population versus μ.
 ```julia
 julia> using Lathe: stats
@@ -131,7 +131,34 @@ julia> stats.t_test(array,arrayt)
 ```
 #### Lathe.stats.f_test(Sample, General)
 Returns an f value, used to detect statistical significance between a variable in a population versus μ.
+
+#### Lathe.stats.inf_sum
+Returns a detailed summary of statistics between two given groups: \
 ```julia
+#julia> using Lathe: stats
+[ Info: Recompiling stale cache file /home/emmett/.julia/compiled/v1.0/Lathe.ji for Lathe [top-level]
+        
+#julia> array1 = 5,7,4,5
+(5, 7, 4, 5)
+
+#julia> array2 = 18,13,11,9
+(18, 13, 11, 9)
+
+#julia> stats.inf_sum(array1,array2)
+================
+     Lathe.stats Inferential Summary
+     _______________________________
+: 12.75
+N: 4
+x̅: 5.25
+μ: 12.75
+s: 248.0625
+σ: 1463.0625
+var(X): 61535.00390625
+σ2: 2.14055187890625e6
+α -0.010252466999871843
+Fp: 0.02874726116785
+================
 
 ```
 ## Bayesian Statistics
