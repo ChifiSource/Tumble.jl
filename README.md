@@ -68,8 +68,26 @@ We can also do the same using the julia REPL using the Pkg module:
 #julia > using Pkg
 #julia > Pkg.add("https://github.com/emmettgb/Lathe.jl")
 ```
-**Note:** *The same can be done inside of Jupyter*
-# Lathe.stats
+**Note:** *The same can be done inside of Jupyter* \
+In order to update Lathe we can call Pkg.update(), and the update will automatically be downloaded and installed for Julia. We can do this using Pkg, or by intering into the Pkg REPL by pressing ]
+**REPL**
+```julia
+#julia > ]
+#pkg > update()
+Updating registry at `~/.julia/registries/General`
+Updating git-repo `https://github.com/JuliaRegistries/General.git`
+Updating git-repo `https://github.com/emmettgb/Lathe.jl`
+.......
+```
+**Julia REPL using Pkg**
+```julia
+#julia > using Pkg
+#julia > Pkg.update
+Updating registry at `~/.julia/registries/General`
+Updating git-repo `https://github.com/JuliaRegistries/General.git`
+Updating git-repo `https://github.com/emmettgb/Lathe.jl`
+.......
+```
 ## Standard Library
 #### Lathe.stats.variance(array)
 Returns the variance of an array.
