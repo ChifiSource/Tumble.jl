@@ -11,7 +11,8 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 [Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray) \
 [Lathe.stats.student_t](https://github.com/emmettgb/Lathe.jl#lathestatsstudent_tsample-general) \
 [Lathe.stats.f_test](https://github.com/emmettgb/Lathe.jl#lathestatsf_testsample-general) \
-[Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsinf_sum)
+[Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsinf_sum) \
+[Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsbay_therprobability-prior-evidence)
 ## Lathe.preprocess
 ## Lathe.model
 ### Using Lathe
