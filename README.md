@@ -170,4 +170,5 @@ julia> stats.bay_ther(55,50,5)
 30250.0
 ```
 # Lathe.preprocess
+# Lathe.dftools
 # Lathe.model
