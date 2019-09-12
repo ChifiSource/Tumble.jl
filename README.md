@@ -88,6 +88,12 @@ Updating git-repo `https://github.com/JuliaRegistries/General.git`
 Updating git-repo `https://github.com/emmettgb/Lathe.jl`
 .......
 ```
+# Documentation Map
+## Lathe.stats
+### [Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray)
+## Lathe.preprocess
+## Lathe.model
+# Lathe.stats
 ## Standard Library
 #### Lathe.stats.variance(array)
 Returns the variance of an array.
@@ -170,5 +176,4 @@ julia> stats.bay_ther(55,50,5)
 30250.0
 ```
 # Lathe.preprocess
-# Lathe.dftools
 # Lathe.model
