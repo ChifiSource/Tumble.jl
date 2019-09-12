@@ -4,11 +4,12 @@ This package intends to fill the one package gap for predictive modeling, for ex
 Lathe includes a statistics module, for basic mathematical calculations, inferential, and bayesian statistics. Lathe also includes preprocessing algortithms that will help your models to interpret your data. Lathe also includes predictive machine learning models, which allow you to make predictions based off of data, and use a computer to infer variables within DataFrames and matrices.
 # Documentation Map
 ## [Installation/usage](https://github.com/emmettgb/Lathe.jl#using-lathe)
+[Adding Lathe](https://github.com/emmettgb/Lathe.jl#adding-lathe)
 ## [Lathe.stats](https://github.com/emmettgb/Lathe.jl#lathestats-1)
-[Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray)
-[Lathe.stats.confint](https://github.com/emmettgb/Lathe.jl#lathestatsconfint)
-[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
-[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
+[Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray) \
+[Lathe.stats.confint](https://github.com/emmettgb/Lathe.jl#lathestatsconfint) \
+[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray) \
+[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray) \
 ## Lathe.preprocess
 ## Lathe.model
 ### Using Lathe
