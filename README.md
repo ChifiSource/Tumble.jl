@@ -2,6 +2,15 @@
 Lathe is a conclusive module for Data Science in Julia, with statistics capabilities, data processing capabilities, and model training and validation capabilities. \
 This package intends to fill the one package gap for predictive modeling, for example, Python has Sklearn then Tensorflow, but Julia has several libraries that you have to install, import, just to encode, impute, or predict data. \
 Lathe includes a statistics module, for basic mathematical calculations, inferential, and bayesian statistics. Lathe also includes preprocessing algortithms that will help your models to interpret your data. Lathe also includes predictive machine learning models, which allow you to make predictions based off of data, and use a computer to infer variables within DataFrames and matrices.
+# Documentation Map
+## [Installation/usage](https://github.com/emmettgb/Lathe.jl#using-lathe)
+## [Lathe.stats](https://github.com/emmettgb/Lathe.jl#lathestats-1)
+[Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray)
+[Lathe.stats.confint](https://github.com/emmettgb/Lathe.jl#lathestatsconfint)
+[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
+[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
+## Lathe.preprocess
+## Lathe.model
 ### Using Lathe
 For now, using Lathe is not recommended for anything but statistical purposes, as the other modules are still Work In Progress (WIP). \
 However, if you would still like to use Lathe, you can Pkg.add it, or use it using push!. \
@@ -88,14 +97,6 @@ Updating git-repo `https://github.com/JuliaRegistries/General.git`
 Updating git-repo `https://github.com/emmettgb/Lathe.jl`
 .......
 ```
-# Documentation Map
-## [Lathe.stats](https://github.com/emmettgb/Lathe.jl#lathestats-1)
-[Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray)
-[Lathe.stats.confint](https://github.com/emmettgb/Lathe.jl#lathestatsconfint)
-[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
-[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
-## Lathe.preprocess
-## Lathe.model
 # Lathe.stats
 ## Standard Library
 #### Lathe.stats.variance(array)
