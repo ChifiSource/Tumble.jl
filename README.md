@@ -161,6 +161,7 @@ Fp: 0.02874726116785
 ================
 
 ```
+**Note:** This output is subject to change without documentation updates
 ## Bayesian Statistics
 #### Lathe.stats.bay_ther(Probability, Prior, Evidence)
 Returns a percentage, takes 3 integers. Calculates probability using Bayesian inference.
