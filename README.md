@@ -89,8 +89,11 @@ Updating git-repo `https://github.com/emmettgb/Lathe.jl`
 .......
 ```
 # Documentation Map
-## Lathe.stats
-### [Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray)
+## [Lathe.stats](https://github.com/emmettgb/Lathe.jl#lathestats-1)
+[Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray)
+[Lathe.stats.confint](https://github.com/emmettgb/Lathe.jl#lathestatsconfint)
+[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
+[Lathe.stats.standardize](https://github.com/emmettgb/Lathe.jl#lathestatsstandardizearray)
 ## Lathe.preprocess
 ## Lathe.model
 # Lathe.stats
