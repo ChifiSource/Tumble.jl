@@ -24,13 +24,13 @@ function mean(array)
     return(average)
 end
 #<----Median---->
-function median(array)
+#function median(array)
 
-end
+#end
 #<----Mode---->
-function mode(array)
+#function mode(array)
 
-end
+#end
 #<----Variance---->
 function variance(array)
     me = mean(array)
@@ -62,6 +62,20 @@ function standarderror(data)
     ste = (std/sqrt(sample))
     return(ste)
 end
+#==WIP
+function firstquar()
+
+end
+function secondquar(array)
+
+end
+function thirdquar()
+
+end
+function sampmed()
+
+end
+==#
 #-------Inferential-----------__________
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
@@ -112,9 +126,9 @@ function f_test(sample,general)
     f =  sampvar / totvariance
 end
 #<----F-Value---->
-function f_value(array
+#function f_value(array
 
-end
+#end
 #-------Bayesian--------------___________
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
@@ -152,32 +166,20 @@ Preprocessing
      Module
 ================#
 module preprocess
+using Random
 using Lathe.stats
-sample = randsubseq(1:size(df,1), 0.05)
-trainingset = df[sample, :]
-notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
-testset = df[notsample, :]
-function TrainTest(ratings::Array{Rating,1}, target_percentage=0.10)
-  N = length(ratings)
-  splitindex = round(Integer, target_percentage * N)
-  shuffle!(ratings)
-  return sub(ratings, splitindex+1:N), sub(ratings, 1:splitindex)
+
+function TrainTest(data, at = 0.7)
+    n = nrow(data)
+    idx = Random.shuffle(1:n)
+    train_idx = view(idx, 1:floor(Int, at*n))
+    test_idx = view(idx, (floor(Int, at*n)+1):n)
+    data[train_idx,:], data[test_idx,:]
+    return(test_idx,train_idx)
 end
 function StandardScalar(array)
     standardized = 0
     return(standardized)
-end
-function firstquar()
-
-end
-function secondquar()
-
-end
-function thirdquar()
-
-end
-function sampmed()
-
 end
 #-----------------------------
 end
@@ -188,15 +190,15 @@ Predictive
 ================#
 module model
 #==
-Base
-    functions
+Baseline
+    Model
 ==#
-function fit(model,x,y)
-    model(x,y)
-end
-function predict(x)
-
-end
+#struct baseline(x:Array,y:Array)
+#    function fit(x,y)
+#        h = x+y
+#        return(h)
+#    end
+#end
 #----------------------------------------------
 end
 #==
