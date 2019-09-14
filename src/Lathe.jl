@@ -229,10 +229,10 @@ mutable struct select
     y
 end
 function predict(m)
-    if m == "turtleshell"
+    if m.model == "turtleshell"
         print("Predicting Turtleshell Model")
     end
-    if m == "baseline"
+    if m.model == "baseline"
         print("Predicting Baseline Model")
     end
 end
