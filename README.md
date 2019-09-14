@@ -4,6 +4,7 @@ This package intends to fill the one package gap for predictive modeling, for ex
 Lathe includes a statistics module, for basic mathematical calculations, inferential, and bayesian statistics. Lathe also includes preprocessing algortithms that will help your models to interpret your data. Lathe also includes predictive machine learning models, which allow you to make predictions based off of data, and use a computer to infer variables within DataFrames and matrices.
 # Documentation Map
 ## [Installation/usage](https://github.com/emmettgb/Lathe.jl#using-lathe)
+[Using Lathe](https://github.com/emmettgb/Lathe.jl#using-lathe)
 [Adding Lathe](https://github.com/emmettgb/Lathe.jl#adding-lathe)
 ## [Lathe.stats](https://github.com/emmettgb/Lathe.jl#lathestats-1)
 [Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray) \
@@ -86,12 +87,6 @@ We can also do the same using the julia REPL using the Pkg module:
 #julia > Pkg.add("https://github.com/emmettgb/Lathe.jl")
 ```
 **Note:** *The same can be done inside of Jupyter* \
-**We can also use the Pkg.clone() method**
-This should be the primary method of adding the module to your Julia environment.
-```julia
-#julia > using Pkg
-#julia > Pkg.clone("https://github.com/emmettgb/Lathe.jl.git"))
-```
 In order to update Lathe we can call Pkg.update(), and the update will automatically be downloaded and installed for Julia. We can do this using Pkg, or by intering into the Pkg REPL by pressing ]
 **REPL**
 ```julia
@@ -110,6 +105,12 @@ Updating registry at `~/.julia/registries/General`
 Updating git-repo `https://github.com/JuliaRegistries/General.git`
 Updating git-repo `https://github.com/emmettgb/Lathe.jl`
 .......
+```
+**We can also use the Pkg.clone() method to use and develop the package**
+This should be the primary method of adding the module to your Julia environment.
+```julia
+#julia > using Pkg
+#julia > Pkg.clone("https://github.com/emmettgb/Lathe.jl.git"))
 ```
 # Lathe.stats
 ## Standard Library
