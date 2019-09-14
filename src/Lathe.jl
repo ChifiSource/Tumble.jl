@@ -223,26 +223,17 @@ module model
 Baseline
     Model
 ==#
-mutable struct baseline
+mutable struct model
+    model
     x
     y
-end
-#==
-Turtle
-    Shell
-        Model
-==#
-mutable struct turtleshell
-    x
-    y
-    mod = "turtleshell"
 end
 function predict(model)
     if model == "turtleshell"
-        
+        print("Predicting Turtleshell Model")
     end
     if model == "baseline"
-
+        print("Predicting Baseline Model")
     end
 end
 #----------------------------------------------
