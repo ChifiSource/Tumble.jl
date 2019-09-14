@@ -27,11 +27,11 @@ end
 function nrow(data)
     if typeof(data) == DataFrame
         nrow(data)
-    end
-else
-    x = 0
-    for i in data
-        x = x+1
+    else
+        x = 0
+        for i in data
+            x = x+1
+        end
     end
     return(x)
 end
@@ -244,7 +244,7 @@ function z_normalize(array)
     for i in array
         x = i
         y = (x-avg) / q
-
+    end
 end
 function Unit_LScale(array)
 
@@ -262,28 +262,8 @@ Baseline
     Model
 ==#
 using Lathe: stats
-function predict(m)
-    if typeof(m) == TurtleShell
-        x = m.x
-        y = m.y
-    end
-    if typeof(m) == Baseline
-        x = m.x
-        y = m.y
-    end
-end
-mutable struct TurtleShell
-    x
-    y
-end
-mutable struct Baseline
-    x
-    y
-end
-mutable struct LinearRegression
-    x
-    y
-end
+#Show models shows all the models that are stable
+#And ready for use in the library
 function showmodels()
     println("________________")
     println("Current")
@@ -293,6 +273,55 @@ function showmodels()
     println("turtleshell")
     println("baseline")
 end
+function predict(m,x)
+    if typeof(m) == TurtleShell
+        pred_turtleshell(m,x)
+    end
+    if typeof(m) == Baseline
+        pred_baseline(m,x)
+    end
+    if typeof(m) == LinearRegression
+        pred_linearregression(m,x)
+    end
+end
+#==
+Turtle
+    Shell
+==#
+# Model Type
+mutable struct TurtleShell
+    x
+    y
+end
+# Prediction Function
+function pred_turtleshell(m,xt)
+    x = m.x
+    y = m.y
+end
+#==
+Baseline
+==#
+# Model Type
+mutable struct Baseline
+    y
+end
+# Prediction Function
+function pred_baseline(m)
+    x = m.x
+    y = m.y
+end
+#==
+Linear
+    Regression
+==#
+mutable struct LinearRegression
+    x
+    y
+end
+function pred_linearregression(m,xt)
+
+end
+#
 #----------------------------------------------
 end
 #==
