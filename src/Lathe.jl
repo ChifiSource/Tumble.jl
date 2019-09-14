@@ -69,20 +69,20 @@ function standarderror(data)
     ste = (std/sqrt(sample))
     return(ste)
 end
-#==WIP
-function firstquar()
+
+function firstquar(array)
 
 end
 function secondquar(array)
 
 end
-function thirdquar()
+function thirdquar(array)
 
 end
-function sampmed()
+function sampmed(array)
 
 end
-==#
+
 #-------Inferential-----------__________
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
@@ -153,18 +153,6 @@ function reg_sum(pred,gen)
     println("================")
     println("     Lathe.stats Regression Summary")
     println("     _______________________________")
-    println(": ",gravg)
-    println("N: ",len(grdata))
-    println("x̅: ",avg)
-    println("μ: ",gravg)
-    println("s: ",)
-    println("Sample Variance: ",var)
-    println("Group Variance: ",grvar)
-    println("Low Confidence interval: ",low)
-    println("High Confidence interval: ",high)
-    println("Tp: ",t)
-    println("Fp: ",f)
-    println("================")
 end
 #---------------------------
 end
@@ -200,7 +188,6 @@ function TrainTestVal(data, at = 0.6,valat = 0.2)
 end
 function Rescalar(array)
 
-    return(standardized)
 end
 function MeanNormalization(array)
 
@@ -223,17 +210,38 @@ module models
 Baseline
     Model
 ==#
-mutable struct select
-    model
+mutable struct TurtleShell
     x
     y
 end
+mutable struct Baseline
+    x
+    y
+end
+mutable struct LinearRegression
+    x
+    y
+end
+function showmodels()
+    println("________________")
+    println("Current")
+    println("    Usable")
+    println("       Models")
+    println("================")
+    println("turtleshell")
+    println("baseline")
+end
+#----------------------------------------------
+end
+module ml
 function predict(m)
-    if m.model == "turtleshell"
-        print("Predicting Turtleshell Model")
+    if typeof(m) == TurtleShell
+        x = m.x
+        y = m.y
     end
-    if m.model == "baseline"
-        print("Predicting Baseline Model")
+    if typeof(m) == Baseline
+        x = m.x
+        y = m.y
     end
 end
 #----------------------------------------------
