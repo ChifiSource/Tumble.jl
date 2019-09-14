@@ -86,6 +86,12 @@ We can also do the same using the julia REPL using the Pkg module:
 #julia > Pkg.add("https://github.com/emmettgb/Lathe.jl")
 ```
 **Note:** *The same can be done inside of Jupyter* \
+**We can also use the Pkg.clone() method**
+This should be the primary method of adding the module to your Julia environment.
+```julia
+#julia > using Pkg
+#julia > Pkg.clone("https://github.com/emmettgb/Lathe.jl.git"))
+```
 In order to update Lathe we can call Pkg.update(), and the update will automatically be downloaded and installed for Julia. We can do this using Pkg, or by intering into the Pkg REPL by pressing ]
 **REPL**
 ```julia
