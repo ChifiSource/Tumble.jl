@@ -6,6 +6,7 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 ## [Installation/usage](https://github.com/emmettgb/Lathe.jl#using-lathe)
 [Using Lathe](https://github.com/emmettgb/Lathe.jl#using-lathe)
 [Adding Lathe](https://github.com/emmettgb/Lathe.jl#adding-lathe)
+[Updating Lathe](https://github.com/emmettgb/Lathe.jl#adding-lathe)
 ## [Lathe.stats](https://github.com/emmettgb/Lathe.jl#lathestats-1)
 [Lathe.stats.variance](https://github.com/emmettgb/Lathe.jl#lathestatsvariancearray) \
 [Lathe.stats.confint](https://github.com/emmettgb/Lathe.jl#lathestatsconfint) \
@@ -111,6 +112,12 @@ This should be the primary method of adding the module to your Julia environment
 ```julia
 #julia > using Pkg
 #julia > Pkg.clone("https://github.com/emmettgb/Lathe.jl.git"))
+```
+### Updating Lathe
+Updating is as simple as calling Pkg.update()
+```julia
+#julia > using Pkg
+#julia > Pkg.update()
 ```
 # Lathe.stats
 ## Standard Library
