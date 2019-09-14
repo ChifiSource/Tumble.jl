@@ -23,7 +23,12 @@ function mean(array)
     average = sum(array)/observations
     return(average)
 end
+#<----Nrow counts number of iterations---->
 function nrow(data)
+    if typeof(data) == DataFrame
+        nrow(data)
+    end
+else
     x = 0
     for i in data
         x = x+1
@@ -31,13 +36,13 @@ function nrow(data)
     return(x)
 end
 #<----Median---->
-#function median(array)
+function median(array)
 
-#end
+end
 #<----Mode---->
-#function mode(array)
+function mode(array)
 
-#end
+end
 #<----Variance---->
 function variance(array)
     me = mean(array)
@@ -69,15 +74,23 @@ function standarderror(data)
     ste = (std/sqrt(sample))
     return(ste)
 end
+#<----Z score---->
+function z(array)
 
+end
 function firstquar(array)
-
+    m = median(array)
+    q15 = array / m
+    q1 = array / m
+    return(q)
 end
 function secondquar(array)
-
+    m = median(array)
+    return(m)
 end
 function thirdquar(array)
-
+    q = median(array)
+    q = q * 1.5
 end
 function sampmed(array)
 
@@ -187,12 +200,50 @@ function TrainTestVal(data, at = 0.6,valat = 0.2)
     return(test_idx,train_idx,val_idx)
 end
 function Rescalar(array)
-
+    v = AbstractArray
+    for i in array
+        min = floor(array)
+        max = ceiling(array)
+        x = i
+        x = (x-min) / (max - min)
+        append!(x,v)
+    end
+    return(v)
+end
+function ArbritatraryRescale(array)
+    v = AbstractArray
+    for i in array
+        a = floor(array)
+        b = ceiling(array)
+        x = i
+        x = a + (x-a(x))*(b-a) / (b-a)
+        append!(x,v)
+    end
+    return(v)
 end
 function MeanNormalization(array)
-
+    avg = Lathe.stats.mean(array)
+    first = True
+    for i in array
+        if first == True
+            dtype = typeof(m)
+            v = dtype[]
+        end
+        first = False
+        x = i
+        a = floor(array)
+        b = ceiling(array)
+        m = (x-avg) / (b-a)
+        append!(x,v)
+    end
 end
 function z_normalize(array)
+    q = Lathe.stats.standardize(array)
+    avg = Lathe.stats.mean(array)
+    v = AbstractArray
+    for i in array
+        x = i
+        y = (x-avg) / q
 
 end
 function Unit_LScale(array)
@@ -210,6 +261,17 @@ module models
 Baseline
     Model
 ==#
+using Lathe: stats
+function predict(m)
+    if typeof(m) == TurtleShell
+        x = m.x
+        y = m.y
+    end
+    if typeof(m) == Baseline
+        x = m.x
+        y = m.y
+    end
+end
 mutable struct TurtleShell
     x
     y
@@ -230,19 +292,6 @@ function showmodels()
     println("================")
     println("turtleshell")
     println("baseline")
-end
-#----------------------------------------------
-end
-module ml
-function predict(m)
-    if typeof(m) == TurtleShell
-        x = m.x
-        y = m.y
-    end
-    if typeof(m) == Baseline
-        x = m.x
-        y = m.y
-    end
 end
 #----------------------------------------------
 end
