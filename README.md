@@ -175,5 +175,16 @@ Returns a percentage, takes 3 integers. Calculates probability using Bayesian in
 julia> stats.bay_ther(55,50,5)
 30250.0
 ```
+#### Lathe.stats.cond_prob(Probability, Prior, Evidence)
+Returns conditional probability of a given outcome.
+```julia
+```
 # Lathe.preprocess
+#### Lathe.stats.TrainTest(data, at = .7)
+Splits data into Train and Test datasets.
+**at** is a percentage representation of the given split, by default, at is set to .7, therefore 70 percent of the data will be in the train set, and 30 percent will be in the test set.
 # Lathe.model
+#### Lathe.model.baseline(x,y)
+Model gives a in-accurate prediction based on random choice of iterations in an array.
+```julia
+```
