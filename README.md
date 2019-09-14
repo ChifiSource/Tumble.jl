@@ -12,9 +12,13 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 [Lathe.stats.student_t](https://github.com/emmettgb/Lathe.jl#lathestatsstudent_tsample-general) \
 [Lathe.stats.f_test](https://github.com/emmettgb/Lathe.jl#lathestatsf_testsample-general) \
 [Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsinf_sum) \
+[Lathe.stats.bay_ther](https://github.com/emmettgb/Lathe.jl#lathestatsbay_therprobability-prior-evidence) \
+[Lathe.stats.cond_prob](https://github.com/emmettgb/Lathe.jl#lathestatscond_probprobability-prior-evidence) \
 [Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsbay_therprobability-prior-evidence)
-## Lathe.preprocess
-## Lathe.model
+## [Lathe.preprocess](https://github.com/emmettgb/Lathe.jl#lathepreprocess-1)
+[Lathe.preprocess.TrainTest](https://github.com/emmettgb/Lathe.jl#lathestatstraintestdata-at--7)
+## [Lathe.model](https://github.com/emmettgb/Lathe.jl#lathemodel-1)
+[Lathe.model.baseline](https://github.com/emmettgb/Lathe.jl#lathemodelbaselinexy)
 ### Using Lathe
 For now, using Lathe is not recommended for anything but statistical purposes, as the other modules are still Work In Progress (WIP). \
 However, if you would still like to use Lathe, you can Pkg.add it, or use it using push!. \
