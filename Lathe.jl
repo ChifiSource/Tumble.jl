@@ -23,30 +23,28 @@ function mean(array)
     average = sum(array)/observations
     return(average)
 end
+#<----Median---->
+function median(array)
+
+end
+#<----Mode---->
+function mode(array)
+
+end
 #<----Variance---->
 function variance(array)
     me = mean(array)
     sq = sum(array) - me
-    squared_mean = expo(sq,2)
+    squared_mean = sq ^ 2
     return(squared_mean)
 end
 #<----Standard Deviation---->
 function standardize(array)
     mean = sum(array)/length(array)
     sq = sum(array) - mean
-    squared_mean = expo(sq,2)
+    squared_mean = sq ^ 2
     standardized = sqrt(squared_mean)
     return(standardized)
-end
-#<----Exponential Expression---->
-function expo(number,scalar)
-    if scalar != 0
-        newscale = scalar-1
-        newnumber = number * number
-        expo(newnumber,newscale)
-    else
-        return(number)
-    end
 end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
@@ -124,6 +122,11 @@ function bay_ther(p,a,b)
     psterior = (p*(b|a) * p*(a)) / (p*b)
     return(psterior)
 end
+function cond_prob(p,a,b)
+    psterior = bay_ther(p,a,b)
+    cond = p*(a|b)
+    return(cond)
+end
 #-------Model Metrics--------____________
 function reg_sum(pred,gen)
     println("================")
@@ -150,30 +153,31 @@ Preprocessing
 ================#
 module preprocess
 using Lathe.stats
-function TrainTest(data, at = 0.7)
-    n = nrow(data)
-    idx = shuffle(1:n)
-    train_idx = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train_idx,:], data[test_idx,:]
-    return(train_idx,test_idx)
+sample = randsubseq(1:size(df,1), 0.05)
+trainingset = df[sample, :]
+notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
+testset = df[notsample, :]
+function TrainTest(ratings::Array{Rating,1}, target_percentage=0.10)
+  N = length(ratings)
+  splitindex = round(Integer, target_percentage * N)
+  shuffle!(ratings)
+  return sub(ratings, splitindex+1:N), sub(ratings, 1:splitindex)
 end
 function StandardScalar(array)
     standardized = 0
     return(standardized)
 end
-#-----------------------------
+function firstquar()
+
 end
-#================
-Data
-    Tools
-================#
-module dftools
-function shake(array)
-    array = shuffle(array)
+function secondquar()
+
 end
-function matshuffle(mat, row)
-    mat[row,:] = shuffle(mat[row,:])
+function thirdquar()
+
+end
+function sampmed()
+
 end
 #-----------------------------
 end
