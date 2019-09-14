@@ -23,6 +23,13 @@ function mean(array)
     average = sum(array)/observations
     return(average)
 end
+function nrow(data)
+    x = 0
+    for i in data
+        x = x+1
+    end
+    return(x)
+end
 #<----Median---->
 #function median(array)
 
@@ -167,19 +174,42 @@ Preprocessing
 ================#
 module preprocess
 using Random
-using Lathe.stats
+using Lathe
 
 function TrainTest(data, at = 0.7)
-    n = nrow(data)
+    n = Lathe.stats.nrow(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
     test_idx = view(idx, (floor(Int, at*n)+1):n)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
 end
-function StandardScalar(array)
-    standardized = 0
+function TrainTestVal(data, at = 0.6,valat = 0.2)
+    n = Lathe.stats.nrow(data)
+    idx = Random.shuffle(1:n)
+    train = view(idx, 1:floor(Int, at*n))
+    test_idx = view(idx, (floor(Int, at*n)+1):n)
+    data[train,:], data[test_idx,:]
+    # ~Repeats to split test data~
+    n = Lathe.stats.nrow(test)
+    idx = Random.shuffle(1:n)
+    train_idx = view(idx, 1:floor(Int, at*n))
+    val_idx = view(idx, (floor(Int, at*n)+1):n)
+    train[train_idx,:], train[val_idx,:]
+    return(test_idx,train_idx,val_idx)
+end
+function Rescalar(array)
+
     return(standardized)
+end
+function MeanNormalization(array)
+
+end
+function z_normalize(array)
+
+end
+function Unit_LScale(array)
+
 end
 #-----------------------------
 end
@@ -193,12 +223,28 @@ module model
 Baseline
     Model
 ==#
-#struct baseline(x:Array,y:Array)
-#    function fit(x,y)
-#        h = x+y
-#        return(h)
-#    end
-#end
+mutable struct baseline
+    x
+    y
+end
+#==
+Turtle
+    Shell
+        Model
+==#
+mutable struct turtleshell
+    x
+    y
+    mod = "turtleshell"
+end
+function predict(model)
+    if model == "turtleshell"
+        
+    end
+    if model == "baseline"
+
+    end
+end
 #----------------------------------------------
 end
 #==
