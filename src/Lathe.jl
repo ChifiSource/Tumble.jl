@@ -218,21 +218,21 @@ Predictive
     Learning
         Models
 ================#
-module model
+module models
 #==
 Baseline
     Model
 ==#
-mutable struct model
+mutable struct select
     model
     x
     y
 end
-function predict(model)
-    if model == "turtleshell"
+function predict(m)
+    if m == "turtleshell"
         print("Predicting Turtleshell Model")
     end
-    if model == "baseline"
+    if m == "baseline"
         print("Predicting Baseline Model")
     end
 end
