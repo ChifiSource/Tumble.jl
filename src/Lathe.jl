@@ -41,7 +41,8 @@ function median(array)
 end
 #<----Mode---->
 function mode(array)
-
+    m = findmax(array)
+    return(m)
 end
 #<----Variance---->
 function variance(array)
@@ -227,7 +228,7 @@ function MeanNormalization(array)
     for i in array
         if first == True
             dtype = typeof(m)
-            v = dtype[]
+            v = []
         end
         first = False
         x = i
@@ -261,7 +262,7 @@ module models
 Baseline
     Model
 ==#
-using Lathe: stats
+using Lathe
 #Show models shows all the models that are stable
 #And ready for use in the library
 function showmodels()
@@ -306,9 +307,18 @@ mutable struct Baseline
     y
 end
 # Prediction Function
-function pred_baseline(m)
-    x = m.x
+function pred_baseline(m,xt)
     y = m.y
+    r = length(xt)
+    e = []
+    mode = Lathe.stats.mode(xt)
+    for i in xt
+        append!(i,e)
+        while r != 0
+            r = r -1
+        end
+    end
+
 end
 #==
 Linear
