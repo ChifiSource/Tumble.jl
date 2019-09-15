@@ -221,6 +221,19 @@ Standardizes the data based on the mean.
 Takes a fit model, and predicts the outcome based on the given X.
 ```julia
 ```
+### Lathe.models.showmodels()
+Shows all current fit-able models.
+```julia
+#julia> Lathe.models.showmodels()
+________________
+Current
+    Usable
+       Models
+================
+turtleshell
+baseline
+
+```
 ### Models
 #### Lathe.models.Baseline(x,y)
 Model gives an in-accurate prediction based on random choice of iterations in an array.
