@@ -198,11 +198,52 @@ Returns conditional probability of a given outcome.
 ```julia
 ```
 # Lathe.preprocess
-#### Lathe.stats.TrainTest(data, at = .7)
+#### Lathe.preprocess.TrainTest(data, at = .7)
 Splits data into Train and Test datasets.
 **at** is a percentage representation of the given split, by default, at is set to .7, therefore 70 percent of the data will be in the train set, and 30 percent will be in the test set.
-# Lathe.model
-#### Lathe.model.baseline(x,y)
-Model gives a in-accurate prediction based on random choice of iterations in an array.
+```julia
+```
+#### Lathe.preprocess.Rescalar(array)
+Simple mathematical rescaling of an array based on minimum and maximum values to obtain an average.
+```julia
+```
+#### Lathe.preprocess.ArbritraryRescale(array)
+Rescales using the minimum plus the rescaled value.
+```julia
+```
+#### MeanNormalization
+Standardizes the data based on the mean.
+```julia
+```
+# Lathe.models
+### Model functions
+#### Lathe.models.predict(model,X)
+Takes a fit model, and predicts the outcome based on the given X.
+```julia
+```
+### Lathe.models.showmodels()
+Shows all current fit-able models.
+```julia
+#julia> Lathe.models.showmodels()
+________________
+Current
+    Usable
+       Models
+================
+turtleshell
+baseline
+
+```
+### Models
+#### Lathe.models.Baseline(x,y)
+Model gives an in-accurate prediction based on random choice of iterations in an array.
+```julia
+```
+#### Lathe.models.TurtleShell
+Gives a fairly in-accurate Baseline score that is more refined than a Baseline accuracy, but is more refined than a Baseline score. This model is good for getting a higher Baseline score with highly variant data, as apposed to the baseline using the mode of the data.
+```julia
+```
+#### Lathe.models.LinearRegression
+Predicts Linear Continuity between two variables, and predicts values based on the shape and X of the input.
 ```julia
 ```
