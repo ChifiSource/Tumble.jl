@@ -136,20 +136,13 @@ function student_t(sample,general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
-#<---- T Value---->
-function t_value(array)
-
-end
 #<---- F-Test---->
 function f_test(sample,general)
     totvariance = variance(general)
     sampvar = variance(sample)
     f =  sampvar / totvariance
+    return(f)
 end
-#<----F-Value---->
-#function f_value(array
-
-#end
 #-------Bayesian--------------___________
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
@@ -175,7 +168,7 @@ function mae(actual,pred)
         throw(ArgumentError("Length of values does not match index!"))
     end
     for i in actual
-        
+
     end
 end
 #---------------------------
@@ -187,7 +180,6 @@ Preprocessing
 module preprocess
 using Random
 using Lathe
-
 function TrainTest(data, at = 0.7)
     n = Lathe.stats.nrow(data)
     idx = Random.shuffle(1:n)
@@ -213,8 +205,8 @@ end
 function Rescalar(array)
     v = []
     for i in array
-        min = floor(array)
-        max = ceiling(array)
+        min = min(array)
+        max = max(array)
         x = i
         x = (x-min) / (max - min)
         append!(v,x)
@@ -224,8 +216,8 @@ end
 function ArbritatraryRescale(array)
     v = []
     for i in array
-        a = floor(array)
-        b = ceiling(array)
+        a = min(array)
+        b = max(array)
         x = i
         x = a + (x-a(x))*(b-a) / (b-a)
         append!(v,x)
@@ -242,8 +234,8 @@ function MeanNormalization(array)
         end
         first = False
         x = i
-        a = floor(array)
-        b = ceiling(array)
+        a = min(array)
+        b = max(array)
         m = (x-avg) / (b-a)
         append!(v,x)
     end
@@ -251,10 +243,11 @@ end
 function z_normalize(array)
     q = Lathe.stats.standardize(array)
     avg = Lathe.stats.mean(array)
-    v = AbstractArray
+    v = []
     for i in array
         x = i
         y = (x-avg) / q
+        append!(v,y)
     end
 end
 function Unit_LScale(array)
