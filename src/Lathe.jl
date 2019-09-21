@@ -25,9 +25,6 @@ function mean(array)
 end
 #<----Nrow counts number of iterations---->
 function nrow(data)
-    if typeof(data) == DataFrame
-        nrow(data)
-    else
         x = 0
         for i in data
             x = x+1
