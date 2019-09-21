@@ -29,8 +29,7 @@ function nrow(data)
         for i in data
             x = x+1
         end
-    end
-    return(x)
+        return(x)
 end
 #<----Median---->
 function median(array)
