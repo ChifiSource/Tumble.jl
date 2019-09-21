@@ -165,11 +165,13 @@ function mae(actual,pred)
     l = length(actual)
     lp = length(pred)
     if l != lp
-        throw(ArgumentError("Length of values does not match index!"))
+        throw(ArgumentError("The array shape does not match!"))
     end
-    for i in actual
-
-    end
+    println(1,"X",l)
+    m = mean(actual)
+    prm = mean(pred)
+    a = m-prm
+    return(a)
 end
 #---------------------------
 end
@@ -278,20 +280,21 @@ function showmodels()
     println("majBaseline")
     println("meanBaseline")
 end
+#Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
     if typeof(m) == TurtleShell
-        pred_turtleshell(m,x)
+        y_pred = pred_turtleshell(m,x)
     end
     if typeof(m) == majBaseline
-        pred_catbaseline(m,x)
+        y_pred = pred_catbaseline(m,x)
     end
     if typeof(m) == LinearRegression
-        pred_linearregression(m,x)
+        y_pred = pred_linearregression(m,x)
     end
     if typeof(m) == meanBaseline
         y_pred = pred_meanbaseline(m,x)
-        return(y_pred)
     end
+    return(y_pred)
 end
 #==
 Turtle
@@ -302,7 +305,7 @@ mutable struct TurtleShell
     x
     y
 end
-# Prediction Function
+#----  Callback
 function pred_turtleshell(m,xt)
     x = m.x
     y = m.y
@@ -316,7 +319,7 @@ Majority
 mutable struct majBaseline
     y
 end
-# Prediction Function
+#----  Callback
 function pred_catbaseline(m,xt)
     y = m.y
     e = []
@@ -333,6 +336,7 @@ Mean
 mutable struct meanBaseline
     y
 end
+#----  Callback
 function pred_meanbaseline(m,xt)
     e = []
     m = Lathe.stats.mean(m.y)
@@ -349,6 +353,7 @@ mutable struct LinearRegression
     x
     y
 end
+#----  Callback
 function pred_linearregression(m,xt)
 
 end
