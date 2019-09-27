@@ -22,7 +22,7 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 [Lathe.stats.bay_ther](https://github.com/emmettgb/Lathe.jl#lathestatsbay_therprobability-prior-evidence) \
 [Lathe.stats.cond_prob](https://github.com/emmettgb/Lathe.jl#lathestatscond_probprobability-prior-evidence) \
 [Lathe.stats.inf_sum]() \
-[Lathe.stats.mae]() \
+[Lathe.stats.mae]() 
 ## [Lathe.preprocess](https://github.com/emmettgb/Lathe.jl#lathepreprocess-1)
 [Lathe.preprocess.TrainTest](https://github.com/emmettgb/Lathe.jl#lathestatstraintestdata-at--7)
 [Lathe.preprocess.TrainTestVal]() \
@@ -30,14 +30,14 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 [Lathe.preprocess.ArbritraryRescale]() \
 [Lathe.preprocess.MeanNormalization]() \
 [Lathe.preprocess.z_normalize]() \
-[Lathe.preprocess.Unit_LScale]() \
+[Lathe.preprocess.Unit_LScale]() 
 ## [Lathe.models](https://github.com/emmettgb/Lathe.jl#lathemodel-1)
 [Lathe.models.showmodels]() \
 [Lathe.models.predict]() \
 [Lathe.models.majBaseline](https://github.com/emmettgb/Lathe.jl#lathemodelbaselinexy)
 [Lathe.models.meanBaseline]() \
 [Lathe.models.TurtleShell]() \
-[Lathe.models.LinearRegression]() \
+[Lathe.models.LinearRegression]() 
 ### Using Lathe
 For now, using Lathe is not recommended for anything but statistical purposes, as the other modules are still Work In Progress (WIP). \
 However, if you would still like to use Lathe, you can Pkg.add it, or use it using push!. \
