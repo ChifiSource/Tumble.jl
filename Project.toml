@@ -1,6 +1,0 @@
-
-desc = "Predictive Learning Library for Julia"
-keywords = ["Machine-Learning", "Statistics", "Processing"]
-license = "MIT"
-name = "Lathe"
-version = "0.0.1"
