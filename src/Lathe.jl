@@ -296,7 +296,6 @@ Baseline
 ==#
 using Lathe
 using Random
-using Sort
 #Show models shows all the models that are stable
 #And ready for use in the library
 function showmodels()
