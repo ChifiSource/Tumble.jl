@@ -147,28 +147,35 @@ function cond_prob(p,a,b)
     cond = p*(a|b)
     return(cond)
 end
-#-------Model Metrics--------____________
-function reg_sum(pred,gen)
-    println("================")
-    println("     Lathe.stats Regression Summary")
-    println("     _______________________________")
+
+#---------------------------
 end
+#================
+Model
+    Validation
+        Module
+================#
+module validate
+#-------Model Metrics--------____________
+# --- Mean Absolute Error ---
+using Lathe
 function mae(actual,pred)
     l = length(actual)
     lp = length(pred)
     if l != lp
         throw(ArgumentError("The array shape does not match!"))
     end
-    println(1,"X",l)
-    m = mean(actual)
-    prm = mean(pred)
-    a = m-prm
-    return(a)
+    result = l-lp
+    maeunf = Lathe.stats.mean(result)
+    if maeunf < 0
+        maeunf = maeunf - (maeunf - maeunf)
+    end
+    return(maeunf)
 end
+# --- Get Permutation ---
 function getPermutation(model)
 
 end
-#---------------------------
 end
 #================
 Preprocessing
