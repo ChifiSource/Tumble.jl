@@ -357,8 +357,8 @@ end
 function pred_meanbaseline(m,xt)
     e = []
     m = Lathe.stats.mean(m.y)
-    print('-Lathe.models Mean Baseline-')
-    print('mean: ',m)
+    print("-Lathe.models Mean Baseline-")
+    print("mean: ",m)
     for i in xt
         append!(e,m)
     end
@@ -462,6 +462,15 @@ function pred_catbaseline(m,xt)
     end
 
 end
+#
+#----------------------------------------------
+end
+#================
+Predictive
+    Learning
+        Models
+================#
+module pipelines
 #
 #----------------------------------------------
 end
