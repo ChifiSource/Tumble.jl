@@ -165,7 +165,7 @@ function mae(actual,pred)
     if l != lp
         throw(ArgumentError("The array shape does not match!"))
     end
-    result = l-lp
+    result = actual-pred
     maeunf = Lathe.stats.mean(result)
     if maeunf < 0
         maeunf = maeunf - (maeunf - maeunf)
@@ -472,11 +472,17 @@ end
 #----------------------------------------------
 end
 #================
-Predictive
-    Learning
-        Models
+Pipeline
+    Module
 ================#
 module pipelines
+#
+mutable struct Pipeline
+    model
+    categoricalenc
+    contenc
+    imputer
+end
 #
 #----------------------------------------------
 end
