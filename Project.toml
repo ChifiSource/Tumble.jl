@@ -1,0 +1,7 @@
+
+desc = "Predictive Learning Library for Julia"
+keywords = ["Machine-Learning", "Statistics", "Processing"]
+license = "MIT"
+name = "Lathe"
+version = "0.0.1"
+uuid = "876371f8-e1c4-11e9-0bb4-5383ec155698"
