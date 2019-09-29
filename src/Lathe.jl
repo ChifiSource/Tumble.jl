@@ -483,10 +483,14 @@ function pred_foursquare(m,xt)
     xtrange2mean = Lathe.stats.mean(xtrange2)
     xtrange3mean = Lathe.stats.mean(xtrange3)
     xtrange4mean = Lathe.stats.mean(xtrange4)
-# ypred = rand(1:7)
+    # Ranges for ifs
+    condrange1 = (xtrange1min:xtrange1max)
+    condrange2 = (xtrange2min:xtrange2max)
+    condrange3 = (xtrange3min:xtrange3max)
+    condrange4 = (xtrange4min:xtrange4max)
     # This for loop is where the dimension's are actually used:
     for i in xt:
-        if i in range(xtrange1min:xtrange1max)
+        if i in range(condrange1)
             if i < xtrange1mean
                 xshuff = rand(floordifmin1:floordifmax1)
                 ypred = i * xshuff
@@ -495,7 +499,7 @@ function pred_foursquare(m,xt)
                 ypred = i * xshuff
             end
         end
-        if i in range(xtrange2min:xtrange2max)
+        if i in range(condrange2)
             if i < xtrange2mean
                 xshuff = rand(floordifmin2:floordifmax2)
                 ypred = i * xshuff
@@ -504,7 +508,7 @@ function pred_foursquare(m,xt)
                 ypred = i * xshuff
             end
         end
-        if i in range(xtrange3min:xtrange3max)
+        if i in range(condrange3)
             if i < xtrange3mean
                 xshuff = rand(floordifmin3:floordifmax3)
                 ypred = i * xshuff
@@ -513,7 +517,7 @@ function pred_foursquare(m,xt)
                 ypred = i * xshuff
             end
         end
-        if i in range(xtrange4min:xtrangemax)
+        if i in range(condrange4)
             if i < xtrange4mean
                 xshuff = rand(floordifmin4:floordifmax4)
                 ypred = i * xshuff
