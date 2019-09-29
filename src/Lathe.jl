@@ -492,37 +492,37 @@ function pred_foursquare(m,xt)
     for i in xt:
         if i in range(condrange1)
             if i < xtrange1mean
-                xshuff = rand(floordifmin1:floordifmax1)
+                xshuff = rand(range(floordifmin1:floordifmax1))
                 ypred = i * xshuff
             else
-                xshuff = rand(cielingdifmin1:cielingdifmax1)
+                xshuff = rand(range(cielingdifmin1:cielingdifmax1))
                 ypred = i * xshuff
             end
         end
         if i in range(condrange2)
             if i < xtrange2mean
-                xshuff = rand(floordifmin2:floordifmax2)
+                xshuff = rand(range(floordifmin2:floordifmax2))
                 ypred = i * xshuff
             else
-                xshuff = rand(cielingdifmin2:cielingdifmax2)
+                xshuff = rand(range(cielingdifmin2:cielingdifmax2))
                 ypred = i * xshuff
             end
         end
         if i in range(condrange3)
             if i < xtrange3mean
-                xshuff = rand(floordifmin3:floordifmax3)
+                xshuff = rand(range(floordifmin3:floordifmax3))
                 ypred = i * xshuff
             else
-                xshuff = rand(cielingdifmin3:cielingdifmax3)
+                xshuff = rand(range(cielingdifmin3:cielingdifmax3))
                 ypred = i * xshuff
             end
         end
         if i in range(condrange4)
             if i < xtrange4mean
-                xshuff = rand(floordifmin4:floordifmax4)
+                xshuff = rand(range(floordifmin4:floordifmax4))
                 ypred = i * xshuff
             else
-                xshuff = rand(cielingdifmin4:cielingdifmax4)
+                xshuff = rand(range(cielingdifmin4:cielingdifmax4))
                 ypred = i * xshuff
             end
         end
