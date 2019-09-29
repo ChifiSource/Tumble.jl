@@ -331,8 +331,8 @@ function showmodels()
 end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
-    if typeof(m) == QuadRange
-        y_pred = pred_quadrange(m,x)
+    if typeof(m) == FourSquare
+        y_pred = pred_foursquare(m,x)
     end
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
@@ -390,12 +390,12 @@ Quad
     Range
 ==#
 # Model Type
-mutable struct QuadRange
+mutable struct FourSquare
     x
     y
 end
 #----  Callback
-function pred_quadrange(m,xt)
+function pred_foursquare(m,xt)
     x = m.x
     y = m.y
     # Go ahead and throw an error for the wrong input shape:
@@ -436,18 +436,34 @@ function pred_quadrange(m,xt)
     xrange3max = maximum(xrange3)
     xrange4min = minimum(xrange4)
     xrange4max = maximum(xrange4)
+    # Get the means, for the split predictor:
     xrange1avg = Lathe.stats.mean(xrange1)
     xrange2avg = Lathe.stats.mean(xrange2)
     xrange3avg = Lathe.stats.mean(xrange3)
     xrange4avg = Lathe.stats.mean(xrange4)
-    difmin1 = range1min - xrange1min
-    difmax1 = range1max - xrange1max
-    difmin2 = range2min - xrange2max
-    difmax2 = range2min - xrange2min
-    difmin3 = range3min - xrange3min
-    difmax3 = range3max - xrange3max
-    difmin4 = range4min - xrange4max
-    difmax4 = range4min - xrange4min
+    yrange1avg = Lathe.stats.mean(range1)
+    yrange2avg = Lathe.stats.mean(range2)
+    yrange3avg = Lathe.stats.mean(range3)
+    yrange4avg = Lathe.stats.mean(range4)
+    # Floor ranges
+    floordifmax1 = yrange1avg / xrange1min
+    floordifmin1 = xrange1min / yrange1avg
+    floordifmax2 = yrange2avg / xrange2min
+    floordifmin2 = xrange2min / yrange2avg
+    floordifmax3 = yrange3avg / xrange3min
+    floordifmin3 = xrange3min / yrange3avg
+    floordifmax4 = yrange4avg / xrange4min
+    floordifmin4 = xrange4min / yrange4avg
+    # Cieling ranges
+        # Notice the mathematics are reversed! :
+    cielingdifmin1 = yrange1avg / xrange1max
+    cielingdifmax1 = xrange1max / yrange1avg
+    cielingdifmin2 = yrange2avg / xrange2max
+    cielingdifmax2 = xrange2max / yrange2avg
+    cielingdifmin3 = yrange3avg / xrange3max
+    cielingdifmax3 = xrange3max / yrange3avg
+    cielingdifmin4 = yrange4avg / xrange4max
+    cielingdifmax4 = xrange4max / yrange4avg
     # Split the train Data
     xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
     xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
@@ -468,38 +484,46 @@ function pred_quadrange(m,xt)
     xtrange3mean = Lathe.stats.mean(xtrange3)
     xtrange4mean = Lathe.stats.mean(xtrange4)
 # ypred = rand(1:7)
+    # This for loop is where the dimension's are actually used:
     for i in xt:
         if i in (xtrange1min:xtrange1max)
             if i < xtrange1mean
-                xshuff = rand(xtrange1min:xtrange1mean)
+                xshuff = rand(floordifmin1:floordifmax1)
+                ypred = i * xshuff
             else
-                xshuff = rand(xtrange1mean:xtrange1max)
+                xshuff = rand(cielingdifmin1:cielingdifmax1)
+                ypred = i * xshuff
             end
         end
         if i in (xtrange2min:xtrange2max)
             if i < xtrange2mean
-                xshuff = rand(xtrange2min:xtrange2mean)
+                xshuff = rand(floordifmin2:floordifmax2)
+                ypred = i * xshuff
             else
-                xshuff = rand(xtrange1min:xtrange1mean)
+                xshuff = rand(cielingdifmin2:cielingdifmax2)
+                ypred = i * xshuff
             end
         end
         if i in (xtrange3min:xtrange3max)
             if i < xtrange3mean
-                xshuff = rand(xtrange3min:xtrange3mean)
+                xshuff = rand(floordifmin3:floordifmax3)
+                ypred = i * xshuff
             else
-                xshuff = rand(xtrange3mean:xtrange3max)
+                xshuff = rand(cielingdifmin3:cielingdifmax3)
+                ypred = i * xshuff
             end
         end
         if i in (xtrange4min:xtrangemax)
             if i < xtrange4mean
-                xshuff = rand(xtrange4min:xtrange4mean)
+                xshuff = rand(floordifmin4:floordifmax4)
+                ypred = i * xshuff
             else
-                xshuff = rand(xtrange1min:xtrange1mean)
+                xshuff = rand(cielingdifmin4:cielingdifmax4)
+                ypred = i * xshuff
             end
         end
+        append!(e,ypred)
     end
-    ypred = 1
-    append!(e,ypred)
     return(e)
 end
 #==
