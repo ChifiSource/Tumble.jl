@@ -11,7 +11,6 @@ Thank you for your forks!
 <-----------Lathe.jl----------->
 ================================#
 module Lathe
-using DataFrames
 #================
 Stats
     Module
@@ -25,15 +24,11 @@ function mean(array)
 end
 #<----Nrow counts number of iterations---->
 function nrow(data)
-    if typeof(data) == DataFrame
-        nrow(data)
-    else
         x = 0
         for i in data
             x = x+1
         end
-    end
-    return(x)
+        return(x)
 end
 #<----Median---->
 function median(array)
@@ -93,9 +88,6 @@ function thirdquar(array)
     q = median(array)
     q = q * 1.5
 end
-function sampmed(array)
-
-end
 
 #-------Inferential-----------__________
 #<----Inferential Summary---->
@@ -136,20 +128,13 @@ function student_t(sample,general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
-#<---- T Value---->
-function t_value(array)
-
-end
 #<---- F-Test---->
 function f_test(sample,general)
     totvariance = variance(general)
     sampvar = variance(sample)
     f =  sampvar / totvariance
+    return(f)
 end
-#<----F-Value---->
-#function f_value(array
-
-#end
 #-------Bayesian--------------___________
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
@@ -162,13 +147,35 @@ function cond_prob(p,a,b)
     cond = p*(a|b)
     return(cond)
 end
-#-------Model Metrics--------____________
-function reg_sum(pred,gen)
-    println("================")
-    println("     Lathe.stats Regression Summary")
-    println("     _______________________________")
-end
+
 #---------------------------
+end
+#================
+Model
+    Validation
+        Module
+================#
+module validate
+#-------Model Metrics--------____________
+# --- Mean Absolute Error ---
+using Lathe
+function mae(actual,pred)
+    l = length(actual)
+    lp = length(pred)
+    if l != lp
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    result = actual-pred
+    maeunf = Lathe.stats.mean(result)
+    if maeunf < 0
+        maeunf = maeunf - (maeunf - maeunf)
+    end
+    return(maeunf)
+end
+# --- Get Permutation ---
+function getPermutation(model)
+
+end
 end
 #================
 Preprocessing
@@ -177,7 +184,12 @@ Preprocessing
 module preprocess
 using Random
 using Lathe
-
+#===============
+Generalized
+    Data
+        Processing
+===============#
+# Train-Test-Split-----
 function TrainTest(data, at = 0.7)
     n = Lathe.stats.nrow(data)
     idx = Random.shuffle(1:n)
@@ -186,6 +198,18 @@ function TrainTest(data, at = 0.7)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
 end
+# SortSplit-------------
+function SortSplit(data,at=.25,reverse=false)
+    idx = sort(data)
+    if reverse == true
+        idx = sort(data,Sort.Reverse)
+    end
+    one = view(idx, 1:floor(Int, at*n))
+    two = view(idx, (floor(Int, at*n)+1):n)
+    data[train_idx,:], data[test_idx,:]
+    return(one,two)
+end
+# Test Train Val Split----
 function TrainTestVal(data, at = 0.6,valat = 0.2)
     n = Lathe.stats.nrow(data)
     idx = Random.shuffle(1:n)
@@ -200,28 +224,35 @@ function TrainTestVal(data, at = 0.6,valat = 0.2)
     train[train_idx,:], train[val_idx,:]
     return(test_idx,train_idx,val_idx)
 end
+#=======
+Numerical
+    Scaling
+=======#
+# ---- Rescalar (Standard Deviation) ---
 function Rescalar(array)
-    v = AbstractArray
+    v = []
     for i in array
-        min = floor(array)
-        max = ceiling(array)
+        min = minimum(array)
+        max = maximum(array)
         x = i
         x = (x-min) / (max - min)
-        append!(x,v)
+        append!(v,x)
     end
     return(v)
 end
+# ---- Arbitrary Rescalar ----
 function ArbritatraryRescale(array)
-    v = AbstractArray
+    v = []
     for i in array
-        a = floor(array)
-        b = ceiling(array)
+        a = minimum(array)
+        b = maximum(array)
         x = i
         x = a + (x-a(x))*(b-a) / (b-a)
-        append!(x,v)
+        append!(v,x)
     end
     return(v)
 end
+# ---- Mean Normalization ----
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
     first = True
@@ -232,24 +263,32 @@ function MeanNormalization(array)
         end
         first = False
         x = i
-        a = floor(array)
-        b = ceiling(array)
+        a = minimum(array)
+        b = maximum(array)
         m = (x-avg) / (b-a)
-        append!(x,v)
+        append!(v,x)
     end
 end
+# ---- Z Normalization ----
 function z_normalize(array)
     q = Lathe.stats.standardize(array)
     avg = Lathe.stats.mean(array)
-    v = AbstractArray
+    v = []
     for i in array
         x = i
         y = (x-avg) / q
+        append!(v,y)
     end
 end
+# ---- Unit L-Scale normalize ----
 function Unit_LScale(array)
-
+    print("Lathe 0.0.5")
+    print("As of now, this feature is unavailable.")
 end
+#==========
+Categorical
+    Encoding
+==========#
 #-----------------------------
 end
 #================
@@ -263,6 +302,7 @@ Baseline
     Model
 ==#
 using Lathe
+using Random
 #Show models shows all the models that are stable
 #And ready for use in the library
 function showmodels()
@@ -271,54 +311,232 @@ function showmodels()
     println("    Usable")
     println("       Models")
     println("================")
-    println("turtleshell")
-    println("baseline")
+#    println("--QuadRange--")
+#    print("Ideal for use with continuous variables, uses")
+#    print("4 ranges and mathematical gap to predict the")
+#    print("outcome of Y. This results in a non-linear")
+#    print("Prediction for data with high variance.")
+#    print("---- Usage ----")
+#    print("model = Lathe.models.QuadRange(x,y)")
+#    print("ypr = Lathe.models.predict(model,Feature)")
+    print("_________________________________")
+#    println("--TurtleShell--")
+#    println("--majBaseline--")
+    println("--meanBaseline--")
+    print("Basic model to get a baseline-accuracy to")
+    print("improve upon")
+    print("---- Usage ----")
+    print("model = Lathe.models.meanBaseline(y)")
+    print("ypr = predict(model,Feature)")
 end
+#Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
-    if typeof(m) == TurtleShell
-        pred_turtleshell(m,x)
+    if typeof(m) == FourSquare
+        y_pred = pred_foursquare(m,x)
     end
-    if typeof(m) == Baseline
-        pred_baseline(m,x)
+    if typeof(m) == majBaseline
+        y_pred = pred_catbaseline(m,x)
     end
     if typeof(m) == LinearRegression
-        pred_linearregression(m,x)
+        y_pred = pred_linearregression(m,x)
     end
+    if typeof(m) == meanBaseline
+        y_pred = pred_meanbaseline(m,x)
+    end
+    return(y_pred)
+end
+#======================================================================
+=======================================================================
+            CONTINUOS MODELS               CONTINUOS MODELS
+            CONTINUOS MODELS               CONTINUOS MODELS
+======================================================================
+======================================================================#
+#==
+Mean
+    Baseline
+==#
+ # Model Type
+mutable struct meanBaseline
+    y
+end
+#----  Callback
+function pred_meanbaseline(m,xt)
+    e = []
+    m = Lathe.stats.mean(m.y)
+    print("-Lathe.models Mean Baseline-")
+    print("mean: ",m)
+    for i in xt
+        append!(e,m)
+    end
+    return(e)
 end
 #==
-Turtle
-    Shell
+Multi-
+    Gap
+ - A quad range predictor, on steroids. -
 ==#
 # Model Type
-mutable struct TurtleShell
+mutable struct MultiGap
+    x
+    y
+    nfourths
+end
+#----  Callback
+function pred_multigap(m,xt)
+
+end
+#==
+Quad
+    Range
+==#
+# Model Type
+mutable struct FourSquare
     x
     y
 end
-# Prediction Function
-function pred_turtleshell(m,xt)
+#----  Callback
+function pred_foursquare(m,xt)
     x = m.x
     y = m.y
-end
-#==
-Baseline
-==#
-# Model Type
-mutable struct Baseline
-    y
-end
-# Prediction Function
-function pred_baseline(m,xt)
-    y = m.y
-    r = length(xt)
-    e = []
-    mode = Lathe.stats.mode(xt)
-    for i in xt
-        append!(i,e)
-        while r != 0
-            r = r -1
-        end
+    # Go ahead and throw an error for the wrong input shape:
+    xlength = length(x)
+    ylength = length(y)
+    if xlength != ylength
+        throw(ArgumentError("The array shape does not match!"))
     end
+    # Our empty Y prediction list==
+    e = []
+    # Empty lists for each range==
 
+    # Quad Splitting the data ---->
+    # Split the Y
+    y2,range1 = Lathe.preprocess.SortSplit(y)
+    y3,range2 = Lathe.preprocess.SortSplit(y2)
+    y4,range3 = Lathe.preprocess.SortSplit(y3)
+    range4 = y4
+    # Split the x train
+    x1,xrange1 = Lathe.preprocess.SortSplit(x)
+    x2,xrange2 = Lathe.preprocess.SortSplit(x1)
+    x3,xrange3 = Lathe.preprocess.SortSplit(x2)
+    xrange4 = x3
+    len = length(xt)
+    range1min = minimum(range1)
+    range1max = maximum(range1)
+    range2min = minimum(range2)
+    range2max = maximum(range2)
+    range3min = minimum(range3)
+    range3max = maximum(range3)
+    range4min = minimum(range4)
+    range4max = maximum(range4)
+    xrange1min = minimum(xrange1)
+    xrange1max = maximum(xrange1)
+    xrange2min = minimum(xrange2)
+    xrange2max = maximum(xrange2)
+    xrange3min = minimum(xrange3)
+    xrange3max = maximum(xrange3)
+    xrange4min = minimum(xrange4)
+    xrange4max = maximum(xrange4)
+    # Get the means, for the split predictor:
+    xrange1avg = Lathe.stats.mean(xrange1)
+    xrange2avg = Lathe.stats.mean(xrange2)
+    xrange3avg = Lathe.stats.mean(xrange3)
+    xrange4avg = Lathe.stats.mean(xrange4)
+    yrange1avg = Lathe.stats.mean(range1)
+    yrange2avg = Lathe.stats.mean(range2)
+    yrange3avg = Lathe.stats.mean(range3)
+    yrange4avg = Lathe.stats.mean(range4)
+    # Floor ranges
+    floordifmax1 = yrange1avg / xrange1min
+    floordifmin1 = xrange1min / yrange1avg
+    floordifmax2 = yrange2avg / xrange2min
+    floordifmin2 = xrange2min / yrange2avg
+    floordifmax3 = yrange3avg / xrange3min
+    floordifmin3 = xrange3min / yrange3avg
+    floordifmax4 = yrange4avg / xrange4min
+    floordifmin4 = xrange4min / yrange4avg
+    # Cieling ranges
+        # Notice the mathematics are reversed! :
+    cielingdifmin1 = yrange1avg / xrange1max
+    cielingdifmax1 = xrange1max / yrange1avg
+    cielingdifmin2 = yrange2avg / xrange2max
+    cielingdifmax2 = xrange2max / yrange2avg
+    cielingdifmin3 = yrange3avg / xrange3max
+    cielingdifmax3 = xrange3max / yrange3avg
+    cielingdifmin4 = yrange4avg / xrange4max
+    cielingdifmax4 = xrange4max / yrange4avg
+    # Split the train Data
+    xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
+    xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
+    xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
+    xrange4 = x3
+    # Get min-max
+    xtrange1min = minimum(xtrange1)
+    xtrange1max = maximum(xtrange1)
+    xtrange2min = minimum(xtrange2)
+    xtrange2max = maximum(xtrange2)
+    xtrange3min = minimum(xtrange3)
+    xtrange3max = maximum(xtrange3)
+    xtrange4min = minimum(xtrange4)
+    xtrange4max = maximum(xtrange4)
+    # Mean for 8 total divisions
+    xtrange1mean = Lathe.stats.mean(xtrange1)
+    xtrange2mean = Lathe.stats.mean(xtrange2)
+    xtrange3mean = Lathe.stats.mean(xtrange3)
+    xtrange4mean = Lathe.stats.mean(xtrange4)
+    # Ranges for ifs
+    condrange1 = (xtrange1min:xtrange1max)
+    condrange2 = (xtrange2min:xtrange2max)
+    condrange3 = (xtrange3min:xtrange3max)
+    condrange4 = (xtrange4min:xtrange4max)
+    # This for loop is where the dimension's are actually used:
+    for i in xt
+        if i in range(condrange1)
+            if i < xtrange1mean
+                border = range(floordifmin1:floordifmax1)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            else
+                border = range(cielingdifmin1:cielingdifmax1)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            end
+        end
+        if i in range(condrange2)
+            if i < xtrange2mean
+                border = range(floordifmin2:floordifmax2)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            else
+                border = range(cielingdifmin2:cielingdifmax2)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            end
+        end
+        if i in range(condrange3)
+            if i < xtrange3mean
+                border = range(floordifmin3:floordifmax3)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            else
+                border = range(cielingdifmin3:cielingdifmax3)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            end
+        end
+        if i in range(condrange4)
+            if i < xtrange4mean
+                border = range(floordifmin4:floordifmax4)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            else
+                border = range(cielingdifmin4:cielingdifmax4)
+                xshuff = rand(border)
+                ypred = i * xshuff
+            end
+        end
+        append!(e,ypred)
+    end
+    return(e)
 end
 #==
 Linear
@@ -328,8 +546,52 @@ mutable struct LinearRegression
     x
     y
 end
+#----  Callback
 function pred_linearregression(m,xt)
 
+end
+#======================================================================
+=======================================================================
+            CATEGORICAL MODELS             CATEGORICAL MODELS
+            CATEGORICAL MODELS             CATEGORICAL MODELS
+======================================================================
+======================================================================#
+#==
+Majority
+    Class
+        Baseline
+==#
+# Model Type
+mutable struct majBaseline
+    y
+end
+#----  Callback
+function pred_catbaseline(m,xt)
+    y = m.y
+    e = []
+    mode = Lathe.stats.mode(xt)
+    for i in xt
+        append!(e,i)
+    end
+
+end
+#
+#----------------------------------------------
+end
+#================
+Pipeline
+    Module
+================#
+module pipelines
+#
+# Note to future self, or other programmer:
+# It is not necessary to store these as constructors!
+# They can just be strings, and use the model's X and Y!
+mutable struct Pipeline
+    model
+    categoricalenc
+    contenc
+    imputer
 end
 #
 #----------------------------------------------

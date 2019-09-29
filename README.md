@@ -1,7 +1,12 @@
 # Lathe.jl
 Lathe is a conclusive module for Data Science in Julia, with statistics capabilities, data processing capabilities, and model training and validation capabilities. \
 This package intends to fill the one package gap for predictive modeling, for example, Python has Sklearn then Tensorflow, but Julia has several libraries that you have to install, import, just to encode, impute, or predict data. \
-Lathe includes a statistics module, for basic mathematical calculations, inferential, and bayesian statistics. Lathe also includes preprocessing algortithms that will help your models to interpret your data. Lathe also includes predictive machine learning models, which allow you to make predictions based off of data, and use a computer to infer variables within DataFrames and matrices.
+Lathe includes a statistics module, for basic mathematical calculations, inferential, and bayesian statistics. Lathe also includes preprocessing algortithms that will help your models to interpret your data. Lathe also includes predictive machine learning models, which allow you to make predictions based off of data, and use a computer to infer variables within DataFrames and matrices. \
+**Future implementations:**
+- Add Categorical Encoders
+- Add more statistics!
+- Add more scoring metrics
+- Add more models!
 # Documentation Map
 ## [Installation/usage](https://github.com/emmettgb/Lathe.jl#using-lathe)
 [Using Lathe](https://github.com/emmettgb/Lathe.jl#using-lathe)
@@ -16,11 +21,23 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 [Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsinf_sum) \
 [Lathe.stats.bay_ther](https://github.com/emmettgb/Lathe.jl#lathestatsbay_therprobability-prior-evidence) \
 [Lathe.stats.cond_prob](https://github.com/emmettgb/Lathe.jl#lathestatscond_probprobability-prior-evidence) \
-[Lathe.stats.inf_sum](https://github.com/emmettgb/Lathe.jl#lathestatsbay_therprobability-prior-evidence)
+[Lathe.stats.inf_sum]() \
+[Lathe.stats.mae]() 
 ## [Lathe.preprocess](https://github.com/emmettgb/Lathe.jl#lathepreprocess-1)
 [Lathe.preprocess.TrainTest](https://github.com/emmettgb/Lathe.jl#lathestatstraintestdata-at--7)
-## [Lathe.model](https://github.com/emmettgb/Lathe.jl#lathemodel-1)
-[Lathe.model.baseline](https://github.com/emmettgb/Lathe.jl#lathemodelbaselinexy)
+[Lathe.preprocess.TrainTestVal]() \
+[Lathe.preprocess.Rescalar]() \
+[Lathe.preprocess.ArbritraryRescale]() \
+[Lathe.preprocess.MeanNormalization]() \
+[Lathe.preprocess.z_normalize]() \
+[Lathe.preprocess.Unit_LScale]() 
+## [Lathe.models](https://github.com/emmettgb/Lathe.jl#lathemodel-1)
+[Lathe.models.showmodels]() \
+[Lathe.models.predict]() \
+[Lathe.models.majBaseline](https://github.com/emmettgb/Lathe.jl#lathemodelbaselinexy)
+[Lathe.models.meanBaseline]() \
+[Lathe.models.TurtleShell]() \
+[Lathe.models.LinearRegression]() 
 ### Using Lathe
 For now, using Lathe is not recommended for anything but statistical purposes, as the other modules are still Work In Progress (WIP). \
 However, if you would still like to use Lathe, you can Pkg.add it, or use it using push!. \
