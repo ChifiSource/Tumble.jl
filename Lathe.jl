@@ -489,7 +489,7 @@ function pred_foursquare(m,xt)
     condrange3 = (xtrange3min:xtrange3max)
     condrange4 = (xtrange4min:xtrange4max)
     # This for loop is where the dimension's are actually used:
-    for i in xt:
+    for i in xt
         if i in range(condrange1)
             if i < xtrange1mean
                 border = range(floordifmin1:floordifmax1)
