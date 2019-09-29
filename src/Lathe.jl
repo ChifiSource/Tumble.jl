@@ -371,6 +371,21 @@ function pred_meanbaseline(m,xt)
     return(e)
 end
 #==
+Multi-
+    Gap
+ - A quad range predictor, on steroids. -
+==#
+# Model Type
+mutable struct MultiGap
+    x
+    y
+    nfourths
+end
+#----  Callback
+function pred_multigap(m,xt)
+
+end
+#==
 Quad
     Range
 ==#
@@ -425,11 +440,67 @@ function pred_quadrange(m,xt)
     xrange2avg = Lathe.stats.mean(xrange2)
     xrange3avg = Lathe.stats.mean(xrange3)
     xrange4avg = Lathe.stats.mean(xrange4)
-    for i in xt
-        pred = 2
-        append!(e,pred)
+    difmin1 = range1min - xrange1min
+    difmax1 = range1max - xrange1max
+    difmin2 = range2min - xrange2max
+    difmax2 = range2min - xrange2min
+    difmin3 = range3min - xrange3min
+    difmax3 = range3max - xrange3max
+    difmin4 = range4min - xrange4max
+    difmax4 = range4min - xrange4min
+    # Split the train Data
+    xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
+    xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
+    xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
+    xrange4 = x3
+    # Get min-max
+    xtrange1min = minimum(xtrange1)
+    xtrange1max = maximum(xtrange1)
+    xtrange2min = minimum(xtrange2)
+    xtrange2max = maximum(xtrange2)
+    xtrange3min = minimum(xtrange3)
+    xtrange3max = maximum(xtrange3)
+    xtrange4min = minimum(xtrange4)
+    xtrange4max = maximum(xtrange4)
+    # Mean for 8 total divisions
+    xtrange1mean = Lathe.stats.mean(xtrange1)
+    xtrange2mean = Lathe.stats.mean(xtrange2)
+    xtrange3mean = Lathe.stats.mean(xtrange3)
+    xtrange4mean = Lathe.stats.mean(xtrange4)
+# ypred = rand(1:7)
+    for i in xt:
+        if i in (xtrange1min:xtrange1max)
+            if i < xtrange1mean
+                xshuff = rand(xtrange1min:xtrange1mean)
+            else
+                xshuff = rand(xtrange1mean:xtrange1max)
+            end
+        end
+        if i in (xtrange2min:xtrange2max)
+            if i < xtrange2mean
+                xshuff = rand(xtrange2min:xtrange2mean)
+            else
+                xshuff = rand(xtrange1min:xtrange1mean)
+            end
+        end
+        if i in (xtrange3min:xtrange3max)
+            if i < xtrange3mean
+                xshuff = rand(xtrange3min:xtrange3mean)
+            else
+                xshuff = rand(xtrange3mean:xtrange3max)
+            end
+        end
+        if i in (xtrange4min:xtrangemax)
+            if i < xtrange4mean
+                xshuff = rand(xtrange4min:xtrange4mean)
+            else
+                xshuff = rand(xtrange1min:xtrange1mean)
+            end
+        end
     end
-    return e
+    ypred = 1
+    append!(e,ypred)
+    return(e)
 end
 #==
 Linear
@@ -477,6 +548,9 @@ Pipeline
 ================#
 module pipelines
 #
+# Note to future self, or other programmer:
+# It is not necessary to store these as constructors!
+# They can just be strings, and use the model's X and Y!
 mutable struct Pipeline
     model
     categoricalenc
