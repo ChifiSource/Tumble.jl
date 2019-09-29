@@ -489,40 +489,48 @@ function pred_foursquare(m,xt)
     condrange3 = (xtrange3min:xtrange3max)
     condrange4 = (xtrange4min:xtrange4max)
     # This for loop is where the dimension's are actually used:
-    for i in xt:
+    for i in xt
         if i in range(condrange1)
             if i < xtrange1mean
-                xshuff = rand(range(floordifmin1:floordifmax1))
+                border = range(floordifmin1:floordifmax1)
+                xshuff = rand(border)
                 ypred = i * xshuff
             else
-                xshuff = rand(range(cielingdifmin1:cielingdifmax1))
+                border = range(cielingdifmin1:cielingdifmax1)
+                xshuff = rand(border)
                 ypred = i * xshuff
             end
         end
         if i in range(condrange2)
             if i < xtrange2mean
-                xshuff = rand(range(floordifmin2:floordifmax2))
+                border = range(floordifmin2:floordifmax2)
+                xshuff = rand(border)
                 ypred = i * xshuff
             else
-                xshuff = rand(range(cielingdifmin2:cielingdifmax2))
+                border = range(cielingdifmin2:cielingdifmax2)
+                xshuff = rand(border)
                 ypred = i * xshuff
             end
         end
         if i in range(condrange3)
             if i < xtrange3mean
-                xshuff = rand(range(floordifmin3:floordifmax3))
+                border = range(floordifmin3:floordifmax3)
+                xshuff = rand(border)
                 ypred = i * xshuff
             else
-                xshuff = rand(range(cielingdifmin3:cielingdifmax3))
+                border = range(cielingdifmin3:cielingdifmax3)
+                xshuff = rand(border)
                 ypred = i * xshuff
             end
         end
         if i in range(condrange4)
             if i < xtrange4mean
-                xshuff = rand(range(floordifmin4:floordifmax4))
+                border = range(floordifmin4:floordifmax4)
+                xshuff = rand(border)
                 ypred = i * xshuff
             else
-                xshuff = rand(range(cielingdifmin4:cielingdifmax4))
+                border = range(cielingdifmin4:cielingdifmax4)
+                xshuff = rand(border)
                 ypred = i * xshuff
             end
         end
