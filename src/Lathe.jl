@@ -208,7 +208,7 @@ function SortSplit(data,at=.25,reverse=false)
 end
 # Unshuffled Split ----
 function Uniform_Split(data, at = 0.7)
-    n = Lathe.stats.nrow(data)
+    n = length(data)
     idx = data
     train_idx = view(idx, 1:floor(Int, at*n))
     test_idx = view(idx, (floor(Int, at*n)+1):n)
