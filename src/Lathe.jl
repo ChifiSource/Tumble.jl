@@ -198,18 +198,22 @@ function TrainTest(data, at = 0.7)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
 end
-# SortSplit-------------
+# Sort-------------
 function SortSplit(data,at=.25,reverse=false)
     data = Array([data])
-    idx = sort(data)
+    idx = sort!(data)
     n = length(data)
-    if reverse == true
-        idx = sort(data,Sort.Reverse)
-    end
-    one = view(idx, 1:floor(Int, at*n))
-    two = view(idx, (floor(Int, at*n)+1):n)
+    data1,data2 = Uniform_Split(data,.75)
+    return(data1,data2)
+end
+# Unshuffled Split ----
+function Uniform_Split(data, at = 0.7)
+    n = Lathe.stats.nrow(data)
+    idx = data
+    train_idx = view(idx, 1:floor(Int, at*n))
+    test_idx = view(idx, (floor(Int, at*n)+1):n)
     data[train_idx,:], data[test_idx,:]
-    return(one,two)
+    return(test_idx,train_idx)
 end
 # Test Train Val Split----
 function TrainTestVal(data, at = 0.6,valat = 0.2)
