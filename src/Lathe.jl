@@ -200,7 +200,9 @@ function TrainTest(data, at = 0.7)
 end
 # SortSplit-------------
 function SortSplit(data,at=.25,reverse=false)
+    data = Array([data])
     idx = sort(data)
+    n = length(data)
     if reverse == true
         idx = sort(data,Sort.Reverse)
     end
