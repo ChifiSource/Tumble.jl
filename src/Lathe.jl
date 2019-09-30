@@ -202,6 +202,7 @@ end
 function SortSplit(data,at=.25,reverse=false)
     data = Array([data])
     idx = sort(data)
+    n = lenght(data)
     if reverse == true
         idx = sort(data,Sort.Reverse)
     end
