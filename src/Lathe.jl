@@ -483,7 +483,7 @@ function pred_foursquare(m,xt)
     xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
     xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
     xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
-    xrange4 = x3
+    xtrange4 = xt3
     # Get min-max
     xtrange1min = minimum(xtrange1)
     xtrange1max = maximum(xtrange1)
