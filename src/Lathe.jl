@@ -213,7 +213,10 @@ function SortSplit(data,at=.25,reverse=false)
     n = length(data)
     n = n*at
     idx = data
-    x[n:end]
+    idx[n:end]
+    a = Any[idx]
+    data = filter!(data->data≠"s",a)
+    return(data,idx)
 end
 # Unshuffled Split ----
 function Uniform_Split(data, at = 0.7)
