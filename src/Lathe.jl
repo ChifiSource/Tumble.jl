@@ -505,7 +505,7 @@ function pred_foursquare(m,xt)
     condrange4 = (xtrange4min:xtrange4max)
     # This for loop is where the dimension's are actually used:
     for i in xt
-        if i in range(condrange1)
+        if i in condrange1
             if i < xtrange1mean
                 border = range(floordifmin1:floordifmax1)
                 xshuff = rand(border)
@@ -516,7 +516,7 @@ function pred_foursquare(m,xt)
                 ypred = i * xshuff
             end
         end
-        if i in range(condrange2)
+        if i in condrange2
             if i < xtrange2mean
                 border = range(floordifmin2:floordifmax2)
                 xshuff = rand(border)
@@ -527,7 +527,7 @@ function pred_foursquare(m,xt)
                 ypred = i * xshuff
             end
         end
-        if i in range(condrange3)
+        if i in condrange3
             if i < xtrange3mean
                 border = range(floordifmin3:floordifmax3)
                 xshuff = rand(border)
@@ -538,7 +538,7 @@ function pred_foursquare(m,xt)
                 ypred = i * xshuff
             end
         end
-        if i in range(condrange4)
+        if i in condrange4
             if i < xtrange4mean
                 border = range(floordifmin4:floordifmax4)
                 xshuff = rand(border)
