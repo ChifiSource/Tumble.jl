@@ -207,15 +207,13 @@ function DfTrainTest(data, at = 0.7)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
 end
-# Sort-------------
+# Sort-Split -------------
 function SortSplit(data,at=.25,reverse=false)
     idx = sort(data)
     n = length(data)
+    n = n*at
     idx = data
-    train_idx = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train_idx,:], data[test_idx,:]
-    return(test_idx,train_idx)
+    x[n:end]
 end
 # Unshuffled Split ----
 function Uniform_Split(data, at = 0.7)
