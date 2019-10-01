@@ -209,7 +209,7 @@ function DfTrainTest(data, at = 0.7)
 end
 # Sort-------------
 function SortSplit(data,at=.25,reverse=false)
-    idx = sort!(data)
+    idx = sort(data)
     n = length(data)
     idx = data
     train_idx = view(idx, 1:floor(Int, at*n))
