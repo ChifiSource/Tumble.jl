@@ -507,12 +507,10 @@ function pred_foursquare(m,xt)
     for i in xt
         if i in condrange1
             if i < xtrange1mean
-                border = range(floordifmin1:floordifmax1)
-                xshuff = rand(border)
+                xshuff = rand(floordifmin1:floordifmax1)
                 ypred = i * xshuff
             else
-                border = range(cielingdifmin1:cielingdifmax1)
-                xshuff = rand(border)
+                xshuff = rand(cielingdifmin1:cielingdifmax1)
                 ypred = i * xshuff
             end
         end
