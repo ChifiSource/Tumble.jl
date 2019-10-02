@@ -74,19 +74,28 @@ end
 function z(array)
 
 end
+#<----Quartiles---->
+# First
 function firstquar(array)
     m = median(array)
     q15 = array / m
     q1 = array / m
     return(q)
 end
+# Second(median)
 function secondquar(array)
     m = median(array)
     return(m)
 end
+# Third
 function thirdquar(array)
     q = median(array)
     q = q * 1.5
+end
+#<----Summatation---->
+function Summatation(array)
+    ∑ = sum(array)
+    return(∑)
 end
 
 #-------Inferential-----------__________
@@ -270,7 +279,7 @@ end
 # ---- Mean Normalization ----
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
-    first = True
+    first = true
     for i in array
         if first == True
             dtype = typeof(m)
@@ -411,6 +420,8 @@ mutable struct FourSquare
 end
 #----  Callback
 function pred_foursquare(m,xt)
+# x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+# y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
     x = m.x
     y = m.y
     # Go ahead and throw an error for the wrong input shape:
@@ -561,7 +572,22 @@ mutable struct LinearRegression
 end
 #----  Callback
 function pred_linearregression(m,xt)
-
+    # a = ((∑y)(∑x^2)-(∑x)(∑xty)) / (n(∑x^2) - (∑x)^2)
+    # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
+    # y’ = a + bx
+    x = m.x
+    y = m.y
+    ypred = []
+    sy = Lathe.stats.Summatation(y)
+    sx = Lathe.stats.Summatation(x)
+    n = length(x)
+    a = ((sy) * (sx ^ 2) - (sx) * (sx * y)) / (n * (sx ^ 2)-(sx)^2)
+    b = ((x*(sx*y)) - sx * sy) / (n * (sx^2) - (sx)^2)
+    for i in xt
+        yp = a+(b*i)
+        append!(ypred,yp)
+    end
+    return(ypred)
 end
 #======================================================================
 =======================================================================
