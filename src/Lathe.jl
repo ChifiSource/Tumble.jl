@@ -265,13 +265,12 @@ function Rescalar(array)
     return(v)
 end
 # ---- Arbitrary Rescalar ----
-function ArbritatraryRescale(array)
+function ArbitraryRescale(array)
     v = []
+    a = minimum(array)
+    b = maximum(array)
     for i in array
-        a = minimum(array)
-        b = maximum(array)
-        x = i
-        x = (a + (x-a(x))*(b-a)) / (b-a)
+        x = (a + (i-a*i))*(b-a)) / (b-a)
         append!(v,x)
     end
     return(v)
@@ -280,11 +279,10 @@ end
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
     v = []
+    a = minimum(array)
+    b = maximum(array)
     for i in array
-        x = i
-        a = minimum(array)
-        b = maximum(array)
-        m = (x-avg) / (b-a)
+        m = (i-avg) / (b-a)
         append!(v,m)
     end
 end
@@ -301,8 +299,7 @@ function z_normalize(array)
 end
 # ---- Unit L-Scale normalize ----
 function Unit_LScale(array)
-    print("Lathe 0.0.5")
-    print("As of now, this feature is unavailable.")
+    
 end
 #==========
 Categorical
@@ -325,6 +322,7 @@ using Random
 #Show models shows all the models that are stable
 #And ready for use in the library
 function showmodels()
+    println("    Lathe.JL    ")
     println("________________")
     println("Current")
     println("    Usable")
