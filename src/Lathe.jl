@@ -271,7 +271,7 @@ function ArbritatraryRescale(array)
         a = minimum(array)
         b = maximum(array)
         x = i
-        x = a + (x-a(x))*(b-a) / (b-a)
+        x = (a + (x-a(x))*(b-a)) / (b-a)
         append!(v,x)
     end
     return(v)
@@ -279,18 +279,13 @@ end
 # ---- Mean Normalization ----
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
-    first = true
+    v = []
     for i in array
-        if first == True
-            dtype = typeof(m)
-            v = []
-        end
-        first = False
         x = i
         a = minimum(array)
         b = maximum(array)
         m = (x-avg) / (b-a)
-        append!(v,x)
+        append!(v,m)
     end
 end
 # ---- Z Normalization ----
@@ -577,12 +572,18 @@ function pred_linearregression(m,xt)
     # y’ = a + bx
     x = m.x
     y = m.y
+    x2 = []
+    for i in x
+        xsq = (i ^ 2)
+        append!(x2,xsq)
+    end
     ypred = []
     sy = Lathe.stats.Summatation(y)
     sx = Lathe.stats.Summatation(x)
+    sx2 = Lathe.stats.Summatation(x2)
     n = length(x)
-    a = ((sy) * (sx ^ 2)) - ((sx * (sx * sy)) / ((n * (sx ^ 2))-(sx^2)))
-    b = (sx*(sx*sy)) - ((sx * sy) / (n * (sx^2)) - (sx ^ 2))
+    a = ((sy) * (sx2)) - ((sx * (sx * sy)) / ((n * (sx2))-(sx^2)))
+    b = (sx*(sx*sy)) - ((sx * sy) / (n * (sx2)) - (sx ^ 2))
     for i in xt
         yp = a+(b*i)
         append!(ypred,yp)
