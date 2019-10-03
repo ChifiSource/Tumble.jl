@@ -266,14 +266,14 @@ function Rescalar(array)
 end
 # ---- Arbitrary Rescalar ----
 function ArbitraryRescale(array)
-    v = []
-    a = minimum(array)
-    b = maximum(array)
-    for i in array
-        x = (a + (i-a*i))*(b-a)) / (b-a)
-        append!(v,x)
-    end
-    return(v)
+#    v = []
+#    a = minimum(array)
+#    b = maximum(array)
+#    for i in array
+#        x = (a + (i-a*i))*(b-a)) / (b-a)
+#        append!(v,x)
+#    end
+#    return(v)
 end
 # ---- Mean Normalization ----
 function MeanNormalization(array)
@@ -299,7 +299,7 @@ function z_normalize(array)
 end
 # ---- Unit L-Scale normalize ----
 function Unit_LScale(array)
-    
+
 end
 #==========
 Categorical
