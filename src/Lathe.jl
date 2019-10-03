@@ -585,6 +585,7 @@ function pred_linearregression(m,xt)
     b = (sx*(sx*sy)) - (sx * sy) / (n * (sx^2)) - (sx ^ 2)
     for i in xt
         yp = a+(b*i)
+        yp = (yp * 10)
         append!(ypred,yp)
     end
     return(ypred)
