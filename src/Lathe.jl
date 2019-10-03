@@ -565,12 +565,14 @@ mutable struct LinearRegression
 end
 #----  Callback
 function pred_linearregression(m,xt)
-    # a = ((∑y)(∑x^2)-(∑x)(∑xty)) / (n(∑x^2) - (∑x)^2)
+    # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
     # y’ = a + bx
+
     x = m.x
     y = m.y
     x2 = []
+    xy = (Lathe.stats.Summatation(x) + Lathe.stats.Summatation(y))
     for i in x
         xsq = (i ^ 2)
         append!(x2,xsq)
@@ -580,8 +582,8 @@ function pred_linearregression(m,xt)
     sx = Lathe.stats.Summatation(x)
     sx2 = Lathe.stats.Summatation(x2)
     n = length(x)
-    a = ((sy) * (sx2)) - ((sx * (sx * sy)) / ((n * (sx2))-(sx^2)))
-    b = (sx*(sx*sy)) - ((sx * sy) / (n * (sx2)) - (sx ^ 2))
+    a = ((sy) * (sx2)) - ((sx * (xy)) / ((n * (sx2))-(sx^2)))
+    b = (sx*(xy)) - ((sx * sy) / (n * (sx2)) - (sx ^ 2))
     for i in xt
         yp = a+(b*i)
         append!(ypred,yp)
