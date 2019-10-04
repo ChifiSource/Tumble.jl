@@ -582,8 +582,10 @@ function pred_linearregression(m,xt)
     sx = Lathe.stats.Summatation(x)
     sx2 = Lathe.stats.Summatation(x2)
     n = length(x)
+    # calculate a: Formula above
     a = ((sy) * (sx2)) - ((sx * (xy)) / ((n * (sx2))-(sx^2)))
-    b = (sx*(xy)) - ((sx * sy) / (n * (sx2)) - (sx ^ 2))
+    # calculate b: Formula above
+    b = (n*(xy)) - ((sx * sy) / (n * (sx2)) - (sx ^ 2))
     for i in xt
         yp = a+(b*i)
         append!(ypred,yp)
