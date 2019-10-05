@@ -1,0 +1,6 @@
+authors = ["emmett emmett@emmettboudreau.com"]
+name = "Lathe"
+uuid = "38d8eb38-e7b1-11e9-0012-376b6c802672"
+version = "0.0.1"
+
+[deps]
