@@ -31,10 +31,6 @@ function nrow(data)
         end
         return(x)
 end
-#<----Median---->
-function median(array)
-
-end
 #<----Mode---->
 function mode(array)
     m = findmax(array)
@@ -355,8 +351,8 @@ function predict(m,x)
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
     end
-    if typeof(m) == LinearRegression
-        y_pred = pred_linearregression(m,x)
+    if typeof(m) == SimpleLinearRegression
+        y_pred = pred_simplelinearregression(m,x)
     end
     if typeof(m) == meanBaseline
         y_pred = pred_meanbaseline(m,x)
@@ -560,12 +556,12 @@ end
 Linear
     Regression
 ==#
-mutable struct LinearRegression
+mutable struct SimpleLinearRegression
     x
     y
 end
 #----  Callback
-function pred_linearregression(m,xt)
+function pred_simplelinearregression(m,xt)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
     # y’ = a + bx
@@ -588,7 +584,7 @@ function pred_linearregression(m,xt)
     a = ((sy) * (sx2)) - ((sx * (xy)) / ((n * (sx2))-(sx^2)))
     # calculate b: Formula above
         # Correct                      # Correct
-    b = ((n*(xy)) - ((sx * sy)) / (n * (sx2)) - (sx ^ 2))
+    b = ((n*(xy)) - ((sx * sy)) / ((n * (sx2)) - (sx ^ 2))
     for i in xt
         yp = a+(b*i)
         append!(ypred,yp)
