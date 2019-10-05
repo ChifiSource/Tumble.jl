@@ -14,13 +14,13 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 - Train, Test, Split
 - Sortsplit
 - Basic Regression metrics (r2,mae)
-**Pre-release implementations:**
+**Future Release implementations:** \
 - Categorical Encoders
 - more statistics
 - More rescalars for preprocessing
 - more scoring metrics
 - Logistic Regression
-- Foursquare
+- Foursquare?
 - Decision Tree
 - Random Forest Classifier
 - Kmeans
