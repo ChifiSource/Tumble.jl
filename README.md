@@ -14,7 +14,7 @@ Lathe includes a statistics module, for basic mathematical calculations, inferen
 - Train, Test, Split
 - Sortsplit
 - Basic Regression metrics (r2,mae) \
-**Future Release implementations:** \
+**Future Release implementations:** 
 - Categorical Encoders
 - more statistics
 - More rescalars for preprocessing
