@@ -631,11 +631,56 @@ module pipelines
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
 # They can just be strings, and use the model's X and Y!
+using Lathe
 mutable struct Pipeline
     model
     categoricalenc
     contenc
     imputer
+end
+mutable struct fitpipeline
+    pipeline
+    x
+    y
+end
+function pipelinebuilder()
+    println("== Lathe.JL Pipeline Builder ==")
+    println("- Select a model -")
+    m = readline()
+    if m == "LinearRegression"
+        model = Lathe.models.LinearRegression
+    else
+        println(m," is not a valid model.")
+        println("Pipeline is continuing without a model.")
+        model = false
+    end
+    println("- Select a categorical encoder -")
+    cat = readline()
+    println(m," is your selected categorical encoder")
+    println("- Select a continous encoder -")
+    m = readline()
+    println(m," is your selected Continous Encoder")
+    println("- Select an imputer -")
+    imputer = false
+    pipl = Pipeline(model,cat,m,imputer)
+    println("Your new pipeline is officially created!")
+    return(pipl)
+end
+function fitpipeline(Pipeline,x,y)
+    pipl = fitpipeline(Pipeline,x,y)
+end
+function predict(fitpipeline,xt)
+    if typeof(fitpipeline) == Pipeline
+        throw(ArgumentError("This pipeline is not yet fitted!"))
+    end
+    # Preprocessing
+    if fitpipeline.Pipeline.contenc == "Rescalar"
+        fitpipeline.x = Lathe.preprocess.Rescalar(fitpipeline.x)
+    end
+    if typeof(fitpipeline.Pipeline.model) == Lathe.models.LinearRegression
+        model = Lathe.models.LinearRegression(fitpipeline.x,fitpipeline.y)
+        ypr = Lathe.models.predict(model,xt)
+    end
 end
 #
 #----------------------------------------------
