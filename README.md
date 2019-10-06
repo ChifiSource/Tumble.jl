@@ -3,5 +3,5 @@
 </div>
 <div align="left">
   <p> Lathe.jl is an inclusive predictive-learning module for Julia. Lathe includes inferential, bayesian, and basic statistics. Additionally, Lathe includes simple options for pre-processing your data, and fitting predictive models to your  data. </p>
+  <button onclick="window.location.href='/page2'">Continue</button>
 </div>
-[![button](http://www.presentationpro.com/images/product/medium/slide/PPP_CGENE_LT3_Presentation-PowerPoint-Slide-Graphic_Push_Button_Up.jpg)](https://mattermost.com)
