@@ -16,7 +16,7 @@ module Lathe
 Stats
     Module
 ================#
-module stats
+module Stats
 #<----Mean---->
 function mean(array)
     observations = length(array)
@@ -161,7 +161,7 @@ Model
     Validation
         Module
 ================#
-module validate
+module Validate
 #-------Model Metrics--------____________
 # --- Mean Absolute Error ---
 using Lathe
@@ -187,7 +187,7 @@ end
 Preprocessing
      Module
 ================#
-module preprocess
+module Preprocess
 using Random
 using Lathe
 #===============
@@ -309,7 +309,7 @@ Predictive
     Learning
         Models
 ================#
-module models
+module Models
 #==
 Baseline
     Model
@@ -564,27 +564,31 @@ end
 function pred_simplelinearregression(m,xt)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
-    # y’ = a + bx
-
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    # Get our x and y as easier variables
     x = m.x
     y = m.y
-    x2 = []
-    xy = (Lathe.stats.Summatation(x) + Lathe.stats.Summatation(y))
-    for i in x
-        xsq = (i ^ 2)
-        append!(x2,xsq)
-    end
-    ypred = []
-    sy = Lathe.stats.Summatation(y)
-    sx = Lathe.stats.Summatation(x)
-    sx2 = Lathe.stats.Summatation(x2)
+    # Get our Summatations:
+    Σx = sum(df.Age)
+    Σy = sum(df.Glucose)
+    # dot x and y
+    xy = x .* y
+    # ∑dot x and y
+    Σxy = sum(xy)
+    # dotsquare x
+    x2 = x .^ 2
+    # ∑ dotsquare x
+    Σx2 = sum(x2)
+    # n = sample size
     n = length(x)
-    # calculate a: Formula above
-        #Correct                          #Correct
-    a = (((sy) * (sx2)) - ((sx * (xy)))) / ((n * (sx2))-(sx^2))
-    # calculate b: Formula above
-        # Correct                      # Correct
-    b = ((n*(xy)) - (sx * sy)) / ((n * (sx2)) - (sx ^ 2))
+    # Calculate a
+    a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
+    # Calculate b
+    b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
+    # Empty array:
+    ypred = []
     for i in xt
         yp = a+(b*i)
         append!(ypred,yp)
@@ -623,7 +627,7 @@ end
 Pipeline
     Module
 ================#
-module pipelines
+module Pipelines
 #
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
