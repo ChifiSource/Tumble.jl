@@ -1,7 +1,7 @@
 # Lathe.jl
 <div align="center"><img src="http://www.emmettboudreau.com/gallery_gen/264eea1c311d372967c97298b03a367b_120x120.png" /></div>
 
-<a class="github-button" href="https://github.com/emmettgb/Lathe.jl/wiki/Lathe" data-color-scheme="no-preference: light; light: dark; dark: light;" data-size="large" aria-label="Follow @ntkme on GitHub">Open github documentation/a>
+<a class="github-button" href="https://github.com/emmettgb/Lathe.jl/wiki/Lathe" data-color-scheme="no-preference: light; light: dark; dark: light;" data-size="large" aria-label="Follow @ntkme on GitHub">Open github documentation /a>
 
 Lathe is an inclusive module for Data Science in Julia, with statistics capabilities, data processing capabilities, and model training and validation capabilities. \
 This package intends to fill the one package gap for predictive modeling, for example, Python has Sklearn then Tensorflow, but Julia has several libraries that you have to install, import, just to encode, impute, or predict data. \
