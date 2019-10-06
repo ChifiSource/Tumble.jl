@@ -16,7 +16,7 @@ module Lathe
 Stats
     Module
 ================#
-module Stats
+module stats
 #<----Mean---->
 function mean(array)
     observations = length(array)
@@ -187,7 +187,7 @@ end
 Preprocessing
      Module
 ================#
-module Preprocess
+module preprocess
 using Random
 using Lathe
 #===============
@@ -309,7 +309,7 @@ Predictive
     Learning
         Models
 ================#
-module Models
+module models
 #==
 Baseline
     Model
