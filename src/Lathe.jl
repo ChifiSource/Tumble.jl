@@ -571,8 +571,8 @@ function pred_simplelinearregression(m,xt)
     x = m.x
     y = m.y
     # Get our Summatations:
-    Σx = sum(df.Age)
-    Σy = sum(df.Glucose)
+    Σx = sum(x)
+    Σy = sum(y)
     # dot x and y
     xy = x .* y
     # ∑dot x and y
