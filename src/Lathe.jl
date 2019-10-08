@@ -460,16 +460,16 @@ function pred_foursquare(m,xt)
     # This for loop is where the dimension's are actually used:
     for i in xt
         if i in condrange1
-            e = predict(regone,i)
+            ypred = predict(regone,i)
         end
         if i in condrange2
-            e = predict(regtwo,i)
+            ypred = predict(regtwo,i)
         end
         if i in condrange3
-            e = predict(regthree,i)
+            ypred = predict(regthree,i)
         end
         if i in condrange4
-            e = predict(regfour,i)
+            ypred = predict(regfour,i)
         end
         append!(e,ypred)
     end
