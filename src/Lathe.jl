@@ -53,10 +53,9 @@ function standardize(array)
 end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
-#    n = length(data)
-#    mean = sum(data)/n
-#    std = standardize(data)
-#    stderr = standarderror(data)
+    mean = mean(data)
+    std = standardize(data)
+    stderr = standarderror(data)
 #    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
 #    return (mean-interval, mean+interval)
 end
@@ -126,13 +125,47 @@ function inf_sum(data,grdata)
     println("================")
 end
 #<----T Test---->
-function student_t(sample,general)
+# - Independent
+function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
     std = standardize(general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
+end
+# - Paired
+function paired_t(var1,var2)
+
+end
+#<---- Correlations ---->
+# - Spearman
+function spearman(var1,var2)
+
+end
+# - Pearson
+function pearson(var1,var2)
+
+end
+#<---- Chi-Square ---->
+function chisq(var1,var2)
+
+end
+#<---- ANOVA ---->
+function anova(var1,var2)
+
+end
+#<---- Wilcoxon ---->
+# - Wilcoxon Rank-Sum Test
+function wilcoxrs(var1,var2)
+
+end
+function wilcoxsr(var1,var2)
+
+end
+#<---- Sign Test ---->
+function sign(var1,var2)
+
 end
 #<---- F-Test---->
 function f_test(sample,general)
@@ -161,10 +194,10 @@ Model
     Validation
         Module
 ================#
-module Validate
+module validate
 #-------Model Metrics--------____________
-# --- Mean Absolute Error ---
 using Lathe
+## <---- Mean Absolute Error ---->
 function mae(actual,pred)
     l = length(actual)
     lp = length(pred)
@@ -177,6 +210,11 @@ function mae(actual,pred)
         maeunf = maeunf - (maeunf - maeunf)
     end
     return(maeunf)
+end
+# <---- R Squared ---->
+function r2(actual,pred)
+
+    r = 1-(fsume,ssume)
 end
 # --- Get Permutation ---
 function getPermutation(model)
@@ -302,6 +340,10 @@ end
 Categorical
     Encoding
 ==========#
+# <---- One Hot Encoder ---->
+function OneHotEncode(array)
+
+end
 #-----------------------------
 end
 #================
@@ -325,37 +367,35 @@ function showmodels()
     println("    Usable")
     println("       Models")
     println("================")
-#    println("--QuadRange--")
-#    print("Ideal for use with continuous variables, uses")
-#    print("4 ranges and mathematical gap to predict the")
-#    print("outcome of Y. This results in a non-linear")
-#    print("Prediction for data with high variance.")
-#    print("---- Usage ----")
-#    print("model = Lathe.models.QuadRange(x,y)")
-#    print("ypr = Lathe.models.predict(model,Feature)")
-    print("_________________________________")
-#    println("--TurtleShell--")
-#    println("--majBaseline--")
-    println("--meanBaseline--")
-    print("Basic model to get a baseline-accuracy to")
-    print("improve upon")
-    print("---- Usage ----")
-    print("model = Lathe.models.meanBaseline(y)")
-    print("ypr = predict(model,Feature)")
 end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
     if typeof(m) == FourSquare
         y_pred = pred_foursquare(m,x)
     end
+    if typeof(m) == Multigap
+
+    end
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
     end
-    if typeof(m) == SimpleLinearRegression
-        y_pred = pred_simplelinearregression(m,x)
+    if typeof(m) == MultiGap
+        y_pred = pred_multigap
+    end
+    if typeof(m) == LinearRegression
+        y_pred = pred_LinearRegression(m,x)
     end
     if typeof(m) == meanBaseline
         y_pred = pred_meanbaseline(m,x)
+    end
+    if typeof(m) == RidgeRegression
+        y_pred = pred_ridgeregression(m,x)
+    end
+    if typeof(m) == LinearLeastSquare
+        y_pred = pred_linearleastsquare
+    end
+    if typeof(m) == LogisticRegression
+        y_pred = pred_logisticregression
     end
     return(y_pred)
 end
@@ -434,10 +474,10 @@ function pred_foursquare(m,xt)
     x3,xrange3 = Lathe.preprocess.SortSplit(x2)
     xrange4 = x3
     # Fitting the 4 linear regression models ---->
-    regone = SimpleLinearRegression(xrange1,range1)
-    regtwo = SimpleLinearRegression(xrange2,range2)
-    regthree = SimpleLinearRegression(xrange3,range3)
-    regfour = SimpleLinearRegression(xrange4,range4)
+    regone = LinearRegression(xrange1,range1)
+    regtwo = LinearRegression(xrange2,range2)
+    regthree = LinearRegression(xrange3,range3)
+    regfour = LinearRegression(xrange4,range4)
     # Split the train Data
     xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
     xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
@@ -479,12 +519,12 @@ end
 Linear
     Regression
 ==#
-mutable struct SimpleLinearRegression
+mutable struct LinearRegression
     x
     y
 end
 #----  Callback
-function pred_simplelinearregression(m,xt)
+function pred_LinearRegression(m,xt)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
     if length(m.x) != length(m.y)
@@ -517,6 +557,69 @@ function pred_simplelinearregression(m,xt)
         append!(ypred,yp)
     end
     return(ypred)
+end
+#==
+Linear
+    Least
+     Square
+==#
+mutable struct LinearLeastSquare
+    x
+    y
+end
+function pred_linearleastsquare(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    x = m.x
+    y = m.y
+    # Summatation of x*y
+    xy = x .* y
+    sxy = sum(xy)
+    # N
+    n = len(x)
+    # Summatation of x^2
+    x2 = x .^ 2
+    sx2 = sum(x2)
+    # Summatation of x and y
+    sx = sum(x)
+    sy = sum(y)
+    # Calculate the slope:
+    m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+    # Calculate the y intercept
+    b = (xy - m*sx) / n
+    # Empty prediction list:
+    y_pred = []
+    for i in xt
+        pred = (m*i)+b
+        append!(y_pred,pred)
+    end
+end
+#==
+Ridge
+    Regression
+==#
+mutable struct RidgeRegression
+    x
+    y
+end
+function pred_ridgeregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+end
+#==
+Logistic
+    Regression
+==#
+mutable struct LogisticRegression
+    x
+    y
+end
+function pred_logisticregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
 end
 #======================================================================
 =======================================================================
