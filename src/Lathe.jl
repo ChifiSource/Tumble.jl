@@ -451,6 +451,7 @@ function pred_foursquare(m,xt)
     xtrange3min = minimum(xtrange3)
     xtrange3max = maximum(xtrange3)
     xtrange4min = minimum(xtrange4)
+    xtrange4max = maximum(xtrange4)
     # Ranges for ifs
     condrange1 = (xtrange1min:xtrange1max)
     condrange2 = (xtrange2min:xtrange2max)
