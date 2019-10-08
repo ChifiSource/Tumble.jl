@@ -603,7 +603,7 @@ function pred_linearleastsquare(m,xt)
     xy = x .* y
     sxy = sum(xy)
     # N
-    n = len(x)
+    n = length(x)
     # Summatation of x^2
     x2 = x .^ 2
     sx2 = sum(x2)
