@@ -44,7 +44,7 @@ function variance(array)
     return(squared_mean)
 end
 #<----Standard Deviation---->
-function standardize(array)
+function std(array)
     mean = sum(array)/length(array)
     sq = sum(array) - mean
     squared_mean = sq ^ 2
@@ -54,46 +54,71 @@ end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
     mean = mean(data)
-    std = standardize(data)
+    std = std(data)
     stderr = standarderror(data)
 #    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
 #    return (mean-interval, mean+interval)
 end
 #<----Standard Error---->
 function standarderror(data)
-    std = standardize(data)
+    std = std(data)
     sample = length(data)
     ste = (std/sqrt(sample))
     return(ste)
+end
+#<---- Correlation Coefficient --->
+function correlationcoeff(x,y)
+    n = len(x)
+    y = len(y)
+    if x != y
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    xy = x .* y
+    x2 = x .^ 2
+    y2 = y .^ 2
+    sx = sum(x)
+    sy = sum(y)
+    sxy = sum(xy)
+    sx2 = sum(x2)
+    sy2 = sum(y2)
+    numer = (n * sxy) - (sx * sy)
+    denom = sqrt(n*sx2 - sx^2) * (n*sy2 - sy^2)
+    corrcoff = numer / denom
+    return(corrcoff)
 end
 #<----Z score---->
 function z(array)
 
 end
 #<----Quartiles---->
-# First
+# - First
 function firstquar(array)
     m = median(array)
     q15 = array / m
     q1 = array / m
     return(q)
 end
-# Second(median)
+# - Second(median)
 function secondquar(array)
     m = median(array)
     return(m)
 end
-# Third
+# - Third
 function thirdquar(array)
     q = median(array)
     q = q * 1.5
 end
-#<----Summatation---->
-function Summatation(array)
-    ∑ = sum(array)
-    return(∑)
+# <---- Rank ---->
+function getranks(array,rev = false)
+    sortedar = sort!(array,rev=rev)
+    num = 1
+    list = []
+    for i in sortedar
+        append!(list,i)
+        num = num + 1
+    end
+    return(list)
 end
-
 #-------Inferential-----------__________
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
@@ -105,8 +130,8 @@ function inf_sum(data,grdata)
     grvar = variance(grdata)
     avg = mean(data)
     gravg = mean(grdata)
-    sampstd = standardize(data)
-    grstd = standardize(grdata)
+    sampstd = std(data)
+    grstd = std(grdata)
     #Printing them out
     println("================")
     println("     Lathe.stats Inferential Summary")
@@ -130,7 +155,7 @@ function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
-    std = standardize(general)
+    std = std(general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
@@ -213,8 +238,10 @@ function mae(actual,pred)
 end
 # <---- R Squared ---->
 function r2(actual,pred)
-
-    r = 1-(fsume,ssume)
+    r = Lathe.stats.correlationcoeff(actual,pred)
+    rsq = r^2
+    rsq = rsq * 100
+    return(rsq)
 end
 # --- Get Permutation ---
 function getPermutation(model)
@@ -322,7 +349,7 @@ function MeanNormalization(array)
 end
 # ---- Z Normalization ----
 function StandardScalar(array)
-    q = Lathe.stats.standardize(array)
+    q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
     v = []
     for i in array
@@ -380,7 +407,7 @@ function predict(m,x)
         y_pred = pred_catbaseline(m,x)
     end
     if typeof(m) == MultiGap
-        y_pred = pred_multigap
+        y_pred = pred_multigap(m,x)
     end
     if typeof(m) == LinearRegression
         y_pred = pred_LinearRegression(m,x)
