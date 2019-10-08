@@ -400,9 +400,6 @@ function predict(m,x)
     if typeof(m) == FourSquare
         y_pred = pred_foursquare(m,x)
     end
-    if typeof(m) == Multigap
-
-    end
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
     end
