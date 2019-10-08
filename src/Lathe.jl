@@ -68,8 +68,8 @@ function standarderror(data)
 end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
-    n = len(x)
-    y = len(y)
+    n = length(x)
+    y = length(y)
     if x != y
         throw(ArgumentError("The array shape does not match!"))
     end
@@ -247,6 +247,8 @@ end
 function getPermutation(model)
 
 end
+#--------------------------------------------
+# End
 end
 #================
 Preprocessing
