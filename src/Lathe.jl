@@ -418,10 +418,10 @@ function predict(m,x)
         y_pred = pred_ridgeregression(m,x)
     end
     if typeof(m) == LinearLeastSquare
-        y_pred = pred_linearleastsquare
+        y_pred = pred_linearleastsquare(m,x)
     end
     if typeof(m) == LogisticRegression
-        y_pred = pred_logisticregression
+        y_pred = pred_logisticregression(m,x)
     end
     return(y_pred)
 end
