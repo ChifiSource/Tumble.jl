@@ -9,6 +9,7 @@ GNU General Open Source License
         Redistribution
 Thank you for your forks!
 <-----------Lathe.jl----------->
+38d8eb38-e7b1-11e9-0012-376b6c802672
 ================================#
 module Lathe
 #================
@@ -29,10 +30,6 @@ function nrow(data)
             x = x+1
         end
         return(x)
-end
-#<----Median---->
-function median(array)
-
 end
 #<----Mode---->
 function mode(array)
@@ -164,7 +161,7 @@ Model
     Validation
         Module
 ================#
-module validate
+module Validate
 #-------Model Metrics--------____________
 # --- Mean Absolute Error ---
 using Lathe
@@ -255,25 +252,24 @@ Numerical
 # ---- Rescalar (Standard Deviation) ---
 function Rescalar(array)
     v = []
+    min = minimum(array)
+    max = maximum(array)
     for i in array
-        min = minimum(array)
-        max = maximum(array)
-        x = i
-        x = (x-min) / (max - min)
+        x = (i-min) / (max - min)
         append!(v,x)
     end
     return(v)
 end
 # ---- Arbitrary Rescalar ----
 function ArbitraryRescale(array)
-#    v = []
-#    a = minimum(array)
-#    b = maximum(array)
-#    for i in array
-#        x = (a + (i-a*i))*(b-a)) / (b-a)
-#        append!(v,x)
-#    end
-#    return(v)
+    v = []
+    a = minimum(array)
+    b = maximum(array)
+    for i in array
+        x = a + ((i-a*i)*(b-a)) / (b-a)
+        append!(v,x)
+    end
+    return(v)
 end
 # ---- Mean Normalization ----
 function MeanNormalization(array)
@@ -287,7 +283,7 @@ function MeanNormalization(array)
     end
 end
 # ---- Z Normalization ----
-function z_normalize(array)
+function StandardScalar(array)
     q = Lathe.stats.standardize(array)
     avg = Lathe.stats.mean(array)
     v = []
@@ -296,6 +292,7 @@ function z_normalize(array)
         y = (x-avg) / q
         append!(v,y)
     end
+    return(v)
 end
 # ---- Unit L-Scale normalize ----
 function Unit_LScale(array)
@@ -354,8 +351,8 @@ function predict(m,x)
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
     end
-    if typeof(m) == LinearRegression
-        y_pred = pred_linearregression(m,x)
+    if typeof(m) == SimpleLinearRegression
+        y_pred = pred_simplelinearregression(m,x)
     end
     if typeof(m) == meanBaseline
         y_pred = pred_meanbaseline(m,x)
@@ -425,8 +422,6 @@ function pred_foursquare(m,xt)
     end
     # Our empty Y prediction list==
     e = []
-    # Empty lists for each range==
-
     # Quad Splitting the data ---->
     # Split the Y
     y2,range1 = Lathe.preprocess.SortSplit(y)
@@ -438,51 +433,11 @@ function pred_foursquare(m,xt)
     x2,xrange2 = Lathe.preprocess.SortSplit(x1)
     x3,xrange3 = Lathe.preprocess.SortSplit(x2)
     xrange4 = x3
-    len = length(xt)
-    range1min = minimum(range1)
-    range1max = maximum(range1)
-    range2min = minimum(range2)
-    range2max = maximum(range2)
-    range3min = minimum(range3)
-    range3max = maximum(range3)
-    range4min = minimum(range4)
-    range4max = maximum(range4)
-    xrange1min = minimum(xrange1)
-    xrange1max = maximum(xrange1)
-    xrange2min = minimum(xrange2)
-    xrange2max = maximum(xrange2)
-    xrange3min = minimum(xrange3)
-    xrange3max = maximum(xrange3)
-    xrange4min = minimum(xrange4)
-    xrange4max = maximum(xrange4)
-    # Get the means, for the split predictor:
-    xrange1avg = Lathe.stats.mean(xrange1)
-    xrange2avg = Lathe.stats.mean(xrange2)
-    xrange3avg = Lathe.stats.mean(xrange3)
-    xrange4avg = Lathe.stats.mean(xrange4)
-    yrange1avg = Lathe.stats.mean(range1)
-    yrange2avg = Lathe.stats.mean(range2)
-    yrange3avg = Lathe.stats.mean(range3)
-    yrange4avg = Lathe.stats.mean(range4)
-    # Floor ranges
-    floordifmax1 = yrange1avg / xrange1min
-    floordifmin1 = xrange1min / yrange1avg
-    floordifmax2 = yrange2avg / xrange2min
-    floordifmin2 = xrange2min / yrange2avg
-    floordifmax3 = yrange3avg / xrange3min
-    floordifmin3 = xrange3min / yrange3avg
-    floordifmax4 = yrange4avg / xrange4min
-    floordifmin4 = xrange4min / yrange4avg
-    # Cieling ranges
-        # Notice the mathematics are reversed! :
-    cielingdifmin1 = yrange1avg / xrange1max
-    cielingdifmax1 = xrange1max / yrange1avg
-    cielingdifmin2 = yrange2avg / xrange2max
-    cielingdifmax2 = xrange2max / yrange2avg
-    cielingdifmin3 = yrange3avg / xrange3max
-    cielingdifmax3 = xrange3max / yrange3avg
-    cielingdifmin4 = yrange4avg / xrange4max
-    cielingdifmax4 = xrange4max / yrange4avg
+    # Fitting the 4 linear regression models ---->
+    regone = SimpleLinearRegression(xrange1,range1)
+    regtwo = SimpleLinearRegression(xrange2,range2)
+    regthree = SimpleLinearRegression(xrange3,range3)
+    regfour = SimpleLinearRegression(xrange4,range4)
     # Split the train Data
     xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
     xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
@@ -497,11 +452,6 @@ function pred_foursquare(m,xt)
     xtrange3max = maximum(xtrange3)
     xtrange4min = minimum(xtrange4)
     xtrange4max = maximum(xtrange4)
-    # Mean for 8 total divisions
-    xtrange1mean = Lathe.stats.mean(xtrange1)
-    xtrange2mean = Lathe.stats.mean(xtrange2)
-    xtrange3mean = Lathe.stats.mean(xtrange3)
-    xtrange4mean = Lathe.stats.mean(xtrange4)
     # Ranges for ifs
     condrange1 = (xtrange1min:xtrange1max)
     condrange2 = (xtrange2min:xtrange2max)
@@ -510,46 +460,16 @@ function pred_foursquare(m,xt)
     # This for loop is where the dimension's are actually used:
     for i in xt
         if i in condrange1
-            if i < xtrange1mean
-                xshuff = rand(floordifmin1:floordifmax1)
-                ypred = i * xshuff
-            else
-                xshuff = rand(cielingdifmin1:cielingdifmax1)
-                ypred = i * xshuff
-            end
+            ypred = predict(regone,i)
         end
         if i in condrange2
-            if i < xtrange2mean
-                border = range(floordifmin2:floordifmax2)
-                xshuff = rand(border)
-                ypred = i * xshuff
-            else
-                border = range(cielingdifmin2:cielingdifmax2)
-                xshuff = rand(border)
-                ypred = i * xshuff
-            end
+            ypred = predict(regtwo,i)
         end
         if i in condrange3
-            if i < xtrange3mean
-                border = range(floordifmin3:floordifmax3)
-                xshuff = rand(border)
-                ypred = i * xshuff
-            else
-                border = range(cielingdifmin3:cielingdifmax3)
-                xshuff = rand(border)
-                ypred = i * xshuff
-            end
+            ypred = predict(regthree,i)
         end
         if i in condrange4
-            if i < xtrange4mean
-                border = range(floordifmin4:floordifmax4)
-                xshuff = rand(border)
-                ypred = i * xshuff
-            else
-                border = range(cielingdifmin4:cielingdifmax4)
-                xshuff = rand(border)
-                ypred = i * xshuff
-            end
+            ypred = predict(regfour,i)
         end
         append!(e,ypred)
     end
@@ -559,35 +479,39 @@ end
 Linear
     Regression
 ==#
-mutable struct LinearRegression
+mutable struct SimpleLinearRegression
     x
     y
 end
 #----  Callback
-function pred_linearregression(m,xt)
+function pred_simplelinearregression(m,xt)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
-    # y’ = a + bx
-
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    # Get our x and y as easier variables
     x = m.x
     y = m.y
-    x2 = []
-    xy = (Lathe.stats.Summatation(x) + Lathe.stats.Summatation(y))
-    for i in x
-        xsq = (i ^ 2)
-        append!(x2,xsq)
-    end
-    ypred = []
-    sy = Lathe.stats.Summatation(y)
-    sx = Lathe.stats.Summatation(x)
-    sx2 = Lathe.stats.Summatation(x2)
+    # Get our Summatations:
+    Σx = sum(x)
+    Σy = sum(y)
+    # dot x and y
+    xy = x .* y
+    # ∑dot x and y
+    Σxy = sum(xy)
+    # dotsquare x
+    x2 = x .^ 2
+    # ∑ dotsquare x
+    Σx2 = sum(x2)
+    # n = sample size
     n = length(x)
-    # calculate a: Formula above
-        #Correct                          #Correct
-    a = ((sy) * (sx2)) - ((sx * (xy)) / ((n * (sx2))-(sx^2)))
-    # calculate b: Formula above
-        # Correct                      # Correct
-    b = ((n*(xy)) - ((sx * sy)) / (n * (sx2)) - (sx ^ 2))
+    # Calculate a
+    a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
+    # Calculate b
+    b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
+    # Empty array:
+    ypred = []
     for i in xt
         yp = a+(b*i)
         append!(ypred,yp)
@@ -626,7 +550,7 @@ end
 Pipeline
     Module
 ================#
-module pipelines
+module Pipelines
 #
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
