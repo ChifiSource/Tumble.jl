@@ -437,7 +437,7 @@ function pred_foursquare(m,xt)
     regone = SimpleLinearRegression(xrange1,range1)
     regtwo = SimpleLinearRegression(xrange2,range2)
     regthree = SimpleLinearRegression(xrange3,range3)
-    regfour = LinearRegression(xrange4,range4)
+    regfour = SimpleLinearRegression(xrange4,range4)
     # Split the train Data
     xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
     xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
