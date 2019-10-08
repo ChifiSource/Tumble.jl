@@ -69,8 +69,8 @@ end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
     n = length(x)
-    y = length(y)
-    if x != y
+    yl = length(y)
+    if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
     xy = x .* y
@@ -620,6 +620,7 @@ function pred_linearleastsquare(m,xt)
         pred = (m*i)+b
         append!(y_pred,pred)
     end
+    return(y_pred)
 end
 #==
 Ridge
