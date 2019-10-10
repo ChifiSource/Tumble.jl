@@ -501,8 +501,8 @@ Four
 mutable struct FourSquare
     x
     y
-    n_divisions = 4
-    divisionsize = .25
+    n_divisions=4
+    divisionsize=.25
 end
 #----  Callback
 function pred_foursquare(m,xt)
