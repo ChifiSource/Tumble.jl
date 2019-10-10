@@ -48,18 +48,18 @@ function variance(array)
     return(squared_mean)
 end
 #<----Standard Deviation---->
-function std(ar)
-    ms = sum(ar)/length(ar)
-    l = []
-    for i in ar
-        subtr = (i - ms) ^ 2
-        append!(l,subtr)
-    end
-    me = sum(l)/length(l)
-    squared_mean = me ^ 2
-    standardized = sqrt(squared_mean)
-    return(standardized)
-end
+#function std(ar)
+#    ms = sum(ar)/length(ar)
+#    l = []
+#    for i in ar
+#        subtr = (i - ms) ^ 2
+#        append!(l,subtr)
+#    end
+#    me = sum(l)/length(l)
+#    squared_mean = me ^ 2
+#    standardized = sqrt(squared_mean)
+#    return(standardized)
+#end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
     mean = mean(data)
@@ -74,6 +74,19 @@ function standarderror(data)
     sample = length(data)
     ste = (std/sqrt(sample))
     return(ste)
+end
+#<----Standard Deviation---->
+function std(array)
+    avg = mean(array)
+    l = []
+    for i in array
+        subtr = (i-ms) ^ 2
+        append!(l,subtr)
+    end
+    me = mean(l)
+    me = me ^ 2
+    standard = sqrt(me)
+    return(standard)
 end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
