@@ -51,7 +51,7 @@ end
 function std(ar)
     ms = sum(ar)/length(ar)
     l = []
-    for i in array
+    for i in ar
         subtr = (i - ms) ^ 2
         append!(l,subtr)
     end
