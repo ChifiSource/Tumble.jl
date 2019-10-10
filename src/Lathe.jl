@@ -214,6 +214,7 @@ function sign(var1,var2)
             positives.append(i)
         elseif i < 0
             negatives.append(i)
+        end
     end
     totalnegs = length(negatives)
     totalpos = length(positives)
