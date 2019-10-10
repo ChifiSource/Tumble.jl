@@ -48,8 +48,8 @@ function variance(array)
     return(squared_mean)
 end
 #<----Standard Deviation---->
-function std(array)
-    ms = mean(array)
+function std(ar)
+    ms = mean(ar)
     l = []
     for i in array
         subtr = (i - ms) ^ 2
