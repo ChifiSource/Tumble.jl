@@ -49,7 +49,7 @@ function variance(array)
 end
 #<----Standard Deviation---->
 function std(array)
-    mean = mean(array)
+    mean = sum(array)/length(array)
     l = []
     for i in array
         subtr = (i - mean) ^ 2
