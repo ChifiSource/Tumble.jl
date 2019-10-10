@@ -80,7 +80,7 @@ function std(array)
     avg = mean(array)
     l = []
     for i in array
-        subtr = (i-ms) ^ 2
+        subtr = (i-array) ^ 2
         append!(l,subtr)
     end
     me = mean(l)
