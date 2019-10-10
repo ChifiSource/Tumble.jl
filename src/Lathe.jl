@@ -538,7 +538,7 @@ function pred_foursquare(m,xt)
         x,predictorx = SortSplit(x,divisionsize)
         y,predictory = SortSplit(y,divisionsize)
         xtcopy,predictorxt = SortSplit(xtcopy,divisionsize)
-        currentrange = (minimum(predictorxt):maximum(xtcopypredictorxt)
+        currentrange = (minimum(predictorxt):maximum(xtcopypredictorxt))
         linregmod = LinearRegression(predictorx,predictory)
         for i in xt
             if i in currentrange
