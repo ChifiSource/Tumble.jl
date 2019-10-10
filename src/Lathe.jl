@@ -49,14 +49,14 @@ function variance(array)
 end
 #<----Standard Deviation---->
 function std(array)
-    mean = sum(array)/length(array)
+    ms = mean(array)
     l = []
     for i in array
-        subtr = (i - mean) ^ 2
+        subtr = (i - ms) ^ 2
         append!(l,subtr)
     end
-    mean = mean(l)
-    squared_mean = l ^ 2
+    me = mean(l)
+    squared_mean = me ^ 2
     standardized = sqrt(squared_mean)
     return(standardized)
 end
