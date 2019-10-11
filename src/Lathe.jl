@@ -80,7 +80,7 @@ function std(array)
     avg = mean(array)
     l = []
     for i in array
-        subtr = (i-array) ^ 2
+        subtr = (i-avg) ^ 2
         append!(l,subtr)
     end
     me = mean(l)
@@ -211,8 +211,9 @@ function wilcoxsr(var1,var2)
 
 end
 #<---- Binomial Distribution ---->
-function binomialdist(positives,negatives,length)
+function binomialdist(positives,negatives,zeros)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    n = positives + negatives + zeros
 end
 #<---- Sign Test ---->
 function sign(var1,var2)
@@ -233,6 +234,8 @@ function sign(var1,var2)
     totalpos = length(positives)
     totalzer = length(zeros)
     totallen = length(sets)
+    ans = binomialdist(positives,negatives,zeros)
+    return(ans)
 end
 #<---- F-Test---->
 function f_test(sample,general)
@@ -554,12 +557,7 @@ function pred_foursquare(m,xt)
         xtcopy,predictorxt = SortSplit(xtcopy,divisionsize)
         currentrange = (minimum(predictorxt):maximum(xtcopypredictorxt))
         linregmod = LinearRegression(predictorx,predictory)
-        for i in xt
-            if i in currentrange
-                ypred = predict(linregmod,i)
-                append!(predictionlist,ypred)
-            end
-        end
+        xt = [predict(linregmod,x) for x in currentrange]
     end
     return(xt)
 end
@@ -635,7 +633,7 @@ function pred_linearleastsquare(m,xt)
     # Calculate the slope:
     m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
     # Calculate the y intercept
-    b = (sxy - m*sx) / n
+    b = (sxy - (m*sx)) / n
     # Empty prediction list:
     y_pred = []
     for i in xt
