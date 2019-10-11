@@ -16,6 +16,7 @@ Random.jl
 ================================#
 module Lathe
 using DataFrames
+using Random
 #================
 Stats
     Module
@@ -283,6 +284,11 @@ function mae(actual,pred)
 end
 # <---- R Squared ---->
 function r2(actual,pred)
+    l = length(actual)
+    lp = length(pred)
+    if l != lp
+        throw(ArgumentError("The array shape does not match!"))
+    end
     r = Lathe.stats.correlationcoeff(actual,pred)
     rsq = r^2
     rsq = rsq * 100
@@ -539,19 +545,14 @@ function pred_foursquare(m,xt)
     # Now we also need an error for when the total output of the
     #    division size and n divisions is > 100 percent
     divisions = size * divs
-    if divisions > 1
-        throw(ArgumentError("Invalid hyperparameters!: divisions * number of
-        divisions must be = to 100 percent!"))
-    elseif divisions < 1
+    if divisions != 1
         throw(ArgumentError("Invalid hyperparameters!: divisions * number of
         divisions must be = to 100 percent!"))
     end
-    # Put our n/divisions into a range
-    ran = (1:divs)
     # Empty list
     e = []
     # Now for sort-split and predicting:
-    for i in ran
+    while divs > 0
         predictorx,x = Lathe.preprocess.SortSplit(x,size)
         predictory,y = Lathe.preprocess.SortSplit(y,size)
         predictorxt,xtcopy = Lathe.preprocess.SortSplit(xtcopy,size)
@@ -559,6 +560,7 @@ function pred_foursquare(m,xt)
         linregmod = LinearRegression(predictorx,predictory)
         # Recursion replacement method:
         xt = [predict(linregmod,x) for x in currentrange]
+        divs = divs - 1
     end
     return(xt)
 end
