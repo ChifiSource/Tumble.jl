@@ -552,11 +552,12 @@ function pred_foursquare(m,xt)
     e = []
     # Now for sort-split and predicting:
     for i in ran
-        x,predictorx = Lathe.preprocess.SortSplit(x,size)
-        y,predictory = Lathe.preprocess.SortSplit(y,size)
-        xtcopy,predictorxt = Lathe.preprocess.SortSplit(xtcopy,size)
-        currentrange = (minimum(predictorxt):maximum(xtcopypredictorxt))
+        predictorx,x = Lathe.preprocess.SortSplit(x,size)
+        predictory,y = Lathe.preprocess.SortSplit(y,size)
+        predictorxt,xtcopy = Lathe.preprocess.SortSplit(xtcopy,size)
+        currentrange = (minimum(predictorxt):maximum(predictorxt))
         linregmod = LinearRegression(predictorx,predictory)
+        # Recursion replacement method:
         xt = [predict(linregmod,x) for x in currentrange]
     end
     return(xt)
