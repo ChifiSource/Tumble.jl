@@ -538,7 +538,7 @@ function pred_foursquare(m,xt)
     end
     # Now we also need an error for when the total output of the
     #    division size and n divisions is > 100 percent
-    divisions = size * div
+    divisions = size * divs
     if divisions > 1
         throw(ArgumentError("Invalid hyperparameters!: divisions * number of
         divisions must be = to 100 percent!"))
