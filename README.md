@@ -3,7 +3,9 @@
 </div>
 <div align="left">
   <p> Lathe.jl is an inclusive predictive-learning module for Julia. Lathe includes inferential, bayesian, and basic statistics. Additionally, Lathe includes simple options for pre-processing your data, and fitting predictive models to your  data. </p>
-  <button><a href="https://github.com/emmettgb/Lathe.jl/wiki/Lathe">Open Documentation</a></button>
+  <h3>Development Roadmap<h3>
   <p>     </p>
+  <img src="http://emmettboudreau.com/Data/img/Lathe%20Roadmap.png" />
 </div>
-**Please push all commits to the unstable branch.**
+    
+
