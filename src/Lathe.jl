@@ -455,8 +455,8 @@ function predict(m,x)
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
     end
-    if typeof(m) == MultiGap
-        y_pred = pred_multigap(m,x)
+    if typeof(m) == RegressionTree
+        y_pred = pred_regressiontree(m,x)
     end
     if typeof(m) == LinearRegression
         y_pred = pred_LinearRegression(m,x)
@@ -506,14 +506,49 @@ Multi-
  - A quad range predictor, on steroids. -
 ==#
 # Model Type
-mutable struct MultiGap
+mutable struct RegressionTree
     x
     y
-    nfourths
+    n_divisions
+    divisionsize
 end
 #----  Callback
-function pred_multigap(m,xt)
-
+function pred_regressiontree(m,xt)
+    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
+    # Original 4 quartile math ^^
+        x = m.x
+        y = m.y
+        xtcopy = xt
+        divs = m.n_divisions
+        size = m.divisionsize
+        # Go ahead and throw an error for the wrong input shape:
+        xlength = length(x)
+        ylength = length(y)
+        if xlength != ylength
+            throw(ArgumentError("The array shape does not match!"))
+        end
+        # Now we also need an error for when the total output of the
+        #    division size and n divisions is > 100 percent
+        divisions = size * divs
+        if divisions != 1
+            throw(ArgumentError("Invalid hyperparameters!: divisions * number of
+            divisions must be = to 100 percent!"))
+        end
+        # Empty list
+        e = []
+        while divs > 0
+            predictorx,x = Lathe.preprocess.SortSplit(x,size)
+            predictory,y = Lathe.preprocess.SortSplit(y,size)
+            predictorxt,xtcopy = Lathe.preprocess.SortSplit(xtcopy,size)
+            currentrange = (minimum(predictorxt):maximum(predictorxt))
+            linregmod = LinearRegression(predictorx,predictory)
+            # Recursion replacement method:
+            [predict(LinearRegression(predictorx,
+            predictory),x) for x in currentrange]
+            divs = divs - 1
+        end
+        return(xt)
 end
 #==
 Four
@@ -523,46 +558,73 @@ Four
 mutable struct FourSquare
     x
     y
-    n_divisions
-    divisionsize
 end
 #----  Callback
 function pred_foursquare(m,xt)
-# x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
-# y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
-# Original 4 quartile math ^^
-    x = m.x
-    y = m.y
-    xtcopy = xt
-    divs = m.n_divisions
-    size = m.divisionsize
-    # Go ahead and throw an error for the wrong input shape:
-    xlength = length(x)
-    ylength = length(y)
-    if xlength != ylength
-        throw(ArgumentError("The array shape does not match!"))
-    end
-    # Now we also need an error for when the total output of the
-    #    division size and n divisions is > 100 percent
-    divisions = size * divs
-    if divisions != 1
-        throw(ArgumentError("Invalid hyperparameters!: divisions * number of
-        divisions must be = to 100 percent!"))
-    end
-    # Empty list
-    e = []
-    # Now for sort-split and predicting:
-    while divs > 0
-        predictorx,x = Lathe.preprocess.SortSplit(x,size)
-        predictory,y = Lathe.preprocess.SortSplit(y,size)
-        predictorxt,xtcopy = Lathe.preprocess.SortSplit(xtcopy,size)
-        currentrange = (minimum(predictorxt):maximum(predictorxt))
-        linregmod = LinearRegression(predictorx,predictory)
-        # Recursion replacement method:
-        xt = [predict(linregmod,x) for x in currentrange]
-        divs = divs - 1
-    end
-    return(xt)
+    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
+        x = m.x
+        y = m.y
+        # Go ahead and throw an error for the wrong input shape:
+        xlength = length(x)
+        ylength = length(y)
+        if xlength != ylength
+            throw(ArgumentError("The array shape does not match!"))
+        end
+        # Our empty Y prediction list==
+        e = []
+        # Quad Splitting the data ---->
+        # Split the Y
+        y2,range1 = Lathe.preprocess.SortSplit(y)
+        y3,range2 = Lathe.preprocess.SortSplit(y2)
+        y4,range3 = Lathe.preprocess.SortSplit(y3)
+        range4 = y4
+        # Split the x train
+        x1,xrange1 = Lathe.preprocess.SortSplit(x)
+        x2,xrange2 = Lathe.preprocess.SortSplit(x1)
+        x3,xrange3 = Lathe.preprocess.SortSplit(x2)
+        xrange4 = x3
+        # Fitting the 4 linear regression models ---->
+        regone = SimpleLinearRegression(xrange1,range1)
+        regtwo = SimpleLinearRegression(xrange2,range2)
+        regthree = SimpleLinearRegression(xrange3,range3)
+        regfour = SimpleLinearRegression(xrange4,range4)
+        # Split the train Data
+        xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
+        xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
+        xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
+        xtrange4 = xt3
+        # Get min-max
+        xtrange1min = minimum(xtrange1)
+        xtrange1max = maximum(xtrange1)
+        xtrange2min = minimum(xtrange2)
+        xtrange2max = maximum(xtrange2)
+        xtrange3min = minimum(xtrange3)
+        xtrange3max = maximum(xtrange3)
+        xtrange4min = minimum(xtrange4)
+        xtrange4max = maximum(xtrange4)
+        # Ranges for ifs
+        condrange1 = (xtrange1min:xtrange1max)
+        condrange2 = (xtrange2min:xtrange2max)
+        condrange3 = (xtrange3min:xtrange3max)
+        condrange4 = (xtrange4min:xtrange4max)
+        # This for loop is where the dimension's are actually used:
+        for i in xt
+            if i in condrange1
+                ypred = predict(regone,i)
+            end
+            if i in condrange2
+                ypred = predict(regtwo,i)
+            end
+            if i in condrange3
+                ypred = predict(regthree,i)
+            end
+            if i in condrange4
+                ypred = predict(regfour,i)
+            end
+            append!(e,ypred)
+        end
+        return(e)
 end
 #==
 Linear
