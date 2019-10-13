@@ -763,12 +763,10 @@ end
 function pred_exponentialscalar(m,xt)
     x = m.x
     y = m.y
-    n_preds = m.n_predictors
     xdiv1,x = Lathe.preprocess.SortSplit(x)
     xdiv2,x = Lathe.preprocess.SortSplit(x)
     xdiv3,x = Lathe.preprocess.SortSplit(x)
     xdiv4,x = Lathe.preprocess.SortSplit(x)
-    xdiv5,x = Lathe.preprocess.SortSplit(x)
     ydiv1,y = Lathe.preprocess.SortSplit(y)
     ydiv2,y = Lathe.preprocess.SortSplit(y)
     ydiv3,y = Lathe.preprocess.SortSplit(y)
@@ -776,8 +774,8 @@ function pred_exponentialscalar(m,xt)
     scalarlist1 = ydiv1 ./ xdiv1
     scalarlist2 = ydiv2 ./ xdiv2
     scalarlist3 = ydiv3 ./ xdiv3
-    scalarlist4 = ydiv4 ./ xdiv4
-    scalarlist5 = x ./ y
+    scalarlist4 = ydiv3 ./ xdiv3
+    scalarlist5 = y ./ x
     # Now we sortsplit the x train
     xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
     xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
@@ -791,40 +789,25 @@ function pred_exponentialscalar(m,xt)
     returnlist = []
     for i in xt
         if i in range1
-            predlist = []
-            for i in 1:n_preds
-                res = i * rand(scalarlist1)
-                append!(predlist,res)
-            end
-            append!(returnlist,Lathe.stats.mean(predlist))
+            res = i * rand(scalarlist1)
+            append!(returnlist,res)
         elseif i in range2
             predlist = []
-            for i in 1:n_preds
-                res = i * rand(scalarlist2)
-                append!(predlist,res)
-            end
-            append!(returnlist,Lathe.stats.mean(predlist))
+            res = i * rand(scalarlist2)
+            append!(returnlist,res)
+
         elseif i in range3
             predlist = []
-            for i in 1:n_preds
-                res = i * rand(scalarlist3)
-                append!(predlist,res)
-            end
-            append!(returnlist,Lathe.stats.mean(predlist))
+            res = i * rand(scalarlist3)
+            append!(returnlist,res)
         elseif i in range4
             predlist = []
-            for i in 1:n_preds
-                res = i * rand(scalarlist4)
-                append!(predlist,res)
-            end
-            append!(returnlist,Lathe.stats.mean(predlist))
+            res = i * rand(scalarlist4)
+            append!(returnlist,res)
         else
             predlist = []
-            for i in 1:n_preds
-                res = i * rand(scalarlist5)
-                append!(predlist,res)
-            end
-            append!(returnlist,Lathe.stats.mean(predlist))
+            res = i * rand(scalarlist5)
+            append!(returnlist,res)
         end
     end
     return(returnlist)
