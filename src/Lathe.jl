@@ -69,6 +69,12 @@ function confiints(data, confidence=.95)
 #    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
 #    return (mean-interval, mean+interval)
 end
+#<----Sample---->
+function sample(a)
+    n = length(a)
+    idx = mod(rand(Uint),n)+1
+    return a[idx]
+end
 #<----Standard Error---->
 function standarderror(data)
     std = std(data)
@@ -746,6 +752,59 @@ end
 function pred_logisticregression(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
+    end
+end
+#==
+Linear
+    Scalar
+==#
+mutable struct ExponentialScalar
+    x
+    y
+    n_predictors
+end
+function pred_exponentialscalar(m,xt)
+    x = m.x
+    y = m.y
+    xdiv1,x = Lathe.preprocess.SortSplit(x)
+    xdiv2,x = Lathe.preprocess.SortSplit(x)
+    xdiv3,x = Lathe.preprocess.SortSplit(x)
+    xdiv4,x = Lathe.preprocess.SortSplit(x)
+    ydiv1,y = Lathe.preprocess.SortSplit(y)
+    ydiv2,y = Lathe.preprocess.SortSplit(y)
+    ydiv3,y = Lathe.preprocess.SortSplit(y)
+    ydiv4,y = Lathe.preprocess.SortSplit(y)
+    scalarlist1 = ydiv1 ./ xdiv1
+    scalarlist2 = ydiv2 ./ xdiv2
+    scalarlist3 = ydiv3 ./ xdiv3
+    scalarlist4 = ydiv3 ./ xdiv3
+    # Now we sortsplit the x train
+    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
+    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
+    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2)
+    xtdiv4,null = Lathe.preprocess.SortSplit(xt2)
+    range1 = minimum(xtdiv1):maximum(xtdiv1)
+    range2 = minimum(xtdiv2):maximum(xtdiv2)
+    range3 = minimum(xtdiv3):maximum(xtdiv3)
+    range4 = minimum(xtdiv4):maximum(xtdiv4)
+    returnlist = []
+    for i in xt
+        if i in range1
+            res = i * Lathe.stats.sample(scalarlist1)
+            append!(returnlist,res)
+        end
+        if i in range2
+            res = i * Lathe.stats.sample(scalarlist2)
+            append!(returnlist,res)
+        end
+        if i in range3
+            res = i * Lathe.stats.sample(scalarlist3)
+            append!(returnlist,res)
+        end
+        if i in range4
+            res = i * Lathe.stats.sample(scalarlist4)
+            append!(returnlist,res)
+        end
     end
 end
 #======================================================================
