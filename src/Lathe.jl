@@ -10,8 +10,13 @@ GNU General Open Source License
 Thank you for your forks!
 <-----------Lathe.jl----------->
 38d8eb38-e7b1-11e9-0012-376b6c802672
+#[deps]
+DataFrames.jl
+Random.jl
 ================================#
 module Lathe
+using DataFrames
+using Random
 #================
 Stats
     Module
@@ -44,57 +49,99 @@ function variance(array)
     return(squared_mean)
 end
 #<----Standard Deviation---->
-function standardize(array)
-    mean = sum(array)/length(array)
-    sq = sum(array) - mean
-    squared_mean = sq ^ 2
-    standardized = sqrt(squared_mean)
-    return(standardized)
-end
+#function std(ar)
+#    ms = sum(ar)/length(ar)
+#    l = []
+#    for i in ar
+#        subtr = (i - ms) ^ 2
+#        append!(l,subtr)
+#    end
+#    me = sum(l)/length(l)
+#    squared_mean = me ^ 2
+#    standardized = sqrt(squared_mean)
+#    return(standardized)
+#end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
-#    n = length(data)
-#    mean = sum(data)/n
-#    std = standardize(data)
-#    stderr = standarderror(data)
+    mean = mean(data)
+    std = std(data)
+    stderr = standarderror(data)
 #    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
 #    return (mean-interval, mean+interval)
 end
 #<----Standard Error---->
 function standarderror(data)
-    std = standardize(data)
+    std = std(data)
     sample = length(data)
     ste = (std/sqrt(sample))
     return(ste)
+end
+#<----Standard Deviation---->
+function std(array)
+    avg = mean(array)
+    l = []
+    for i in array
+        subtr = (i-avg) ^ 2
+        append!(l,subtr)
+    end
+    me = mean(l)
+    me = me ^ 2
+    standard = sqrt(me)
+    return(standard)
+end
+#<---- Correlation Coefficient --->
+function correlationcoeff(x,y)
+    n = length(x)
+    yl = length(y)
+    if n != yl
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    xy = x .* y
+    x2 = x .^ 2
+    y2 = y .^ 2
+    sx = sum(x)
+    sy = sum(y)
+    sxy = sum(xy)
+    sx2 = sum(x2)
+    sy2 = sum(y2)
+    numer = (n * sxy) - (sx * sy)
+    denom = sqrt(n*sx2 - sx^2) * (n*sy2 - sy^2)
+    corrcoff = numer / denom
+    return(corrcoff)
 end
 #<----Z score---->
 function z(array)
 
 end
 #<----Quartiles---->
-# First
+# - First
 function firstquar(array)
     m = median(array)
     q15 = array / m
     q1 = array / m
     return(q)
 end
-# Second(median)
+# - Second(median)
 function secondquar(array)
     m = median(array)
     return(m)
 end
-# Third
+# - Third
 function thirdquar(array)
     q = median(array)
     q = q * 1.5
 end
-#<----Summatation---->
-function Summatation(array)
-    ∑ = sum(array)
-    return(∑)
+# <---- Rank ---->
+function getranks(array,rev = false)
+    sortedar = sort!(array,rev=rev)
+    num = 1
+    list = []
+    for i in sortedar
+        append!(list,i)
+        num = num + 1
+    end
+    return(list)
 end
-
 #-------Inferential-----------__________
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
@@ -106,8 +153,8 @@ function inf_sum(data,grdata)
     grvar = variance(grdata)
     avg = mean(data)
     gravg = mean(grdata)
-    sampstd = standardize(data)
-    grstd = standardize(grdata)
+    sampstd = std(data)
+    grstd = std(grdata)
     #Printing them out
     println("================")
     println("     Lathe.stats Inferential Summary")
@@ -126,13 +173,70 @@ function inf_sum(data,grdata)
     println("================")
 end
 #<----T Test---->
-function student_t(sample,general)
+# - Independent
+function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
-    std = standardize(general)
+    std = std(general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
+end
+# - Paired
+function paired_t(var1,var2)
+
+end
+#<---- Correlations ---->
+# - Spearman
+function spearman(var1,var2)
+
+end
+# - Pearson
+function pearson(var1,var2)
+
+end
+#<---- Chi-Square ---->
+function chisq(var1,var2)
+
+end
+#<---- ANOVA ---->
+function anova(var1,var2)
+
+end
+#<---- Wilcoxon ---->
+# - Wilcoxon Rank-Sum Test
+function wilcoxrs(var1,var2)
+
+end
+function wilcoxsr(var1,var2)
+
+end
+#<---- Binomial Distribution ---->
+function binomialdist(positives,negatives,zeros)
+    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    n = positives + negatives + zeros
+end
+#<---- Sign Test ---->
+function sign(var1,var2)
+    sets = var1 .- var2
+    positives = []
+    negatives = []
+    zeros = []
+    for i in sets
+        if i == 0
+            zeros.append(i)
+        elseif i > 0
+            positives.append(i)
+        elseif i < 0
+            negatives.append(i)
+        end
+    end
+    totalnegs = length(negatives)
+    totalpos = length(positives)
+    totalzer = length(zeros)
+    totallen = length(sets)
+    ans = binomialdist(positives,negatives,zeros)
+    return(ans)
 end
 #<---- F-Test---->
 function f_test(sample,general)
@@ -161,10 +265,10 @@ Model
     Validation
         Module
 ================#
-module Validate
+module validate
 #-------Model Metrics--------____________
-# --- Mean Absolute Error ---
 using Lathe
+## <---- Mean Absolute Error ---->
 function mae(actual,pred)
     l = length(actual)
     lp = length(pred)
@@ -178,10 +282,24 @@ function mae(actual,pred)
     end
     return(maeunf)
 end
+# <---- R Squared ---->
+function r2(actual,pred)
+    l = length(actual)
+    lp = length(pred)
+    if l != lp
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    r = Lathe.stats.correlationcoeff(actual,pred)
+    rsq = r^2
+    rsq = rsq * 100
+    return(rsq)
+end
 # --- Get Permutation ---
 function getPermutation(model)
 
 end
+#--------------------------------------------
+# End
 end
 #================
 Preprocessing
@@ -284,12 +402,11 @@ function MeanNormalization(array)
 end
 # ---- Z Normalization ----
 function StandardScalar(array)
-    q = Lathe.stats.standardize(array)
+    q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
     v = []
     for i in array
-        x = i
-        y = (x-avg) / q
+        y = (i-avg) / q
         append!(v,y)
     end
     return(v)
@@ -302,6 +419,10 @@ end
 Categorical
     Encoding
 ==========#
+# <---- One Hot Encoder ---->
+function OneHotEncode(array)
+
+end
 #-----------------------------
 end
 #================
@@ -325,23 +446,6 @@ function showmodels()
     println("    Usable")
     println("       Models")
     println("================")
-#    println("--QuadRange--")
-#    print("Ideal for use with continuous variables, uses")
-#    print("4 ranges and mathematical gap to predict the")
-#    print("outcome of Y. This results in a non-linear")
-#    print("Prediction for data with high variance.")
-#    print("---- Usage ----")
-#    print("model = Lathe.models.QuadRange(x,y)")
-#    print("ypr = Lathe.models.predict(model,Feature)")
-    print("_________________________________")
-#    println("--TurtleShell--")
-#    println("--majBaseline--")
-    println("--meanBaseline--")
-    print("Basic model to get a baseline-accuracy to")
-    print("improve upon")
-    print("---- Usage ----")
-    print("model = Lathe.models.meanBaseline(y)")
-    print("ypr = predict(model,Feature)")
 end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
@@ -351,11 +455,23 @@ function predict(m,x)
     if typeof(m) == majBaseline
         y_pred = pred_catbaseline(m,x)
     end
-    if typeof(m) == SimpleLinearRegression
-        y_pred = pred_simplelinearregression(m,x)
+    if typeof(m) == RegressionTree
+        y_pred = pred_regressiontree(m,x)
+    end
+    if typeof(m) == LinearRegression
+        y_pred = pred_LinearRegression(m,x)
     end
     if typeof(m) == meanBaseline
         y_pred = pred_meanbaseline(m,x)
+    end
+    if typeof(m) == RidgeRegression
+        y_pred = pred_ridgeregression(m,x)
+    end
+    if typeof(m) == LinearLeastSquare
+        y_pred = pred_linearleastsquare(m,x)
+    end
+    if typeof(m) == LogisticRegression
+        y_pred = pred_logisticregression(m,x)
     end
     return(y_pred)
 end
@@ -390,18 +506,53 @@ Multi-
  - A quad range predictor, on steroids. -
 ==#
 # Model Type
-mutable struct MultiGap
+mutable struct RegressionTree
     x
     y
-    nfourths
+    n_divisions
+    divisionsize
 end
 #----  Callback
-function pred_multigap(m,xt)
-
+function pred_regressiontree(m,xt)
+    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
+    # Original 4 quartile math ^^
+        x = m.x
+        y = m.y
+        xtcopy = xt
+        divs = m.n_divisions
+        size = m.divisionsize
+        # Go ahead and throw an error for the wrong input shape:
+        xlength = length(x)
+        ylength = length(y)
+        if xlength != ylength
+            throw(ArgumentError("The array shape does not match!"))
+        end
+        # Now we also need an error for when the total output of the
+        #    division size and n divisions is > 100 percent
+        divisions = size * divs
+        if divisions != 1
+            throw(ArgumentError("Invalid hyperparameters!: divisions * number of
+            divisions must be = to 100 percent!"))
+        end
+        # Empty list
+        e = []
+        while divs > 0
+            predictorx,x = Lathe.preprocess.SortSplit(x,size)
+            predictory,y = Lathe.preprocess.SortSplit(y,size)
+            predictorxt,xtcopy = Lathe.preprocess.SortSplit(xtcopy,size)
+            currentrange = (minimum(predictorxt):maximum(predictorxt))
+            linregmod = LinearRegression(predictorx,predictory)
+            # Recursion replacement method:
+            [predict(LinearRegression(predictorx,
+            predictory),x) for x in currentrange]
+            divs = divs - 1
+        end
+        return(xt)
 end
 #==
-Quad
-    Range
+Four
+    Square
 ==#
 # Model Type
 mutable struct FourSquare
@@ -410,81 +561,81 @@ mutable struct FourSquare
 end
 #----  Callback
 function pred_foursquare(m,xt)
-# x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
-# y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
-    x = m.x
-    y = m.y
-    # Go ahead and throw an error for the wrong input shape:
-    xlength = length(x)
-    ylength = length(y)
-    if xlength != ylength
-        throw(ArgumentError("The array shape does not match!"))
-    end
-    # Our empty Y prediction list==
-    e = []
-    # Quad Splitting the data ---->
-    # Split the Y
-    y2,range1 = Lathe.preprocess.SortSplit(y)
-    y3,range2 = Lathe.preprocess.SortSplit(y2)
-    y4,range3 = Lathe.preprocess.SortSplit(y3)
-    range4 = y4
-    # Split the x train
-    x1,xrange1 = Lathe.preprocess.SortSplit(x)
-    x2,xrange2 = Lathe.preprocess.SortSplit(x1)
-    x3,xrange3 = Lathe.preprocess.SortSplit(x2)
-    xrange4 = x3
-    # Fitting the 4 linear regression models ---->
-    regone = SimpleLinearRegression(xrange1,range1)
-    regtwo = SimpleLinearRegression(xrange2,range2)
-    regthree = SimpleLinearRegression(xrange3,range3)
-    regfour = SimpleLinearRegression(xrange4,range4)
-    # Split the train Data
-    xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
-    xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
-    xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
-    xtrange4 = xt3
-    # Get min-max
-    xtrange1min = minimum(xtrange1)
-    xtrange1max = maximum(xtrange1)
-    xtrange2min = minimum(xtrange2)
-    xtrange2max = maximum(xtrange2)
-    xtrange3min = minimum(xtrange3)
-    xtrange3max = maximum(xtrange3)
-    xtrange4min = minimum(xtrange4)
-    xtrange4max = maximum(xtrange4)
-    # Ranges for ifs
-    condrange1 = (xtrange1min:xtrange1max)
-    condrange2 = (xtrange2min:xtrange2max)
-    condrange3 = (xtrange3min:xtrange3max)
-    condrange4 = (xtrange4min:xtrange4max)
-    # This for loop is where the dimension's are actually used:
-    for i in xt
-        if i in condrange1
-            ypred = predict(regone,i)
+    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
+        x = m.x
+        y = m.y
+        # Go ahead and throw an error for the wrong input shape:
+        xlength = length(x)
+        ylength = length(y)
+        if xlength != ylength
+            throw(ArgumentError("The array shape does not match!"))
         end
-        if i in condrange2
-            ypred = predict(regtwo,i)
+        # Our empty Y prediction list==
+        e = []
+        # Quad Splitting the data ---->
+        # Split the Y
+        y2,range1 = Lathe.preprocess.SortSplit(y)
+        y3,range2 = Lathe.preprocess.SortSplit(y2)
+        y4,range3 = Lathe.preprocess.SortSplit(y3)
+        range4 = y4
+        # Split the x train
+        x1,xrange1 = Lathe.preprocess.SortSplit(x)
+        x2,xrange2 = Lathe.preprocess.SortSplit(x1)
+        x3,xrange3 = Lathe.preprocess.SortSplit(x2)
+        xrange4 = x3
+        # Fitting the 4 linear regression models ---->
+        regone = LinearRegression(xrange1,range1)
+        regtwo = LinearRegression(xrange2,range2)
+        regthree = LinearRegression(xrange3,range3)
+        regfour = LinearRegression(xrange4,range4)
+        # Split the train Data
+        xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
+        xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
+        xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
+        xtrange4 = xt3
+        # Get min-max
+        xtrange1min = minimum(xtrange1)
+        xtrange1max = maximum(xtrange1)
+        xtrange2min = minimum(xtrange2)
+        xtrange2max = maximum(xtrange2)
+        xtrange3min = minimum(xtrange3)
+        xtrange3max = maximum(xtrange3)
+        xtrange4min = minimum(xtrange4)
+        xtrange4max = maximum(xtrange4)
+        # Ranges for ifs
+        condrange1 = (xtrange1min:xtrange1max)
+        condrange2 = (xtrange2min:xtrange2max)
+        condrange3 = (xtrange3min:xtrange3max)
+        condrange4 = (xtrange4min:xtrange4max)
+        # This for loop is where the dimension's are actually used:
+        for i in xt
+            if i in condrange1
+                ypred = predict(regone,i)
+            end
+            if i in condrange2
+                ypred = predict(regtwo,i)
+            end
+            if i in condrange3
+                ypred = predict(regthree,i)
+            end
+            if i in condrange4
+                ypred = predict(regfour,i)
+            end
+            append!(e,ypred)
         end
-        if i in condrange3
-            ypred = predict(regthree,i)
-        end
-        if i in condrange4
-            ypred = predict(regfour,i)
-        end
-        append!(e,ypred)
-    end
-    return(e)
+        return(e)
 end
 #==
 Linear
     Regression
 ==#
-mutable struct SimpleLinearRegression
+mutable struct LinearRegression
     x
     y
 end
 #----  Callback
-function pred_simplelinearregression(m,xt)
+function pred_LinearRegression(m,xt)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
     if length(m.x) != length(m.y)
@@ -517,6 +668,70 @@ function pred_simplelinearregression(m,xt)
         append!(ypred,yp)
     end
     return(ypred)
+end
+#==
+Linear
+    Least
+     Square
+==#
+mutable struct LinearLeastSquare
+    x
+    y
+end
+function pred_linearleastsquare(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    x = m.x
+    y = m.y
+    # Summatation of x*y
+    xy = x .* y
+    sxy = sum(xy)
+    # N
+    n = length(x)
+    # Summatation of x^2
+    x2 = x .^ 2
+    sx2 = sum(x2)
+    # Summatation of x and y
+    sx = sum(x)
+    sy = sum(y)
+    # Calculate the slope:
+    m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+    # Calculate the y intercept
+    b = (sxy - (m*sx)) / n
+    # Empty prediction list:
+    y_pred = []
+    for i in xt
+        pred = (m*i)+b
+        append!(y_pred,pred)
+    end
+    return(y_pred)
+end
+#==
+Ridge
+    Regression
+==#
+mutable struct RidgeRegression
+    x
+    y
+end
+function pred_ridgeregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+end
+#==
+Logistic
+    Regression
+==#
+mutable struct LogisticRegression
+    x
+    y
+end
+function pred_logisticregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
 end
 #======================================================================
 =======================================================================
@@ -551,6 +766,7 @@ Pipeline
     Module
 ================#
 module Pipelines
+#=================================================
 #
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
@@ -606,7 +822,7 @@ function predict(fitpipeline,xt)
         ypr = Lathe.models.predict(model,xt)
     end
 end
-#
+=============================================#
 #----------------------------------------------
 end
 #==
