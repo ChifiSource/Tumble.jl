@@ -677,33 +677,48 @@ Linear
 mutable struct LinearLeastSquare
     x
     y
+    Type
 end
 function pred_linearleastsquare(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
-    x = m.x
-    y = m.y
-    # Summatation of x*y
-    xy = x .* y
-    sxy = sum(xy)
-    # N
-    n = length(x)
-    # Summatation of x^2
-    x2 = x .^ 2
-    sx2 = sum(x2)
-    # Summatation of x and y
-    sx = sum(x)
-    sy = sum(y)
-    # Calculate the slope:
-    m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
-    # Calculate the y intercept
-    b = (sxy - (m*sx)) / n
-    # Empty prediction list:
-    y_pred = []
-    for i in xt
-        pred = (m*i)+b
-        append!(y_pred,pred)
+    if m.Type == :REG
+        x = m.x
+        y = m.y
+        # Summatation of x*y
+        xy = x .* y
+        sxy = sum(xy)
+        # N
+        n = length(x)
+        # Summatation of x^2
+        x2 = x .^ 2
+        sx2 = sum(x2)
+        # Summatation of x and y
+        sx = sum(x)
+        sy = sum(y)
+        # Calculate the slope:
+        m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+        # Calculate the y intercept
+        b = (sy - (m*sx)) / n
+        # Empty prediction list:
+        y_pred = []
+        for i in xt
+            pred = (m*i)+b
+            append!(y_pred,pred)
+        end
+    end
+    if m.Type == :OLS
+
+    end
+    if m.Type == :WLS
+
+    end
+    if m.Type == :GLS
+
+    end
+    if m.Type == :GRG
+
     end
     return(y_pred)
 end
