@@ -69,12 +69,6 @@ function confiints(data, confidence=.95)
 #    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
 #    return (mean-interval, mean+interval)
 end
-#<----Sample---->
-function sample(a)
-    n = length(a)
-    idx = mod(rand(Uint),n)+1
-    return a[idx]
-end
 #<----Standard Error---->
 function standarderror(data)
     std = std(data)
@@ -793,19 +787,19 @@ function pred_exponentialscalar(m,xt)
     returnlist = []
     for i in xt
         if i in range1
-            res = i * Lathe.stats.sample(scalarlist1)
+            res = i * rand(scalarlist1)
             append!(returnlist,res)
         end
         if i in range2
-            res = i * Lathe.stats.sample(scalarlist2)
+            res = i * rand(scalarlist2)
             append!(returnlist,res)
         end
         if i in range3
-            res = i * Lathe.stats.sample(scalarlist3)
+            res = i * rand(scalarlist3)
             append!(returnlist,res)
         end
         if i in range4
-            res = i * Lathe.stats.sample(scalarlist4)
+            res = i * rand(scalarlist4)
             append!(returnlist,res)
         end
     end
