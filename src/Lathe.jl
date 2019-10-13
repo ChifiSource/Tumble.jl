@@ -775,6 +775,8 @@ function pred_exponentialscalar(m,xt)
     scalarlist2 = ydiv2 ./ xdiv2
     scalarlist3 = ydiv3 ./ xdiv3
     scalarlist4 = ydiv3 ./ xdiv3
+    scalarlist5 = y ./ x
+    extra handler
     # Now we sortsplit the x train
     xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
     xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
@@ -784,22 +786,25 @@ function pred_exponentialscalar(m,xt)
     range2 = minimum(xtdiv2):maximum(xtdiv2)
     range3 = minimum(xtdiv3):maximum(xtdiv3)
     range4 = minimum(xtdiv4):maximum(xtdiv4)
+    range5 = minimum(null):maximum(null)
     returnlist = []
     for i in xt
         if i in range1
             res = i * rand(scalarlist1)
             append!(returnlist,res)
-        end
-        if i in range2
+
+        elseif i in range2
             res = i * rand(scalarlist2)
             append!(returnlist,res)
-        end
-        if i in range3
+
+        elseif i in range3
             res = i * rand(scalarlist3)
             append!(returnlist,res)
-        end
-        if i in range4
+        elseif i in range4
             res = i * rand(scalarlist4)
+            append!(returnlist,res)
+        else
+            res = i * rand(scalarlist5)
             append!(returnlist,res)
         end
     end
