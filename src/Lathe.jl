@@ -479,6 +479,9 @@ function predict(m,x)
     if typeof(m) == LogisticRegression
         y_pred = pred_logisticregression(m,x)
     end
+    if typeof(m) == ExponentialScalar
+        y_pred = pred_exponentialscalar(m,x)
+    end
     return(y_pred)
 end
 #======================================================================
@@ -806,6 +809,7 @@ function pred_exponentialscalar(m,xt)
             append!(returnlist,res)
         end
     end
+    return(returnlist)
 end
 #======================================================================
 =======================================================================
