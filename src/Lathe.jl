@@ -698,13 +698,13 @@ function pred_linearleastsquare(m,xt)
         sx = sum(x)
         sy = sum(y)
         # Calculate the slope:
-        m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+        slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
         # Calculate the y intercept
-        b = (sy - (m*sx)) / n
+        b = (sy - (slope*sx)) / n
         # Empty prediction list:
         y_pred = []
         for i in xt
-            pred = (m*i)+b
+            pred = (slope*i)+b
             append!(y_pred,pred)
         end
     end
