@@ -758,7 +758,6 @@ Linear
 mutable struct ExponentialScalar
     x
     y
-    n_predictors
 end
 function pred_exponentialscalar(m,xt)
     x = m.x
