@@ -91,17 +91,26 @@ function correlationcoeff(x,y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
-    sx = std(x)
-    sy = std(y)
-    x̄ = mean(x)
-    ȳ = mean(x)
-    [i = (i-x̄) / sx for i in x]
-    [i = (i-ȳ) / sy for i in y]
-    n1 = n-1
-    mult = x .* y
-    sq = sum(mult)
-    corrcoff = sq / n1
-    return(corrcoff)
+#    sx = std(x)
+#    sy = std(y)
+#    x̄ = mean(x)
+#    ȳ = mean(x)
+#    [i = (i-x̄) / sx for i in x]
+#    [i = (i-ȳ) / sy for i in y]
+#    n1 = n-1
+#    mult = x .* y
+#    sq = sum(mult)
+#    corrcoff = sq / n1
+    xy = x .* y
+    sx = sum(x)
+    sy = sum(y)
+    sxy = sum(xy)
+    x2 = x .^ 2
+    y2 = y .^ 2
+    sx2 = sum(x2)
+    sy2 = sum(y2)
+    r = ((n*sxy) - (sx * sy)) / ((sqrt(n*sx2-(sx^2))) * (n*sy2-(sy^2)))
+    return(r)
 end
 #<----Z score---->
 function z(array)
@@ -285,7 +294,6 @@ function r2(actual,pred)
     end
     r = Lathe.stats.correlationcoeff(actual,pred)
     rsq = r^2
-    rsq = rsq * 100
     return(rsq)
 end
 # --- Get Permutation ---
