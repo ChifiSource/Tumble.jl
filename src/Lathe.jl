@@ -77,17 +77,12 @@ function standarderror(data)
     return(ste)
 end
 #<----Standard Deviation---->
-function std(array)
-    avg = mean(array)
-    l = []
-    for i in array
-        subtr = (i-avg) ^ 2
-        append!(l,subtr)
-    end
-    me = mean(l)
-    me = me ^ 2
-    standard = sqrt(me)
-    return(standard)
+function std(array3)
+    m = mean(array3)
+    [i = (i-m) ^ 2 for i in array3]
+    m = mean(array3)
+    m = sqrt(m)
+    return(m)
 end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
