@@ -314,17 +314,16 @@ Generalized
         Processing
 ===============#
 # Train-Test-Split-----
-function TrainTest(data, at = 0.7)
-    n = length(data)
-    idx = Random.shuffle(1:n)
-    train_idx = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train_idx,:], data[test_idx,:]
-    return(test_idx,train_idx)
+function TrainTestSplit(df,at = 0.75)
+    sample = randsubseq(1:size(df,1), at)
+    trainingset = df[sample, :]
+    notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
+    testset = df[notsample, :]
+    return(trainingset,testset)
 end
-# DataFrames TestTrainSplit -----
-function DfTrainTest(data, at = 0.7)
-    n = nrow(data)
+# Array-Split ----------
+function ArraySplit(data, at = 0.7)
+    n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
     test_idx = view(idx, (floor(Int, at*n)+1):n)
@@ -347,21 +346,6 @@ function Uniform_Split(data, at = 0.7)
     test_idx = view(idx, (floor(Int, at*n)+1):n)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
-end
-# Test Train Val Split----
-function TrainTestVal(data, at = 0.6,valat = 0.2)
-    n = Lathe.stats.nrow(data)
-    idx = Random.shuffle(1:n)
-    train = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train,:], data[test_idx,:]
-    # ~Repeats to split test data~
-    n = Lathe.stats.nrow(test)
-    idx = Random.shuffle(1:n)
-    train_idx = view(idx, 1:floor(Int, at*n))
-    val_idx = view(idx, (floor(Int, at*n)+1):n)
-    train[train_idx,:], train[val_idx,:]
-    return(test_idx,train_idx,val_idx)
 end
 #=======
 Numerical
