@@ -608,7 +608,10 @@ function pred_foursquare(m,xt)
             end
             if i in condrange4
                 ypred = predict(regfour,i)
+            else
+                ypred = predict(regfour,i)
             end
+
             append!(e,ypred)
         end
         return(e)
