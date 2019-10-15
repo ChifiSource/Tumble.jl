@@ -91,17 +91,16 @@ function correlationcoeff(x,y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
-    xy = x .* y
-    x2 = x .^ 2
-    y2 = y .^ 2
-    sx = sum(x)
-    sy = sum(y)
-    sxy = sum(xy)
-    sx2 = sum(x2)
-    sy2 = sum(y2)
-    numer = (n * sxy) - (sx * sy)
-    denom = sqrt(n*sx2 - sx^2) * (n*sy2 - sy^2)
-    corrcoff = numer / denom
+    sx = std(x)
+    sy = std(y)
+    x̄ = mean(x)
+    ȳ = mean(x)
+    [i = (i-x̄) / sx for i in x]
+    [i = (i-ȳ) / sy for i in y]
+    n1 = n-1
+    mult = x .* y
+    sq = sum(mult)
+    corrcoff = sq / n1
     return(corrcoff)
 end
 #<----Z score---->
@@ -273,7 +272,7 @@ function mae(actual,pred)
     result = actual-pred
     maeunf = Lathe.stats.mean(result)
     if maeunf < 0
-        maeunf = maeunf - (maeunf - maeunf)
+        maeunf = (maeunf - maeunf) - maeunf
     end
     return(maeunf)
 end
