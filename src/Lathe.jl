@@ -599,16 +599,11 @@ function pred_foursquare(m,xt)
         for i in xt
             if i in condrange1
                 ypred = predict(regone,i)
-            end
-            if i in condrange2
+            elseif i in condrange2
                 ypred = predict(regtwo,i)
-            end
-            if i in condrange3
+            elseif i in condrange3
                 ypred = predict(regthree,i)
-            end
-            if i in condrange4
-                ypred = predict(regfour,i)
-            else
+            else i in condrange4
                 ypred = predict(regfour,i)
             end
 
