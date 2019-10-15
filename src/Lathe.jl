@@ -109,7 +109,7 @@ function correlationcoeff(x,y)
     y2 = y .^ 2
     sx2 = sum(x2)
     sy2 = sum(y2)
-    r = ((n*sxy) - (sx * sy)) / ((sqrt(n*sx2-(sx^2))) * (n*sy2-(sy^2)))
+    r = ((n*sxy) - (sx * sy)) / (sqrt((((n*sx2)-(sx^2)) * ((n*sy2)-(sy^2))))
     return(r)
 end
 #<----Z score---->
