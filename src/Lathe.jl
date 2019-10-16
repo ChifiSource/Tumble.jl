@@ -149,7 +149,7 @@ end
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
     #Doing our calculations
-    t = student_t(data,grdata)
+    t = independent_t(data,grdata)
     f = f_test(data,grdata)
 #    low,high = confiints(data)
     var = variance(data)
@@ -181,7 +181,11 @@ function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
-    std = std(general)
+    m = genmean
+    [i = (i-m) ^ 2 for i in general]
+    m = mean(general)
+    m = sqrt(m)
+    std = m
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
