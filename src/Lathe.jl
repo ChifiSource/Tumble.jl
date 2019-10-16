@@ -294,6 +294,7 @@ function r2(actual,pred)
     end
     r = Lathe.stats.correlationcoeff(actual,pred)
     rsq = r^2
+    rsq = rsq * 100
     return(rsq)
 end
 # --- Get Permutation ---
@@ -567,22 +568,26 @@ function pred_foursquare(m,xt)
         y2,range1 = Lathe.preprocess.SortSplit(y)
         y3,range2 = Lathe.preprocess.SortSplit(y2)
         y4,range3 = Lathe.preprocess.SortSplit(y3)
-        range4 = y4
+        y5,range4 = Lathe.preprocess.SortSplit(y4)
+        yrange5 = y5
         # Split the x train
         x1,xrange1 = Lathe.preprocess.SortSplit(x)
         x2,xrange2 = Lathe.preprocess.SortSplit(x1)
         x3,xrange3 = Lathe.preprocess.SortSplit(x2)
-        xrange4 = x3
+        x4,xrange4 = Lathe.preprocess.Sortsplit(x3)
+        xrange5 = y5
         # Fitting the 4 linear regression models ---->
         regone = LinearRegression(xrange1,range1)
         regtwo = LinearRegression(xrange2,range2)
         regthree = LinearRegression(xrange3,range3)
         regfour = LinearRegression(xrange4,range4)
+        regfive = LinearRegression(xrange5,yrange5)
         # Split the train Data
         xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
         xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
         xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
-        xtrange4 = xt3
+        xt4,xtrange4 = Lathe.preprocess.SortSplit(xt3)
+        xtrange5 = xt4
         # Get min-max
         xtrange1min = minimum(xtrange1)
         xtrange1max = maximum(xtrange1)
@@ -592,6 +597,7 @@ function pred_foursquare(m,xt)
         xtrange3max = maximum(xtrange3)
         xtrange4min = minimum(xtrange4)
         xtrange4max = maximum(xtrange4)
+        xtrange5min = minimum(xtrange5)
         # Ranges for ifs
         condrange1 = (xtrange1min:xtrange1max)
         condrange2 = (xtrange2min:xtrange2max)
@@ -605,8 +611,10 @@ function pred_foursquare(m,xt)
                 ypred = predict(regtwo,i)
             elseif i in condrange3
                 ypred = predict(regthree,i)
-            else i in condrange4
+            elseif i in condrange4
                 ypred = predict(regfour,i)
+            else
+                ypred = predict(regfive,i)
             end
 
             append!(e,ypred)
