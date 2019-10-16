@@ -574,7 +574,7 @@ function pred_foursquare(m,xt)
         x1,xrange1 = Lathe.preprocess.SortSplit(x)
         x2,xrange2 = Lathe.preprocess.SortSplit(x1)
         x3,xrange3 = Lathe.preprocess.SortSplit(x2)
-        x4,xrange4 = Lathe.preprocess.Sortsplit(x3)
+        x4,xrange4 = Lathe.preprocess.SortSplit(x3)
         xrange5 = y5
         # Fitting the 4 linear regression models ---->
         regone = LinearRegression(xrange1,range1)
