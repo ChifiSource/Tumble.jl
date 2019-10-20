@@ -17,6 +17,13 @@ Random.jl
 module Lathe
 using DataFrames
 using Random
+# Global help() function.
+function help(args)
+    if typeof(args) == stats.mean()
+        println("mean")
+    elseif typeof(args) == stats.variance()
+    end
+end
 #================
 Stats
     Module
@@ -27,14 +34,6 @@ function mean(array)
     observations = length(array)
     average = sum(array)/observations
     return(average)
-end
-#<----Nrow counts number of iterations---->
-function nrow(data)
-        x = 0
-        for i in data
-            x = x+1
-        end
-        return(x)
 end
 #<----Mode---->
 function mode(array)
@@ -48,19 +47,6 @@ function variance(array)
     squared_mean = sq ^ 2
     return(squared_mean)
 end
-#<----Standard Deviation---->
-#function std(ar)
-#    ms = sum(ar)/length(ar)
-#    l = []
-#    for i in ar
-#        subtr = (i - ms) ^ 2
-#        append!(l,subtr)
-#    end
-#    me = sum(l)/length(l)
-#    squared_mean = me ^ 2
-#    standardized = sqrt(squared_mean)
-#    return(standardized)
-#end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
     mean = mean(data)
@@ -167,7 +153,7 @@ function inf_sum(data,grdata)
     println("μ: ",gravg)
     println("s: ",sampstd)
     println("σ: ",grstd)
-    println("var(X): ",var)
+    println("var(x): ",var)
     println("σ2: ",grvar)
 #    println("Low Confidence interval: ",low)
 #    println("High Confidence interval: ",high)
@@ -437,6 +423,20 @@ function showmodels()
     println("    Usable")
     println("       Models")
     println("================")
+    println("Use Lathe.help(model) for more information on model usage.")
+    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Continuous Models")
+    println("-----------------")
+    println("_____Linear_____")
+    println("meanBaseline(y)")
+    println("LinearLeastSquare(x,y,Type)")
+    println("LinearRegression(x,y)")
+    println("-----------------")
+    println("___Non-Linear___")
+    println("FourSquare(x,y)")
+    println("RidgeRegression(x,y)")
+    println("RegressionTree(x,y,n_divisions,divisionsize)")
+    println("LogisticRegression(x,y)")
+    println("ExponentialScalar(x,y)")
 end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
