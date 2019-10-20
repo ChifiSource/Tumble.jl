@@ -17,6 +17,13 @@ Random.jl
 module Lathe
 using DataFrames
 using Random
+# Global help() function.
+function help(args)
+    if typeof(args) == stats.mean()
+        println("mean")
+    elseif typeof(args) == stats.variance()
+    end
+end
 #================
 Stats
     Module
@@ -27,14 +34,6 @@ function mean(array)
     observations = length(array)
     average = sum(array)/observations
     return(average)
-end
-#<----Nrow counts number of iterations---->
-function nrow(data)
-        x = 0
-        for i in data
-            x = x+1
-        end
-        return(x)
 end
 #<----Mode---->
 function mode(array)
@@ -48,19 +47,6 @@ function variance(array)
     squared_mean = sq ^ 2
     return(squared_mean)
 end
-#<----Standard Deviation---->
-#function std(ar)
-#    ms = sum(ar)/length(ar)
-#    l = []
-#    for i in ar
-#        subtr = (i - ms) ^ 2
-#        append!(l,subtr)
-#    end
-#    me = sum(l)/length(l)
-#    squared_mean = me ^ 2
-#    standardized = sqrt(squared_mean)
-#    return(standardized)
-#end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
     mean = mean(data)
@@ -77,17 +63,12 @@ function standarderror(data)
     return(ste)
 end
 #<----Standard Deviation---->
-function std(array)
-    avg = mean(array)
-    l = []
-    for i in array
-        subtr = (i-avg) ^ 2
-        append!(l,subtr)
-    end
-    me = mean(l)
-    me = me ^ 2
-    standard = sqrt(me)
-    return(standard)
+function std(array3)
+    m = mean(array3)
+    [i = (i-m) ^ 2 for i in array3]
+    m = mean(array3)
+    m = sqrt(m)
+    return(m)
 end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
@@ -96,18 +77,26 @@ function correlationcoeff(x,y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
+#    sx = std(x)
+#    sy = std(y)
+#    x̄ = mean(x)
+#    ȳ = mean(x)
+#    [i = (i-x̄) / sx for i in x]
+#    [i = (i-ȳ) / sy for i in y]
+#    n1 = n-1
+#    mult = x .* y
+#    sq = sum(mult)
+#    corrcoff = sq / n1
     xy = x .* y
-    x2 = x .^ 2
-    y2 = y .^ 2
     sx = sum(x)
     sy = sum(y)
     sxy = sum(xy)
+    x2 = x .^ 2
+    y2 = y .^ 2
     sx2 = sum(x2)
     sy2 = sum(y2)
-    numer = (n * sxy) - (sx * sy)
-    denom = sqrt(n*sx2 - sx^2) * (n*sy2 - sy^2)
-    corrcoff = numer / denom
-    return(corrcoff)
+    r = ((n*sxy) - (sx * sy)) / (sqrt((((n*sx2)-(sx^2)) * ((n*sy2)-(sy^2)))))
+    return(r)
 end
 #<----Z score---->
 function z(array)
@@ -146,7 +135,7 @@ end
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
     #Doing our calculations
-    t = student_t(data,grdata)
+    t = independent_t(data,grdata)
     f = f_test(data,grdata)
 #    low,high = confiints(data)
     var = variance(data)
@@ -164,7 +153,7 @@ function inf_sum(data,grdata)
     println("μ: ",gravg)
     println("s: ",sampstd)
     println("σ: ",grstd)
-    println("var(X): ",var)
+    println("var(x): ",var)
     println("σ2: ",grvar)
 #    println("Low Confidence interval: ",low)
 #    println("High Confidence interval: ",high)
@@ -178,7 +167,11 @@ function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
-    std = std(general)
+    m = genmean
+    [i = (i-m) ^ 2 for i in general]
+    m = mean(general)
+    m = sqrt(m)
+    std = m
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
@@ -278,7 +271,7 @@ function mae(actual,pred)
     result = actual-pred
     maeunf = Lathe.stats.mean(result)
     if maeunf < 0
-        maeunf = maeunf - (maeunf - maeunf)
+        maeunf = (maeunf - maeunf) - maeunf
     end
     return(maeunf)
 end
@@ -314,17 +307,16 @@ Generalized
         Processing
 ===============#
 # Train-Test-Split-----
-function TrainTest(data, at = 0.7)
-    n = length(data)
-    idx = Random.shuffle(1:n)
-    train_idx = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train_idx,:], data[test_idx,:]
-    return(test_idx,train_idx)
+function TrainTestSplit(df,at = 0.75)
+    sample = randsubseq(1:size(df,1), at)
+    trainingset = df[sample, :]
+    notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
+    testset = df[notsample, :]
+    return(trainingset,testset)
 end
-# DataFrames TestTrainSplit -----
-function DfTrainTest(data, at = 0.7)
-    n = nrow(data)
+# Array-Split ----------
+function ArraySplit(data, at = 0.7)
+    n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
     test_idx = view(idx, (floor(Int, at*n)+1):n)
@@ -347,21 +339,6 @@ function Uniform_Split(data, at = 0.7)
     test_idx = view(idx, (floor(Int, at*n)+1):n)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
-end
-# Test Train Val Split----
-function TrainTestVal(data, at = 0.6,valat = 0.2)
-    n = Lathe.stats.nrow(data)
-    idx = Random.shuffle(1:n)
-    train = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train,:], data[test_idx,:]
-    # ~Repeats to split test data~
-    n = Lathe.stats.nrow(test)
-    idx = Random.shuffle(1:n)
-    train_idx = view(idx, 1:floor(Int, at*n))
-    val_idx = view(idx, (floor(Int, at*n)+1):n)
-    train[train_idx,:], train[val_idx,:]
-    return(test_idx,train_idx,val_idx)
 end
 #=======
 Numerical
@@ -446,6 +423,20 @@ function showmodels()
     println("    Usable")
     println("       Models")
     println("================")
+    println("Use Lathe.help(model) for more information on model usage.")
+    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Continuous Models")
+    println("-----------------")
+    println("_____Linear_____")
+    println("meanBaseline(y)")
+    println("LinearLeastSquare(x,y,Type)")
+    println("LinearRegression(x,y)")
+    println("-----------------")
+    println("___Non-Linear___")
+    println("FourSquare(x,y)")
+    println("RidgeRegression(x,y)")
+    println("RegressionTree(x,y,n_divisions,divisionsize)")
+    println("LogisticRegression(x,y)")
+    println("ExponentialScalar(x,y)")
 end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
@@ -472,6 +463,9 @@ function predict(m,x)
     end
     if typeof(m) == LogisticRegression
         y_pred = pred_logisticregression(m,x)
+    end
+    if typeof(m) == ExponentialScalar
+        y_pred = pred_exponentialscalar(m,x)
     end
     return(y_pred)
 end
@@ -578,22 +572,26 @@ function pred_foursquare(m,xt)
         y2,range1 = Lathe.preprocess.SortSplit(y)
         y3,range2 = Lathe.preprocess.SortSplit(y2)
         y4,range3 = Lathe.preprocess.SortSplit(y3)
-        range4 = y4
+        y5,range4 = Lathe.preprocess.SortSplit(y4)
+        yrange5 = y5
         # Split the x train
         x1,xrange1 = Lathe.preprocess.SortSplit(x)
         x2,xrange2 = Lathe.preprocess.SortSplit(x1)
         x3,xrange3 = Lathe.preprocess.SortSplit(x2)
-        xrange4 = x3
+        x4,xrange4 = Lathe.preprocess.SortSplit(x3)
+        xrange5 = y5
         # Fitting the 4 linear regression models ---->
         regone = LinearRegression(xrange1,range1)
         regtwo = LinearRegression(xrange2,range2)
         regthree = LinearRegression(xrange3,range3)
         regfour = LinearRegression(xrange4,range4)
+        regfive = LinearRegression(xrange5,yrange5)
         # Split the train Data
         xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
         xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
         xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
-        xtrange4 = xt3
+        xt4,xtrange4 = Lathe.preprocess.SortSplit(xt3)
+        xtrange5 = xt4
         # Get min-max
         xtrange1min = minimum(xtrange1)
         xtrange1max = maximum(xtrange1)
@@ -603,6 +601,7 @@ function pred_foursquare(m,xt)
         xtrange3max = maximum(xtrange3)
         xtrange4min = minimum(xtrange4)
         xtrange4max = maximum(xtrange4)
+        xtrange5min = minimum(xtrange5)
         # Ranges for ifs
         condrange1 = (xtrange1min:xtrange1max)
         condrange2 = (xtrange2min:xtrange2max)
@@ -612,16 +611,16 @@ function pred_foursquare(m,xt)
         for i in xt
             if i in condrange1
                 ypred = predict(regone,i)
-            end
-            if i in condrange2
+            elseif i in condrange2
                 ypred = predict(regtwo,i)
-            end
-            if i in condrange3
+            elseif i in condrange3
                 ypred = predict(regthree,i)
-            end
-            if i in condrange4
+            elseif i in condrange4
                 ypred = predict(regfour,i)
+            else
+                ypred = predict(regfive,i)
             end
+
             append!(e,ypred)
         end
         return(e)
@@ -677,33 +676,48 @@ Linear
 mutable struct LinearLeastSquare
     x
     y
+    Type
 end
 function pred_linearleastsquare(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
-    x = m.x
-    y = m.y
-    # Summatation of x*y
-    xy = x .* y
-    sxy = sum(xy)
-    # N
-    n = length(x)
-    # Summatation of x^2
-    x2 = x .^ 2
-    sx2 = sum(x2)
-    # Summatation of x and y
-    sx = sum(x)
-    sy = sum(y)
-    # Calculate the slope:
-    m = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
-    # Calculate the y intercept
-    b = (sxy - (m*sx)) / n
-    # Empty prediction list:
-    y_pred = []
-    for i in xt
-        pred = (m*i)+b
-        append!(y_pred,pred)
+    if m.Type == :REG
+        x = m.x
+        y = m.y
+        # Summatation of x*y
+        xy = x .* y
+        sxy = sum(xy)
+        # N
+        n = length(x)
+        # Summatation of x^2
+        x2 = x .^ 2
+        sx2 = sum(x2)
+        # Summatation of x and y
+        sx = sum(x)
+        sy = sum(y)
+        # Calculate the slope:
+        slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+        # Calculate the y intercept
+        b = (sy - (slope*sx)) / n
+        # Empty prediction list:
+        y_pred = []
+        for i in xt
+            pred = (slope*i)+b
+            append!(y_pred,pred)
+        end
+    end
+    if m.Type == :OLS
+
+    end
+    if m.Type == :WLS
+
+    end
+    if m.Type == :GLS
+
+    end
+    if m.Type == :GRG
+
     end
     return(y_pred)
 end
@@ -732,6 +746,66 @@ function pred_logisticregression(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
+end
+#==
+Linear
+    Scalar
+==#
+mutable struct ExponentialScalar
+    x
+    y
+end
+function pred_exponentialscalar(m,xt)
+    x = m.x
+    y = m.y
+    xdiv1,x = Lathe.preprocess.SortSplit(x)
+    xdiv2,x = Lathe.preprocess.SortSplit(x)
+    xdiv3,x = Lathe.preprocess.SortSplit(x)
+    xdiv4,x = Lathe.preprocess.SortSplit(x)
+    ydiv1,y = Lathe.preprocess.SortSplit(y)
+    ydiv2,y = Lathe.preprocess.SortSplit(y)
+    ydiv3,y = Lathe.preprocess.SortSplit(y)
+    ydiv4,y = Lathe.preprocess.SortSplit(y)
+    scalarlist1 = ydiv1 ./ xdiv1
+    scalarlist2 = ydiv2 ./ xdiv2
+    scalarlist3 = ydiv3 ./ xdiv3
+    scalarlist4 = ydiv3 ./ xdiv3
+    scalarlist5 = y ./ x
+    # Now we sortsplit the x train
+    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
+    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
+    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2)
+    xtdiv4,null = Lathe.preprocess.SortSplit(xt2)
+    range1 = minimum(xtdiv1):maximum(xtdiv1)
+    range2 = minimum(xtdiv2):maximum(xtdiv2)
+    range3 = minimum(xtdiv3):maximum(xtdiv3)
+    range4 = minimum(xtdiv4):maximum(xtdiv4)
+    range5 = minimum(null):maximum(null)
+    returnlist = []
+    for i in xt
+        if i in range1
+            res = i * rand(scalarlist1)
+            append!(returnlist,res)
+        elseif i in range2
+            predlist = []
+            res = i * rand(scalarlist2)
+            append!(returnlist,res)
+
+        elseif i in range3
+            predlist = []
+            res = i * rand(scalarlist3)
+            append!(returnlist,res)
+        elseif i in range4
+            predlist = []
+            res = i * rand(scalarlist4)
+            append!(returnlist,res)
+        else
+            predlist = []
+            res = i * rand(scalarlist5)
+            append!(returnlist,res)
+        end
+    end
+    return(returnlist)
 end
 #======================================================================
 =======================================================================
