@@ -17,18 +17,19 @@ Random.jl
 module Lathe
 using DataFrames
 using Random
-# Global help() function.
-function help(args)
-    if typeof(args) == stats.mean()
-        println("mean")
-    elseif typeof(args) == stats.variance()
-    end
-end
 #================
 Stats
     Module
 ================#
 module stats
+# Base help func:
+function help(args)
+    if typeof(args) == mean()
+        println("mean")
+    elseif typeof(args) == mode()
+        println("most often")
+    end
+end
 #<----Mean---->
 function mean(array)
     observations = length(array)
@@ -468,6 +469,14 @@ function predict(m,x)
         y_pred = pred_exponentialscalar(m,x)
     end
     return(y_pred)
+end
+# The help function:
+function help(args)
+    if typeof(args) == LogisticRegression
+        println("Logistic")
+    elseif typeof(args) == meanBaseline
+        println("MeanBaseline")
+    end
 end
 #======================================================================
 =======================================================================
