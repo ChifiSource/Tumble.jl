@@ -3,7 +3,7 @@
 Programmed by Emmett Boudreau
     <emmett@emmettboudreau.com>
         <http://emmettboudreau.com>
-GNU General Open Source License
+MIT General Open Source License
     (V 3.0.0)
         Free for Modification and
         Redistribution
@@ -22,14 +22,6 @@ Stats
     Module
 ================#
 module stats
-# Base help func:
-function help(args)
-    if typeof(args) == mean()
-        println("mean")
-    elseif typeof(args) == mode()
-        println("most often")
-    end
-end
 #<----Mean---->
 function mean(array)
     observations = length(array)
@@ -751,6 +743,7 @@ function pred_logisticregression(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
+
 end
 #==
 Linear
