@@ -181,6 +181,10 @@ end
 function pearson(var1,var2)
 
 end
+# <---- Chi Distribution --->
+function chidist(x,e)
+
+end
 #<---- Chi-Square ---->
 function chisq(var1,var2)
 
@@ -621,6 +625,19 @@ function pred_foursquare(m,xt)
             append!(e,ypred)
         end
         return(e)
+end
+#==
+Isotonic
+    Regression
+==#
+mutable struct IsotonicRegression
+    x
+    y
+end
+function pred_isotonicregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
 end
 #==
 Linear
