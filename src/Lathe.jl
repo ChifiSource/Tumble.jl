@@ -178,8 +178,18 @@ function spearman(var1,var2)
 
 end
 # - Pearson
-function pearson(var1,var2)
-
+function pearson(x,y)
+    sx = std(x)
+    sy = std(y)
+    x̄ = mean(x)
+    ȳ = mean(x)
+    [i = (i-x̄) / sx for i in x]
+    [i = (i-ȳ) / sy for i in y]
+    n1 = n-1
+    mult = x .* y
+    sq = sum(mult)
+    corrcoff = sq / n1
+    return(corrcoff)
 end
 # <---- Chi Distribution --->
 function chidist(x,e)
@@ -283,6 +293,10 @@ function r2(actual,pred)
     rsq = r^2
     rsq = rsq * 100
     return(rsq)
+end
+function binomialdistribution(actual,pred)
+    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    Lathe.stats.binomialdist(pos,neg,tot)
 end
 # --- Get Permutation ---
 function getPermutation(model)
