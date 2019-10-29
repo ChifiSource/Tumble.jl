@@ -95,6 +95,20 @@ end
 function z(array)
 
 end
+#<----Factorials---->
+function factorial(x)
+    n = x
+    v = x
+    e = []
+    for i in 0:x
+        n = n - i
+        append!(e,n)
+    end
+    [x = x - v for x in e]
+    for i in e
+
+    end
+end
 #<----Quartiles---->
 # - First
 function firstquar(array)
@@ -212,9 +226,14 @@ function wilcoxsr(var1,var2)
 
 end
 #<---- Binomial Distribution ---->
-function binomialdist(positives,negatives,zeros)
+function binomialdist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    n = positives + negatives + zeros
+    n = size
+    x = positives
+    for i in 0:n
+
+    end
+
 end
 #<---- Sign Test ---->
 function sign(var1,var2)
