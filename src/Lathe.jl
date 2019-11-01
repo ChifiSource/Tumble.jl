@@ -13,10 +13,12 @@ Thank you for your forks!
 #[deps]
 DataFrames.jl
 Random.jl
+Feather.jl
 ================================#
 module Lathe
 using DataFrames
 using Random
+using Feather
 #================
 Stats
     Module
@@ -917,9 +919,12 @@ mutable struct fitpipeline
     conx
     y
 end
-function pipe_predict(fitpipeline,xt)
+function pipe_predict(fitpipeline,xtcats,xtcons)
     """ Takes a fit pipeline, and an X and predicts. """
-    
+    fitpipeline.conx = fitpipeline.pipeline.contenc(x)
+    ypr = Lathe.models.predict(fitpipeline.pipeline.model(fitpipeline.conx,
+    fitpipeline.y),xt)
+    return(ypr)
 end
 #----------------------------------------------
 end
