@@ -95,20 +95,6 @@ end
 function z(array)
 
 end
-#<----Factorials---->
-function factorial(x)
-    n = x
-    v = x
-    e = []
-    for i in 0:x
-        n = n - i
-        append!(e,n)
-    end
-    [x = x - v for x in e]
-    for i in e
-
-    end
-end
 #<----Quartiles---->
 # - First
 function firstquar(array)
@@ -230,10 +216,10 @@ function binomialdist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
-    for i in 0:n
-
-    end
-
+    factn = factorial(n)
+    factx = factorial(x)
+    nx = factn / (factx * (n-x))
+    return(nx)
 end
 #<---- Sign Test ---->
 function sign(var1,var2)
@@ -250,11 +236,9 @@ function sign(var1,var2)
             negatives.append(i)
         end
     end
-    totalnegs = length(negatives)
     totalpos = length(positives)
-    totalzer = length(zeros)
     totallen = length(sets)
-    ans = binomialdist(positives,negatives,zeros)
+    ans = binomialdist(positives,totallen)
     return(ans)
 end
 #<---- F-Test---->
@@ -493,6 +477,9 @@ function predict(m,x)
     if typeof(m) == ExponentialScalar
         y_pred = pred_exponentialscalar(m,x)
     end
+    if typeof(m) == MultipleLinearRegression
+        y_pred = pred_multiplelinearregression(m,x)
+    end
     return(y_pred)
 end
 # The help function:
@@ -673,6 +660,36 @@ function pred_isotonicregression(m,xt)
     end
 end
 #==
+Multiple
+    Linear
+        Regression
+==#
+mutable struct MultipleLinearRegression
+    x
+    y
+end
+function pred_multiplelinearregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    if length(m.x) != length(xt)
+        throw(ArgumentError("Bad Feature Shape |
+        Training Features are not equal!",))
+    end
+    y_pred = []
+    for z in xt
+        predavg = []
+        for i in matrice
+            m = LinearRegression(i,y)
+            pred = predict(m,z)
+            append!(predavg,pred)
+        end
+        mn = Lathe.stats.mean(predavg)
+        append!(y_pred,mn)
+        return(y_pred)
+    end
+end
+#==
 Linear
     Regression
 ==#
@@ -707,13 +724,8 @@ function pred_LinearRegression(m,xt)
     a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
-    # Empty array:
-    ypred = []
-    for i in xt
-        yp = a+(b*i)
-        append!(ypred,yp)
-    end
-    return(ypred)
+    [i = a+(b*i) for i in xt]
+    return(xt)
 end
 #==
 Linear
@@ -888,8 +900,7 @@ Pipeline
     Module
 ================#
 module Pipelines
-#=================================================
-#
+
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
 # They can just be strings, and use the model's X and Y!
@@ -902,49 +913,14 @@ mutable struct Pipeline
 end
 mutable struct fitpipeline
     pipeline
-    x
+    catx
+    conx
     y
 end
-function pipelinebuilder()
-    println("== Lathe.JL Pipeline Builder ==")
-    println("- Select a model -")
-    m = readline()
-    if m == "LinearRegression"
-        model = Lathe.models.LinearRegression
-    else
-        println(m," is not a valid model.")
-        println("Pipeline is continuing without a model.")
-        model = false
-    end
-    println("- Select a categorical encoder -")
-    cat = readline()
-    println(m," is your selected categorical encoder")
-    println("- Select a continous encoder -")
-    m = readline()
-    println(m," is your selected Continous Encoder")
-    println("- Select an imputer -")
-    imputer = false
-    pipl = Pipeline(model,cat,m,imputer)
-    println("Your new pipeline is officially created!")
-    return(pipl)
+function pipe_predict(fitpipeline,xt)
+    """ Takes a fit pipeline, and an X and predicts. """
+    
 end
-function fitpipeline(Pipeline,x,y)
-    pipl = fitpipeline(Pipeline,x,y)
-end
-function predict(fitpipeline,xt)
-    if typeof(fitpipeline) == Pipeline
-        throw(ArgumentError("This pipeline is not yet fitted!"))
-    end
-    # Preprocessing
-    if fitpipeline.Pipeline.contenc == "Rescalar"
-        fitpipeline.x = Lathe.preprocess.Rescalar(fitpipeline.x)
-    end
-    if typeof(fitpipeline.Pipeline.model) == Lathe.models.LinearRegression
-        model = Lathe.models.LinearRegression(fitpipeline.x,fitpipeline.y)
-        ypr = Lathe.models.predict(model,xt)
-    end
-end
-=============================================#
 #----------------------------------------------
 end
 #==
