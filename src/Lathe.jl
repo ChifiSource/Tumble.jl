@@ -820,24 +820,71 @@ end
 function pred_exponentialscalar(m,xt)
     x = m.x
     y = m.y
-    xdiv1,x = Lathe.preprocess.SortSplit(x)
-    xdiv2,x = Lathe.preprocess.SortSplit(x)
-    xdiv3,x = Lathe.preprocess.SortSplit(x)
-    xdiv4,x = Lathe.preprocess.SortSplit(x)
-    ydiv1,y = Lathe.preprocess.SortSplit(y)
-    ydiv2,y = Lathe.preprocess.SortSplit(y)
-    ydiv3,y = Lathe.preprocess.SortSplit(y)
-    ydiv4,y = Lathe.preprocess.SortSplit(y)
+    at = 0.25
+    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
+    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
     scalarlist1 = ydiv1 ./ xdiv1
     scalarlist2 = ydiv2 ./ xdiv2
     scalarlist3 = ydiv3 ./ xdiv3
     scalarlist4 = ydiv3 ./ xdiv3
-    scalarlist5 = y ./ x
+    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
+    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
+    scalarlist6 = ydiv1 ./ xdiv1
+    scalarlist7 = ydiv2 ./ xdiv2
+    scalarlist8 = ydiv3 ./ xdiv3
+    scalarlist9 = ydiv3 ./ xdiv3
+    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
+    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
+    scalarlist10 = ydiv1 ./ xdiv1
+    scalarlist11 = ydiv2 ./ xdiv2
+    scalarlist12 = ydiv3 ./ xdiv3
+    scalarlist13 = ydiv3 ./ xdiv3
+    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
+    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
+    scalarlist14 = ydiv1 ./ xdiv1
+    scalarlist15 = ydiv2 ./ xdiv2
+    scalarlist16 = ydiv3 ./ xdiv3
+    scalarlist17 = ydiv3 ./ xdiv3
+    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
+    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
+    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
+    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
+    scalarlist18 = ydiv1 ./ xdiv1
+    scalarlist19 = ydiv2 ./ xdiv2
+    scalarlist20 = y ./ x
     # Now we sortsplit the x train
-    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
-    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
-    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2)
-    xtdiv4,null = Lathe.preprocess.SortSplit(xt2)
+    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt,.05)
+    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2,.05)
+    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2,.05)
+    xtdiv4,null = Lathe.preprocess.SortSplit(xt2,.05)
     range1 = minimum(xtdiv1):maximum(xtdiv1)
     range2 = minimum(xtdiv2):maximum(xtdiv2)
     range3 = minimum(xtdiv3):maximum(xtdiv3)
@@ -863,7 +910,7 @@ function pred_exponentialscalar(m,xt)
             append!(returnlist,res)
         else
             predlist = []
-            res = i * rand(scalarlist5)
+            res = i * rand(scalarlist20)
             append!(returnlist,res)
         end
     end
@@ -925,6 +972,9 @@ function pipe_predict(fitpipeline,xtcats,xtcons)
     ypr = Lathe.models.predict(fitpipeline.pipeline.model(fitpipeline.conx,
     fitpipeline.y),xt)
     return(ypr)
+end
+function serialize(fitpipeline,filename)
+    """Outputs pipeline as sav file."""
 end
 #----------------------------------------------
 end
