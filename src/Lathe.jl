@@ -18,7 +18,6 @@ Feather.jl
 module Lathe
 using DataFrames
 using Random
-using Feather
 #================
 Stats
     Module
@@ -671,9 +670,6 @@ mutable struct MultipleLinearRegression
     y
 end
 function pred_multiplelinearregression(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
     if length(m.x) != length(xt)
         throw(ArgumentError("Bad Feature Shape |
         Training Features are not equal!",))
