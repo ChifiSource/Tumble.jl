@@ -686,8 +686,8 @@ function pred_multiplelinearregression(m,xt)
         end
         mn = Lathe.stats.mean(predavg)
         append!(y_pred,mn)
-        return(y_pred)
     end
+    return(y_pred)
 end
 #==
 Linear
