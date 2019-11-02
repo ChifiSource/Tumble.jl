@@ -678,13 +678,15 @@ function pred_multiplelinearregression(m,xt)
     y = m.y
     x = m.x
     for z in xt
-        predavg = []
-        for i in x
-            m = LinearRegression(i,y)
-            pred = predict(m,z)
-            append!(predavg,pred)
-        end
+        for b in z
+            predavg = []
+            for i in x
+                m = LinearRegression(i,y)
+                pred = predict(m,b)
+                append!(predavg,pred)
+            end
         mn = Lathe.stats.mean(predavg)
+    end
         append!(y_pred,mn)
     end
     return(y_pred)
