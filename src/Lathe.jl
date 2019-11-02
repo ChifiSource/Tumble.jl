@@ -675,9 +675,11 @@ function pred_multiplelinearregression(m,xt)
         Training Features are not equal!",))
     end
     y_pred = []
+    y = m.y
+    x = m.x
     for z in xt
         predavg = []
-        for i in matrice
+        for i in x
             m = LinearRegression(i,y)
             pred = predict(m,z)
             append!(predavg,pred)
