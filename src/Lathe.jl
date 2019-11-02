@@ -679,9 +679,9 @@ function pred_multiplelinearregression(m,xt)
     x = m.x
     for z in xt
         for b in z
+            m = LinearRegression(b,y)
             predavg = []
             for i in x
-                m = LinearRegression(i,y)
                 pred = predict(m,b)
                 append!(predavg,pred)
             end
