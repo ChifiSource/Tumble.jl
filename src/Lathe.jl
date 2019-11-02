@@ -13,9 +13,13 @@ Thank you for your forks!
 #[deps]
 DataFrames.jl
 Random.jl
-Feather.jl
+FlatBuffers
+FileIO
+Serialization
 ================================#
 module Lathe
+using FileIO
+using Serialization
 using DataFrames
 using Random
 #================
@@ -71,16 +75,6 @@ function correlationcoeff(x,y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
-#    sx = std(x)
-#    sy = std(y)
-#    x̄ = mean(x)
-#    ȳ = mean(x)
-#    [i = (i-x̄) / sx for i in x]
-#    [i = (i-ȳ) / sy for i in y]
-#    n1 = n-1
-#    mult = x .* y
-#    sq = sum(mult)
-#    corrcoff = sq / n1
     xy = x .* y
     sx = sum(x)
     sy = sum(y)
@@ -219,8 +213,9 @@ function binomialdist(positives,size)
     x = positives
     factn = factorial(n)
     factx = factorial(x)
-    nx = factn / (factx * (n-x))
-    return(nx)
+    p = factn / factx * (n-factx) * π ^ x * (1-π)^n - x
+    pxr = factn / (factx * (n-x)) * p^p * (1-p)^(n-x)
+    return(pxr)
 end
 #<---- Sign Test ---->
 function sign(var1,var2)
@@ -298,9 +293,21 @@ function r2(actual,pred)
     rsq = rsq * 100
     return(rsq)
 end
-function binomialdistribution(actual,pred)
+# <---- Mean Squared Error ---->
+function mse(actual,pred)
+    l = length(actual)
+    lp = length(pred)
+    if l != lp
+        throw(ArgumentError("The array shape does not match!"))
+    end
+    result = actual-pred
+    result = result .^ 2
+    maeunf = Lathe.stats.mean(result)
+    return(maeunf)
+end
+# <---- Binomial Accuracy ---->
+function binomialaccuracy(actual,pred)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    Lathe.stats.binomialdist(pos,neg,tot)
 end
 # --- Get Permutation ---
 function getPermutation(model)
@@ -975,6 +982,8 @@ function pipe_predict(fitpipeline,xtcats,xtcons)
 end
 function serialize(fitpipeline,filename)
     """Outputs pipeline as sav file."""
+    open("example.bin", "w") do f FlatBuffers.serialize(f,
+        fitpipeline.catx) end
 end
 #----------------------------------------------
 end
