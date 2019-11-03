@@ -536,10 +536,8 @@ mutable struct RegressionTree
     divisionsize
 end
 #----  Callback
+# WIP <TODO>
 function pred_regressiontree(m,xt)
-    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
-    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
-    # Original 4 quartile math ^^
         x = m.x
         y = m.y
         xtcopy = xt
@@ -685,8 +683,8 @@ function pred_multiplelinearregression(m,xt)
     y = m.y
     x = m.x
     for z in xt
+        m = LinearRegression(z,y)
         for b in z
-            m = LinearRegression(b,y)
             predavg = []
             for i in x
                 for b in i
