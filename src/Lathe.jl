@@ -689,8 +689,10 @@ function pred_multiplelinearregression(m,xt)
             m = LinearRegression(b,y)
             predavg = []
             for i in x
-                pred = predict(m,b)
-                append!(predavg,pred)
+                for b in i
+                    pred = predict(m,b)
+                    append!(predavg,pred)
+                end
             end
         mn = Lathe.stats.mean(predavg)
     end
@@ -817,7 +819,20 @@ function pred_logisticregression(m,xt)
 
 end
 #==
-Linear
+Binomial
+    Distribution
+==#
+mutable struct BinomialDistribution
+    x
+    y
+end
+function pred_binomialdist
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
+end
+#==
+Exponential
     Scalar
 ==#
 mutable struct ExponentialScalar
