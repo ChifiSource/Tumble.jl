@@ -19,7 +19,7 @@ Serialization
 ================================#
 module Lathe
 using FileIO
-using Serialization
+using JLD2
 using DataFrames
 using Random
 #================
@@ -963,15 +963,7 @@ module Pipelines
 using Lathe
 mutable struct Pipeline
     model
-    categoricalenc
-    contenc
-    imputer
-end
-mutable struct fitpipeline
-    pipeline
-    catx
-    conx
-    y
+    methods
 end
 function pipe_predict(fitpipeline,xtcats,xtcons)
     """ Takes a fit pipeline, and an X and predicts. """
@@ -980,10 +972,10 @@ function pipe_predict(fitpipeline,xtcats,xtcons)
     fitpipeline.y),xt)
     return(ypr)
 end
-function serialize(fitpipeline,filename)
-    """Outputs pipeline as sav file."""
-    open("example.bin", "w") do f FlatBuffers.serialize(f,
-        fitpipeline.catx) end
+function save(pipe,filename)
+    if typeof(pipe.model) == LinearRegression
+        save(filename, Dict("m" => typeof(m),"x" => m.x,"y" => m.y))
+    end
 end
 #----------------------------------------------
 end
