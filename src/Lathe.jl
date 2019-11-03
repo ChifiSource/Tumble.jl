@@ -826,7 +826,7 @@ mutable struct BinomialDistribution
     x
     y
 end
-function pred_binomialdist
+function pred_binomialdist(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
