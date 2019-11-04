@@ -214,6 +214,7 @@ function binomialdist(positives,size)
     factn = factorial(n)
     factx = factorial(x)
     p = factn / factx * (n-factx) * π ^ x * (1-π)^n - x
+    println("P - ",p)
     pxr = factn / (factx * (n-x)) * p^p * (1-p)^(n-x)
     return(pxr)
 end
