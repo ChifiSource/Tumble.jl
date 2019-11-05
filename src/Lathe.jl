@@ -735,7 +735,12 @@ function pred_LinearRegression(m,xt)
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
     [i = a+(b*i) for i in xt]
-    return(xt)
+    y_pred = []
+    for i in xt
+        z = a+(b*i)
+        append!(y_pred,z)
+    end
+    return(y_pred)
 end
 #==
 Linear
