@@ -979,12 +979,15 @@ mutable struct Pipeline
     model
     methods
 end
-function pipe_predict(fitpipeline,xtcats,xtcons)
+function pipe_predict(pipe,xt)
     """ Takes a fit pipeline, and an X and predicts. """
-    fitpipeline.conx = fitpipeline.pipeline.contenc(x)
-    ypr = Lathe.models.predict(fitpipeline.pipeline.model(fitpipeline.conx,
-    fitpipeline.y),xt)
-    return(ypr)
+    model = pipe.model
+    for i in methods
+        [b = i(b) for b in model.x]
+        [b = i(b) for b in xt]
+    end
+    y_pred = Lathe.models.predict(model,xt)
+    return(y_pred)
 end
 function save(pipe,filename)
     if typeof(pipe.model) == LinearRegression
