@@ -978,21 +978,27 @@ using Lathe
 mutable struct Pipeline
     model
     methods
+    setting
 end
 function pipe_predict(pipe,xt)
     """ Takes a fit pipeline, and an X and predicts. """
-    model = pipe.model
-    if typeof(pipe.methods) != Array
-        [b = pipe.methods(b) for b in model.x]
-        [b = pipe.methods(b) for b in xt]
-    else
-        for i in methods
-            [b = i(b) for b in model.x]
-            [b = i(b) for b in xt]
+    if pipe.setting == :CON
+        model = pipe.model
+        if typeof(pipe.methods) != Array
+            [b = pipe.methods(b) for b in model.x]
+            [b = pipe.methods(b) for b in xt]
+        else
+            for i in methods
+                [b = i(b) for b in model.x]
+                [b = i(b) for b in xt]
+            end
         end
+        y_pred = Lathe.models.predict(model,xt)
+        return(y_pred)
+    elseif pipe.setting == :CAT
+
+    elseif pipe.setting == :MIX
     end
-    y_pred = Lathe.models.predict(model,xt)
-    return(y_pred)
 end
 function save(pipe,filename)
     if typeof(pipe.model) == LinearRegression
