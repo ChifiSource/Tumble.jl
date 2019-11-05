@@ -969,7 +969,7 @@ end
 Pipeline
     Module
 ================#
-module Pipelines
+module pipelines
 
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
@@ -982,9 +982,14 @@ end
 function pipe_predict(pipe,xt)
     """ Takes a fit pipeline, and an X and predicts. """
     model = pipe.model
-    for i in methods
+    if length(pipe.methds == 1)
         [b = i(b) for b in model.x]
         [b = i(b) for b in xt]
+    else
+        for i in methods
+            [b = i(b) for b in model.x]
+            [b = i(b) for b in xt]
+        end
     end
     y_pred = Lathe.models.predict(model,xt)
     return(y_pred)
