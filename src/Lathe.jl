@@ -982,7 +982,7 @@ end
 function pipe_predict(pipe,xt)
     """ Takes a fit pipeline, and an X and predicts. """
     model = pipe.model
-    if length(pipe.methds == 1)
+    if length(pipe.methods == 1)
         [b = i(b) for b in model.x]
         [b = i(b) for b in xt]
     else
