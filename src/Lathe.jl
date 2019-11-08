@@ -13,9 +13,8 @@ Thank you for your forks!
 #[deps]
 DataFrames.jl
 Random.jl
-FlatBuffers
+JLD2
 FileIO
-Serialization
 ================================#
 module Lathe
 using FileIO
