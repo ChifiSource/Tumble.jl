@@ -17,6 +17,7 @@ JLD2
 FileIO
 ================================#
 module Lathe
+""" A module for easy, fast, ML inside of Julia."""
 using FileIO
 using JLD2
 using DataFrames
@@ -28,17 +29,20 @@ Stats
 module stats
 #<----Mean---->
 function mean(array)
+    """Returns the mean of an array"""
     observations = length(array)
     average = sum(array)/observations
     return(average)
 end
 #<----Mode---->
 function mode(array)
+    """Returns the most common value in an array"""
     m = findmax(array)
     return(m)
 end
 #<----Variance---->
 function variance(array)
+    """Returns the variance of an array"""
     me = mean(array)
     sq = sum(array) - me
     squared_mean = sq ^ 2
@@ -46,6 +50,7 @@ function variance(array)
 end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
+    """ Returns confidence intervals based on a confidence level."""
     mean = mean(data)
     std = std(data)
     stderr = standarderror(data)
@@ -54,6 +59,7 @@ function confiints(data, confidence=.95)
 end
 #<----Standard Error---->
 function standarderror(data)
+    """ Returns the standard of error"""
     std = std(data)
     sample = length(data)
     ste = (std/sqrt(sample))
@@ -61,6 +67,7 @@ function standarderror(data)
 end
 #<----Standard Deviation---->
 function std(array3)
+    """Returns the standard deviation of an array"""
     m = mean(array3)
     [i = (i-m) ^ 2 for i in array3]
     m = mean(array3)
@@ -69,6 +76,7 @@ function std(array3)
 end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
+    """ Returns the coefficient of correlation (r) """
     n = length(x)
     yl = length(y)
     if n != yl
@@ -92,6 +100,7 @@ end
 #<----Quartiles---->
 # - First
 function firstquar(array)
+    """Returns the first quartile"""
     m = median(array)
     q15 = array / m
     q1 = array / m
@@ -99,16 +108,19 @@ function firstquar(array)
 end
 # - Second(median)
 function secondquar(array)
+    """ Returns the second quartile (Median) """
     m = median(array)
     return(m)
 end
 # - Third
 function thirdquar(array)
+    """ Returns the Third Quartile """
     q = median(array)
     q = q * 1.5
 end
 # <---- Rank ---->
 function getranks(array,rev = false)
+    """ Returns an in order array of the ranks """
     sortedar = sort!(array,rev=rev)
     num = 1
     list = []
@@ -121,6 +133,7 @@ end
 #-------Inferential-----------__________
 #<----Inferential Summary---->
 function inf_sum(data,grdata)
+    """ Spits out a quick summary of inferential statistics. """
     #Doing our calculations
     t = independent_t(data,grdata)
     f = f_test(data,grdata)
@@ -151,6 +164,7 @@ end
 #<----T Test---->
 # - Independent
 function independent_t(sample,general)
+    """ Returns a probability from a T-Test """
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
@@ -173,6 +187,7 @@ function spearman(var1,var2)
 end
 # - Pearson
 function pearson(x,y)
+    """ Returns a correlation from a pearson correlation test. """
     sx = std(x)
     sy = std(y)
     x̄ = mean(x)
@@ -207,6 +222,7 @@ function wilcoxsr(var1,var2)
 end
 #<---- Binomial Distribution ---->
 function binomialdist(positives,size)
+    """ Performs factorial binomialdistribution with positives and n"""
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
@@ -219,6 +235,7 @@ function binomialdist(positives,size)
 end
 #<---- Sign Test ---->
 function sign(var1,var2)
+    """ Returns probability based on signs and binomial distribution. """
     sets = var1 .- var2
     positives = []
     negatives = []
@@ -239,6 +256,7 @@ function sign(var1,var2)
 end
 #<---- F-Test---->
 function f_test(sample,general)
+    """ Returns probability from an F test """
     totvariance = variance(general)
     sampvar = variance(sample)
     f =  sampvar / totvariance
@@ -248,10 +266,12 @@ end
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
 function bay_ther(p,a,b)
+    """ Returns bayesian probability """
     psterior = (p*(b|a) * p*(a)) / (p*b)
     return(psterior)
 end
 function cond_prob(p,a,b)
+    """ Performs Bayesian Conditional Probability"""
     psterior = bay_ther(p,a,b)
     cond = p*(a|b)
     return(cond)
@@ -269,6 +289,7 @@ module validate
 using Lathe
 ## <---- Mean Absolute Error ---->
 function mae(actual,pred)
+    """ Returns mean absolute error between two arrays."""
     l = length(actual)
     lp = length(pred)
     if l != lp
@@ -283,6 +304,7 @@ function mae(actual,pred)
 end
 # <---- R Squared ---->
 function r2(actual,pred)
+    """ Returns the correlation coefficient of regression (r^2)"""
     l = length(actual)
     lp = length(pred)
     if l != lp
@@ -295,6 +317,7 @@ function r2(actual,pred)
 end
 # <---- Mean Squared Error ---->
 function mse(actual,pred)
+    """ Returns mean squared error"""
     l = length(actual)
     lp = length(pred)
     if l != lp
@@ -330,6 +353,7 @@ Generalized
 ===============#
 # Train-Test-Split-----
 function TrainTestSplit(df,at = 0.75)
+    """ Train Test Splits a DataFrame"""
     sample = randsubseq(1:size(df,1), at)
     trainingset = df[sample, :]
     notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
@@ -338,6 +362,7 @@ function TrainTestSplit(df,at = 0.75)
 end
 # Array-Split ----------
 function ArraySplit(data, at = 0.7)
+    """ Train Test Splits an Array"""
     n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
@@ -347,6 +372,7 @@ function ArraySplit(data, at = 0.7)
 end
 # Sort-Split -------------
 function SortSplit(data, at = 0.25, rev=false)
+    """ Sorts and Splits an Array """
   n = length(data)
   sort!(data, rev=rev)  # Sort in-place
   train_idx = view(data, 1:floor(Int, at*n))
@@ -355,6 +381,7 @@ function SortSplit(data, at = 0.25, rev=false)
 end
 # Unshuffled Split ----
 function Uniform_Split(data, at = 0.7)
+    """ Splits without shuffling!"""
     n = length(data)
     idx = data
     train_idx = view(idx, 1:floor(Int, at*n))
