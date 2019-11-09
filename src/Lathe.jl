@@ -16,8 +16,8 @@ Random.jl
 JLD2
 FileIO
 ================================#
-module Lathe
 """ A module for easy, fast, ML inside of Julia."""
+module Lathe
 using FileIO
 using JLD2
 using DataFrames
