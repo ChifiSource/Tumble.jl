@@ -16,7 +16,14 @@ Random.jl
 JLD2
 FileIO
 ================================#
-""" A module for easy, fast, ML inside of Julia."""
+""" A module for easy, fast, ML inside of Julia.
+    |-Lathe
+        |
+        |-stats
+        |-validate
+        |-preprocess
+        |-models
+        |-pipelines"""
 module Lathe
 using FileIO
 using JLD2
@@ -28,15 +35,15 @@ Stats
 ================#
 module stats
 #<----Mean---->
-function mean(array)
     """Returns the mean of an array"""
+function mean(array)
     observations = length(array)
     average = sum(array)/observations
     return(average)
 end
 #<----Mode---->
-function mode(array)
     """Returns the most common value in an array"""
+function mode(array)
     m = findmax(array)
     return(m)
 end
@@ -132,8 +139,8 @@ function getranks(array,rev = false)
 end
 #-------Inferential-----------__________
 #<----Inferential Summary---->
-function inf_sum(data,grdata)
     """ Spits out a quick summary of inferential statistics. """
+function inf_sum(data,grdata)
     #Doing our calculations
     t = independent_t(data,grdata)
     f = f_test(data,grdata)
@@ -221,8 +228,8 @@ function wilcoxsr(var1,var2)
 
 end
 #<---- Binomial Distribution ---->
-function binomialdist(positives,size)
     """ Performs factorial binomialdistribution with positives and n"""
+function binomialdist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
@@ -234,8 +241,8 @@ function binomialdist(positives,size)
     return(pxr)
 end
 #<---- Sign Test ---->
-function sign(var1,var2)
     """ Returns probability based on signs and binomial distribution. """
+function sign(var1,var2)
     sets = var1 .- var2
     positives = []
     negatives = []
@@ -942,6 +949,7 @@ function pred_exponentialscalar(m,xt)
     range3 = minimum(xtdiv3):maximum(xtdiv3)
     range4 = minimum(xtdiv4):maximum(xtdiv4)
     range5 = minimum(null):maximum(null)
+    range6 = minimum(xtdiv):maxiumum(xtdiv)
     returnlist = []
     for i in xt
         if i in range1
@@ -1008,28 +1016,17 @@ module pipelines
 using Lathe
 mutable struct Pipeline
     model
-    methods
-    setting
+    steps
 end
-function pipe_predict(pipe,xt)
     """ Takes a fit pipeline, and an X and predicts. """
-    if pipe.setting == :CON
-        model = pipe.model
-        if typeof(pipe.methods) != Array
-            [b = pipe.methods(b) for b in model.x]
-            [b = pipe.methods(b) for b in xt]
-        else
-            for i in methods
-                [b = i(b) for b in model.x]
-                [b = i(b) for b in xt]
-            end
-        end
-        y_pred = Lathe.models.predict(model,xt)
-        return(y_pred)
-    elseif pipe.setting == :CAT
-
-    elseif pipe.setting == :MIX
+function pipe_predict(pipe,xt)
+    xtrain = []
+    for i in pipe.steps
+        res = i(xt)
+        append!(xtrain,res)
     end
+    return(y_pred)
+end
 end
 function save(pipe,filename)
     if typeof(pipe.model) == LinearRegression
