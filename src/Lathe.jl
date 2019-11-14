@@ -13,12 +13,15 @@ Thank you for your forks!
 #[deps]
 DataFrames.jl
 Random.jl
-Feather.jl
 ================================#
 module Lathe
+# <------- PARTS ----->
+include("nlp.jl")
+# <------- PARTS ----->
+# <------- DEPS ----->
 using DataFrames
 using Random
-using Feather
+# <------- DEPS ----->
 #================
 Stats
     Module
@@ -202,6 +205,17 @@ end
 # <---- Chi Distribution --->
 function chidist(x,e)
 # it is tough to calculate -> is it really needed?
+    # A little less necessary, as its certainly not the most useful,
+    # But this stats library could serve as a foundation for models that
+    # Utilize Chi-Distributions, and although I wouldn't say having
+    # A function to do so is urgent, It definitely would be cool,
+    # Rather than an end user having to add another package just
+    # To do one or two things, if you know what I mean.
+    # But certainly there are other more important things to get through
+    # Before 1.0, and I wouldn't consider any of these statistics incredibly
+    # Necessary, but the template is there for what I want to include,
+    # So people adding the module now can kindof know what to expect.
+    # So hopefully that answers your question!
 end
 #<---- Chi-Square ---->
 function chisq(var1,var2)
@@ -220,8 +234,8 @@ end
 function wilcoxsr(var1,var2)
 
 end
-#<---- Binomial Distribution ---->
-function binomialdist(positives,size)
+#<---- Binomial Probability ---->
+function binomialprob(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
@@ -247,7 +261,7 @@ function sign(var1,var2)
     end
     totalpos = length(positives)
     totallen = length(sets)
-    ans = binomialdist(positives,totallen)
+    ans = binomialprob(positives,totallen)
     return(ans)
 end
 #<---- F-Test---->
@@ -305,10 +319,6 @@ function r2(actual,pred)
     rsq = r^2
     rsq = rsq * 100
     return(rsq)
-end
-function binomialdistribution(actual,pred)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    Lathe.stats.binomialdist(pos,neg,tot)
 end
 # --- Get Permutation ---
 function getPermutation(model)
@@ -697,15 +707,15 @@ function pred_multiplelinearregression(m,xt)
     y_pred = []
     for z in xt
         predavg = []
-        for i in matrice
+        for i in z
             m = LinearRegression(i,y)
             pred = predict(m,z)
             append!(predavg,pred)
         end
         mn = Lathe.stats.mean(predavg)
         append!(y_pred,mn)
-        return(y_pred)
     end
+    return(y_pred)
 end
 #==
 Linear
@@ -958,40 +968,6 @@ function pred_catbaseline(m,xt)
 
 end
 #
-#----------------------------------------------
-end
-#================
-Pipeline
-    Module
-================#
-module Pipelines
-
-# Note to future self, or other programmer:
-# It is not necessary to store these as constructors!
-# They can just be strings, and use the model's X and Y!
-using Lathe
-mutable struct Pipeline
-    model
-    categoricalenc
-    contenc
-    imputer
-end
-mutable struct fitpipeline
-    pipeline
-    catx
-    conx
-    y
-end
-function pipe_predict(fitpipeline,xtcats,xtcons)
-    """ Takes a fit pipeline, and an X and predicts. """
-    fitpipeline.conx = fitpipeline.pipeline.contenc(x)
-    ypr = Lathe.models.predict(fitpipeline.pipeline.model(fitpipeline.conx,
-    fitpipeline.y),xt)
-    return(ypr)
-end
-function serialize(fitpipeline,filename)
-    """Outputs pipeline as sav file."""
-end
 #----------------------------------------------
 end
 #==
