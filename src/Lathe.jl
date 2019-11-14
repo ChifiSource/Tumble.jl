@@ -200,6 +200,17 @@ end
 # <---- Chi Distribution --->
 function chidist(x,e)
 # it is tough to calculate -> is it really needed?
+    # A little less necessary, as its certainly not the most useful,
+    # But this stats library could serve as a foundation for models that
+    # Utilize Chi-Distributions, and although I wouldn't say having
+    # A function to do so is urgent, It definitely would be cool,
+    # Rather than an end user having to add another package just
+    # To do one or two things, if you know what I mean.
+    # But certainly there are other more important things to get through
+    # Before 1.0, and I wouldn't consider any of these statistics incredibly
+    # Necessary, but the template is there for what I want to include,
+    # So people adding the module now can kindof know what to expect.
+    # So hopefully that answers your question!
 end
 #<---- Chi-Square ---->
 function chisq(var1,var2)
