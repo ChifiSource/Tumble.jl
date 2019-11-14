@@ -13,43 +13,30 @@ Thank you for your forks!
 #[deps]
 DataFrames.jl
 Random.jl
-JLD2
-FileIO
+Feather.jl
 ================================#
-""" A module for easy, fast, ML inside of Julia.
-    |-Lathe
-        |
-        |-stats
-        |-validate
-        |-preprocess
-        |-models
-        |-pipelines"""
 module Lathe
-using FileIO
-using JLD2
 using DataFrames
 using Random
+using Feather
 #================
 Stats
     Module
 ================#
 module stats
 #<----Mean---->
-    """Returns the mean of an array"""
 function mean(array)
     observations = length(array)
     average = sum(array)/observations
     return(average)
 end
 #<----Mode---->
-    """Returns the most common value in an array"""
 function mode(array)
     m = findmax(array)
     return(m)
 end
 #<----Variance---->
 function variance(array)
-    """Returns the variance of an array"""
     me = mean(array)
     sq = sum(array) - me
     squared_mean = sq ^ 2
@@ -57,7 +44,6 @@ function variance(array)
 end
 #<----Confidence Intervals---->
 function confiints(data, confidence=.95)
-    """ Returns confidence intervals based on a confidence level."""
     mean = mean(data)
     std = std(data)
     stderr = standarderror(data)
@@ -66,7 +52,6 @@ function confiints(data, confidence=.95)
 end
 #<----Standard Error---->
 function standarderror(data)
-    """ Returns the standard of error"""
     std = std(data)
     sample = length(data)
     ste = (std/sqrt(sample))
@@ -74,7 +59,6 @@ function standarderror(data)
 end
 #<----Standard Deviation---->
 function std(array3)
-    """Returns the standard deviation of an array"""
     m = mean(array3)
     [i = (i-m) ^ 2 for i in array3]
     m = mean(array3)
@@ -83,12 +67,21 @@ function std(array3)
 end
 #<---- Correlation Coefficient --->
 function correlationcoeff(x,y)
-    """ Returns the coefficient of correlation (r) """
     n = length(x)
     yl = length(y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
+#    sx = std(x)
+#    sy = std(y)
+#    x̄ = mean(x)
+#    ȳ = mean(x)
+#    [i = (i-x̄) / sx for i in x]
+#    [i = (i-ȳ) / sy for i in y]
+#    n1 = n-1
+#    mult = x .* y
+#    sq = sum(mult)
+#    corrcoff = sq / n1
     xy = x .* y
     sx = sum(x)
     sy = sum(y)
@@ -102,12 +95,13 @@ function correlationcoeff(x,y)
 end
 #<----Z score---->
 function z(array)
-
+    x̄ = mean(array)
+    σ = std(array)
+    return map(x -> (x - x̄) / σ, array)
 end
 #<----Quartiles---->
 # - First
 function firstquar(array)
-    """Returns the first quartile"""
     m = median(array)
     q15 = array / m
     q1 = array / m
@@ -115,20 +109,17 @@ function firstquar(array)
 end
 # - Second(median)
 function secondquar(array)
-    """ Returns the second quartile (Median) """
     m = median(array)
     return(m)
 end
 # - Third
 function thirdquar(array)
-    """ Returns the Third Quartile """
     q = median(array)
     q = q * 1.5
 end
 # <---- Rank ---->
 function getranks(array,rev = false)
-    """ Returns an in order array of the ranks """
-    sortedar = sort!(array,rev=rev)
+    sortedar = sort(array,rev=rev)
     num = 1
     list = []
     for i in sortedar
@@ -139,7 +130,6 @@ function getranks(array,rev = false)
 end
 #-------Inferential-----------__________
 #<----Inferential Summary---->
-    """ Spits out a quick summary of inferential statistics. """
 function inf_sum(data,grdata)
     #Doing our calculations
     t = independent_t(data,grdata)
@@ -171,7 +161,6 @@ end
 #<----T Test---->
 # - Independent
 function independent_t(sample,general)
-    """ Returns a probability from a T-Test """
     sampmean = mean(sample)
     genmean = mean(general)
     samples = length(sample)
@@ -185,16 +174,19 @@ function independent_t(sample,general)
 end
 # - Paired
 function paired_t(var1,var2)
-
+    d = var1 .- var2
+    d̄ = mean(x)
 end
 #<---- Correlations ---->
 # - Spearman
 function spearman(var1,var2)
-
+    rgX = getranks(var1)
+    rgY = getranks(var2)
+    ρ = rgX*rgY / (std(rgX)*std(rgY))
+    return(ρ)
 end
 # - Pearson
 function pearson(x,y)
-    """ Returns a correlation from a pearson correlation test. """
     sx = std(x)
     sy = std(y)
     x̄ = mean(x)
@@ -209,11 +201,12 @@ function pearson(x,y)
 end
 # <---- Chi Distribution --->
 function chidist(x,e)
-
+# it is tough to calculate -> is it really needed?
 end
 #<---- Chi-Square ---->
 function chisq(var1,var2)
-
+    chistat(obs, exp) = (obs - exp)^2/exp
+    return chistat.(x, e) |> sum
 end
 #<---- ANOVA ---->
 function anova(var1,var2)
@@ -228,20 +221,16 @@ function wilcoxsr(var1,var2)
 
 end
 #<---- Binomial Distribution ---->
-    """ Performs factorial binomialdistribution with positives and n"""
 function binomialdist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
     factn = factorial(n)
     factx = factorial(x)
-    p = factn / factx * (n-factx) * π ^ x * (1-π)^n - x
-    println("P - ",p)
-    pxr = factn / (factx * (n-x)) * p^p * (1-p)^(n-x)
-    return(pxr)
+    nx = factn / (factx * (n-x))
+    return(nx)
 end
 #<---- Sign Test ---->
-    """ Returns probability based on signs and binomial distribution. """
 function sign(var1,var2)
     sets = var1 .- var2
     positives = []
@@ -263,7 +252,6 @@ function sign(var1,var2)
 end
 #<---- F-Test---->
 function f_test(sample,general)
-    """ Returns probability from an F test """
     totvariance = variance(general)
     sampvar = variance(sample)
     f =  sampvar / totvariance
@@ -273,12 +261,10 @@ end
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
 function bay_ther(p,a,b)
-    """ Returns bayesian probability """
     psterior = (p*(b|a) * p*(a)) / (p*b)
     return(psterior)
 end
 function cond_prob(p,a,b)
-    """ Performs Bayesian Conditional Probability"""
     psterior = bay_ther(p,a,b)
     cond = p*(a|b)
     return(cond)
@@ -296,7 +282,6 @@ module validate
 using Lathe
 ## <---- Mean Absolute Error ---->
 function mae(actual,pred)
-    """ Returns mean absolute error between two arrays."""
     l = length(actual)
     lp = length(pred)
     if l != lp
@@ -311,7 +296,6 @@ function mae(actual,pred)
 end
 # <---- R Squared ---->
 function r2(actual,pred)
-    """ Returns the correlation coefficient of regression (r^2)"""
     l = length(actual)
     lp = length(pred)
     if l != lp
@@ -322,22 +306,9 @@ function r2(actual,pred)
     rsq = rsq * 100
     return(rsq)
 end
-# <---- Mean Squared Error ---->
-function mse(actual,pred)
-    """ Returns mean squared error"""
-    l = length(actual)
-    lp = length(pred)
-    if l != lp
-        throw(ArgumentError("The array shape does not match!"))
-    end
-    result = actual-pred
-    result = result .^ 2
-    maeunf = Lathe.stats.mean(result)
-    return(maeunf)
-end
-# <---- Binomial Accuracy ---->
-function binomialaccuracy(actual,pred)
+function binomialdistribution(actual,pred)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    Lathe.stats.binomialdist(pos,neg,tot)
 end
 # --- Get Permutation ---
 function getPermutation(model)
@@ -360,7 +331,6 @@ Generalized
 ===============#
 # Train-Test-Split-----
 function TrainTestSplit(df,at = 0.75)
-    """ Train Test Splits a DataFrame"""
     sample = randsubseq(1:size(df,1), at)
     trainingset = df[sample, :]
     notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
@@ -369,7 +339,6 @@ function TrainTestSplit(df,at = 0.75)
 end
 # Array-Split ----------
 function ArraySplit(data, at = 0.7)
-    """ Train Test Splits an Array"""
     n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
@@ -379,7 +348,6 @@ function ArraySplit(data, at = 0.7)
 end
 # Sort-Split -------------
 function SortSplit(data, at = 0.25, rev=false)
-    """ Sorts and Splits an Array """
   n = length(data)
   sort!(data, rev=rev)  # Sort in-place
   train_idx = view(data, 1:floor(Int, at*n))
@@ -388,7 +356,6 @@ function SortSplit(data, at = 0.25, rev=false)
 end
 # Unshuffled Split ----
 function Uniform_Split(data, at = 0.7)
-    """ Splits without shuffling!"""
     n = length(data)
     idx = data
     train_idx = view(idx, 1:floor(Int, at*n))
@@ -453,8 +420,17 @@ Categorical
     Encoding
 ==========#
 # <---- One Hot Encoder ---->
-function OneHotEncode(array)
-
+function OneHotEncode(array::Number)
+    flatarr = Iterators.flatten(array)
+    len = size(flatarr, 2)
+    poslen = size(unique(flatarr), 2)
+    out = Array{Number}(undef, len, poslen)
+    for i in 1:len
+        el = flatarr[i]
+        idx = findall(x -> x == el, flatarr |> unique)[1][2]
+        out[i, idx] = 1
+    end
+    return(out)
 end
 #-----------------------------
 end
@@ -570,8 +546,10 @@ mutable struct RegressionTree
     divisionsize
 end
 #----  Callback
-# WIP <TODO>
 function pred_regressiontree(m,xt)
+    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
+    # Original 4 quartile math ^^
         x = m.x
         y = m.y
         xtcopy = xt
@@ -709,28 +687,25 @@ mutable struct MultipleLinearRegression
     y
 end
 function pred_multiplelinearregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
     if length(m.x) != length(xt)
         throw(ArgumentError("Bad Feature Shape |
         Training Features are not equal!",))
     end
     y_pred = []
-    y = m.y
-    x = m.x
     for z in xt
-        m = LinearRegression(z,y)
-        for b in z
-            predavg = []
-            for i in x
-                for b in i
-                    pred = predict(m,b)
-                    append!(predavg,pred)
-                end
-            end
+        predavg = []
+        for i in matrice
+            m = LinearRegression(i,y)
+            pred = predict(m,z)
+            append!(predavg,pred)
+        end
         mn = Lathe.stats.mean(predavg)
-    end
         append!(y_pred,mn)
+        return(y_pred)
     end
-    return(y_pred)
 end
 #==
 Linear
@@ -768,12 +743,7 @@ function pred_LinearRegression(m,xt)
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
     [i = a+(b*i) for i in xt]
-    y_pred = []
-    for i in xt
-        z = a+(b*i)
-        append!(y_pred,z)
-    end
-    return(y_pred)
+    return(xt)
 end
 #==
 Linear
@@ -856,20 +826,7 @@ function pred_logisticregression(m,xt)
 
 end
 #==
-Binomial
-    Distribution
-==#
-mutable struct BinomialDistribution
-    x
-    y
-end
-function pred_binomialdist(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
-end
-#==
-Exponential
+Linear
     Scalar
 ==#
 mutable struct ExponentialScalar
@@ -949,7 +906,6 @@ function pred_exponentialscalar(m,xt)
     range3 = minimum(xtdiv3):maximum(xtdiv3)
     range4 = minimum(xtdiv4):maximum(xtdiv4)
     range5 = minimum(null):maximum(null)
-    range6 = minimum(xtdiv):maxiumum(xtdiv)
     returnlist = []
     for i in xt
         if i in range1
@@ -1008,7 +964,7 @@ end
 Pipeline
     Module
 ================#
-module pipelines
+module Pipelines
 
 # Note to future self, or other programmer:
 # It is not necessary to store these as constructors!
@@ -1016,22 +972,25 @@ module pipelines
 using Lathe
 mutable struct Pipeline
     model
-    steps
+    categoricalenc
+    contenc
+    imputer
 end
+mutable struct fitpipeline
+    pipeline
+    catx
+    conx
+    y
+end
+function pipe_predict(fitpipeline,xtcats,xtcons)
     """ Takes a fit pipeline, and an X and predicts. """
-function pipe_predict(pipe,xt)
-    xtrain = []
-    for i in pipe.steps
-        res = i(xt)
-        append!(xtrain,res)
-    end
-    return(y_pred)
+    fitpipeline.conx = fitpipeline.pipeline.contenc(x)
+    ypr = Lathe.models.predict(fitpipeline.pipeline.model(fitpipeline.conx,
+    fitpipeline.y),xt)
+    return(ypr)
 end
-end
-function save(pipe,filename)
-    if typeof(pipe.model) == LinearRegression
-        save(filename, Dict("m" => typeof(m),"x" => m.x,"y" => m.y))
-    end
+function serialize(fitpipeline,filename)
+    """Outputs pipeline as sav file."""
 end
 #----------------------------------------------
 end
