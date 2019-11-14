@@ -13,12 +13,10 @@ Thank you for your forks!
 #[deps]
 DataFrames.jl
 Random.jl
-Feather.jl
 ================================#
 module Lathe
 using DataFrames
 using Random
-using Feather
 #================
 Stats
     Module
