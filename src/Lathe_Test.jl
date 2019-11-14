@@ -1,4 +1,4 @@
-include("Lathe.jl/src/Lathe.jl")
+include("Lathe.jl")
 import .Lathe.stats: z
 
 using Test
