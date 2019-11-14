@@ -95,7 +95,9 @@ function correlationcoeff(x,y)
 end
 #<----Z score---->
 function z(array)
-
+    x̄ = mean(array)
+    σ = std(array)
+    return map(x -> (x - x̄) / σ, array)
 end
 #<----Quartiles---->
 # - First
@@ -117,7 +119,7 @@ function thirdquar(array)
 end
 # <---- Rank ---->
 function getranks(array,rev = false)
-    sortedar = sort!(array,rev=rev)
+    sortedar = sort(array,rev=rev)
     num = 1
     list = []
     for i in sortedar
@@ -172,12 +174,16 @@ function independent_t(sample,general)
 end
 # - Paired
 function paired_t(var1,var2)
-
+    d = var1 .- var2
+    d̄ = mean(x)
 end
 #<---- Correlations ---->
 # - Spearman
 function spearman(var1,var2)
-
+    rgX = getranks(var1)
+    rgY = getranks(var2)
+    ρ = rgX*rgY / (std(rgX)*std(rgY))
+    return(ρ)
 end
 # - Pearson
 function pearson(x,y)
@@ -195,11 +201,12 @@ function pearson(x,y)
 end
 # <---- Chi Distribution --->
 function chidist(x,e)
-
+# it is tough to calculate -> is it really needed?
 end
 #<---- Chi-Square ---->
 function chisq(var1,var2)
-
+    chistat(obs, exp) = (obs - exp)^2/exp
+    return chistat.(x, e) |> sum
 end
 #<---- ANOVA ---->
 function anova(var1,var2)
@@ -413,8 +420,17 @@ Categorical
     Encoding
 ==========#
 # <---- One Hot Encoder ---->
-function OneHotEncode(array)
-
+function OneHotEncode(array::Number)
+    flatarr = Iterators.flatten(array)
+    len = size(flatarr, 2)
+    poslen = size(unique(flatarr), 2)
+    out = Array{Number}(undef, len, poslen)
+    for i in 1:len
+        el = flatarr[i]
+        idx = findall(x -> x == el, flatarr |> unique)[1][2]
+        out[i, idx] = 1
+    end
+    return(out)
 end
 #-----------------------------
 end
