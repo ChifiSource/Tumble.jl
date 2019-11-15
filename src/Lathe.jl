@@ -17,6 +17,7 @@ Random.jl
 module Lathe
 # <------- PARTS ----->
 include("nlp.jl")
+include("pipelines.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
