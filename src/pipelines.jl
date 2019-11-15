@@ -9,8 +9,9 @@ mutable struct Pipeline
 end
 function predict(pipe,xt)
     fx = []
+    m = pipe.model
     for i in pipe.steps
-        u = i(pipe.model.x)
+        u = i(m.x)
         append!(fx,u)
     end
     model.x = fx

@@ -76,16 +76,6 @@ function correlationcoeff(x,y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
-#    sx = std(x)
-#    sy = std(y)
-#    x̄ = mean(x)
-#    ȳ = mean(x)
-#    [i = (i-x̄) / sx for i in x]
-#    [i = (i-ȳ) / sy for i in y]
-#    n1 = n-1
-#    mult = x .* y
-#    sq = sum(mult)
-#    corrcoff = sq / n1
     xy = x .* y
     sx = sum(x)
     sy = sum(y)
@@ -702,16 +692,48 @@ function pred_multiplelinearregression(m,xt)
     y_pred = []
     for z in xt
         r = 0
+        predavg = []
         for i in z
-            predavg = []
             m = LinearRegression(z,m.y)
             pred = predict(m,z)
-            [r = mean([r,pred]) for r in predavg]
+            append!(predavg,pred)
         end
-        []
+        append!(y_pred,predavg)
     end
-    append!(y_pred,res)
-    return(y_pred)
+    len = length(y_pred[1])
+    yprl = length(y_pred)
+    pr = []
+    numbers collect(1:y_pred)
+    oddsonly = numbers[numbers .% 2 .== 0]
+    if yprl in oddsonly
+        truonly = true
+    else
+        truonly = false
+    end
+    on = true
+    while on == true
+        for z in oddsonly
+            cp = z + 1
+            for i in 1:len
+                s = z[i]
+                v = cp[i]
+                d = mean([s,v])
+                append!(pr,d)
+            end
+        end
+        if truonly == true
+            fn = maximum(oddsonly)
+            z = fn
+            cp = fn + 1
+            for i in 1:len
+                s = z[i]
+                v = cp[i]
+                d = mean([s,v])
+                append!(pr,d)
+            end
+        end
+    end
+    return(pr)
 end
 #==
 Linear
