@@ -7,14 +7,14 @@ mutable struct Pipeline
     steps,
     model
 end
-function predict(pipe)
+function predict(pipe,xt)
     fx = []
     for i in steps
         u = i(pipe.model.x)
         append!(fx,u)
     end
     model.x = fx
-    pr = Lathe.models.predict(model)
+    pr = Lathe.models.predict(model,xt)
     return(pr)
 end
 #------------------
