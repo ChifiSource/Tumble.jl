@@ -703,7 +703,7 @@ function pred_multiplelinearregression(m,xt)
     len = length(y_pred[1])
     yprl = length(y_pred)
     pr = []
-    numbers = collect(1:y_pred)
+    numbers = collect(1:yprl)
     oddsonly = numbers[numbers .% 2 .== 0]
     if yprl in oddsonly
         truonly = true
