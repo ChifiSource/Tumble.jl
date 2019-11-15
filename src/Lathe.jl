@@ -502,9 +502,6 @@ function predict(m,x)
     if typeof(m) == LogisticRegression
         y_pred = pred_logisticregression(m,x)
     end
-    if typeof(m) == ExponentialScalar
-        y_pred = pred_exponentialscalar(m,x)
-    end
     if typeof(m) == MultipleLinearRegression
         y_pred = pred_multiplelinearregression(m,x)
     end
