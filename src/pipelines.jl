@@ -14,7 +14,8 @@ function predict(pipe)
         append!(fx,u)
     end
     model.x = fx
-    Lathe.models.predict(model)
+    pr = Lathe.models.predict(model)
+    return(pr)
 end
 #------------------
 end
