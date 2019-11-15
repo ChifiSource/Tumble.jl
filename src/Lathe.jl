@@ -716,7 +716,7 @@ function pred_multiplelinearregression(m,xt)
             for i in 1:len
                 s = z[i]
                 v = cp[i]
-                d = mean([s,v])
+                d = Lathe.stats.mean([s,v])
                 append!(pr,d)
             end
         end
@@ -727,7 +727,7 @@ function pred_multiplelinearregression(m,xt)
             for i in 1:len
                 s = z[i]
                 v = cp[i]
-                d = mean([s,v])
+                d = Lathe.stats.mean([s,v])
                 append!(pr,d)
             end
         end
