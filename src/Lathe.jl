@@ -700,15 +700,16 @@ function pred_multiplelinearregression(m,xt)
     end
     y_pred = []
     for z in xt
-        predavg = []
+        r = 0
         for i in z
+            predavg = []
             m = LinearRegression(z,m.y)
             pred = predict(m,z)
-            append!(predavg,pred)
+            [r = mean([r,pred]) for r in predavg]
         end
-        mn = Lathe.stats.mean(predavg)
-        append!(y_pred,mn)
+        []
     end
+    append!(y_pred,res)
     return(y_pred)
 end
 #==
