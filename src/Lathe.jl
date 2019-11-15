@@ -694,9 +694,6 @@ mutable struct MultipleLinearRegression
     y
 end
 function pred_multiplelinearregression(m,xt)
-    if length(m.x) != length(m.y[1])
-        throw(ArgumentError("The array shape does not match!"))
-    end
     if length(m.x) != length(xt)
         throw(ArgumentError("Bad Feature Shape |
         Training Features are not equal!",))
@@ -705,7 +702,7 @@ function pred_multiplelinearregression(m,xt)
     for z in xt
         predavg = []
         for i in z
-            m = LinearRegression(i,y)
+            m = LinearRegression(z,y)
             pred = predict(m,z)
             append!(predavg,pred)
         end
