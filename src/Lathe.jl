@@ -694,7 +694,7 @@ mutable struct MultipleLinearRegression
     y
 end
 function pred_multiplelinearregression(m,xt)
-    if length(m.x) != length(m.y)
+    if length(m.x) != length(m.y[1])
         throw(ArgumentError("The array shape does not match!"))
     end
     if length(m.x) != length(xt)
