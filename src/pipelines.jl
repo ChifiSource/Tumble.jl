@@ -4,12 +4,12 @@
 module pipelines
 using Lathe
 mutable struct Pipeline
-    steps,
+    steps
     model
 end
 function predict(pipe,xt)
     fx = []
-    for i in steps
+    for i in pipe.steps
         u = i(pipe.model.x)
         append!(fx,u)
     end
