@@ -705,13 +705,12 @@ function pred_multiplelinearregression(m,xt)
     pr = []
     numbers = collect(1:yprl)
     oddsonly = numbers[numbers .% 2 .== 0]
+    oddsonly = filter!(e->e≠0,oddsonly)
     if yprl in oddsonly
         truonly = true
     else
         truonly = false
     end
-    on = true
-    while on == true
         for z in oddsonly
             cp = z + 1
             for i in 1:len
@@ -732,7 +731,6 @@ function pred_multiplelinearregression(m,xt)
                 append!(pr,d)
             end
         end
-    end
     return(pr)
 end
 #==
