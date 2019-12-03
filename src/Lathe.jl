@@ -15,8 +15,14 @@ DataFrames.jl
 Random.jl
 ================================#
 module Lathe
+# <------- PARTS ----->
+include("nlp.jl")
+include("pipelines.jl")
+# <------- PARTS ----->
+# <------- DEPS ----->
 using DataFrames
 using Random
+# <------- DEPS ----->
 #================
 Stats
     Module
@@ -70,16 +76,6 @@ function correlationcoeff(x,y)
     if n != yl
         throw(ArgumentError("The array shape does not match!"))
     end
-#    sx = std(x)
-#    sy = std(y)
-#    x̄ = mean(x)
-#    ȳ = mean(x)
-#    [i = (i-x̄) / sx for i in x]
-#    [i = (i-ȳ) / sy for i in y]
-#    n1 = n-1
-#    mult = x .* y
-#    sq = sum(mult)
-#    corrcoff = sq / n1
     xy = x .* y
     sx = sum(x)
     sy = sum(y)
@@ -229,8 +225,8 @@ end
 function wilcoxsr(var1,var2)
 
 end
-#<---- Binomial Distribution ---->
-function binomialdist(positives,size)
+#<---- Binomial Probability ---->
+function binomialprob(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
@@ -256,7 +252,7 @@ function sign(var1,var2)
     end
     totalpos = length(positives)
     totallen = length(sets)
-    ans = binomialdist(positives,totallen)
+    ans = binomialprob(positives,totallen)
     return(ans)
 end
 #<---- F-Test---->
@@ -314,10 +310,6 @@ function r2(actual,pred)
     rsq = r^2
     rsq = rsq * 100
     return(rsq)
-end
-function binomialdistribution(actual,pred)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    Lathe.stats.binomialdist(pos,neg,tot)
 end
 # --- Get Permutation ---
 function getPermutation(model)
@@ -500,9 +492,6 @@ function predict(m,x)
     end
     if typeof(m) == LogisticRegression
         y_pred = pred_logisticregression(m,x)
-    end
-    if typeof(m) == ExponentialScalar
-        y_pred = pred_exponentialscalar(m,x)
     end
     if typeof(m) == MultipleLinearRegression
         y_pred = pred_multiplelinearregression(m,x)
@@ -696,25 +685,53 @@ mutable struct MultipleLinearRegression
     y
 end
 function pred_multiplelinearregression(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
     if length(m.x) != length(xt)
         throw(ArgumentError("Bad Feature Shape |
         Training Features are not equal!",))
     end
     y_pred = []
     for z in xt
+        r = 0
         predavg = []
-        for i in matrice
-            m = LinearRegression(i,y)
+        for i in z
+            m = LinearRegression(z,m.y)
             pred = predict(m,z)
             append!(predavg,pred)
         end
-        mn = Lathe.stats.mean(predavg)
-        append!(y_pred,mn)
-        return(y_pred)
+        append!(y_pred,predavg)
     end
+    len = length(y_pred[1])
+    yprl = length(y_pred)
+    pr = []
+    numbers = collect(1:yprl)
+    oddsonly = numbers[numbers .% 2 .== 0]
+    oddsonly = filter!(e->e≠0,oddsonly)
+    if yprl in oddsonly
+        truonly = true
+    else
+        truonly = false
+    end
+        for z in oddsonly
+            cp = z + 1
+            for i in 1:len
+                s = z[i]
+                v = cp[i]
+                d = Lathe.stats.mean([s,v])
+                append!(pr,d)
+            end
+        end
+        if truonly == true
+            fn = maximum(oddsonly)
+            z = fn
+            cp = fn + 1
+            for i in 1:len
+                s = z[i]
+                v = cp[i]
+                d = Lathe.stats.mean([s,v])
+                append!(pr,d)
+            end
+        end
+    return(pr)
 end
 #==
 Linear
@@ -834,113 +851,6 @@ function pred_logisticregression(m,xt)
     end
 
 end
-#==
-Linear
-    Scalar
-==#
-mutable struct ExponentialScalar
-    x
-    y
-end
-function pred_exponentialscalar(m,xt)
-    x = m.x
-    y = m.y
-    at = 0.25
-    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
-    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
-    scalarlist1 = ydiv1 ./ xdiv1
-    scalarlist2 = ydiv2 ./ xdiv2
-    scalarlist3 = ydiv3 ./ xdiv3
-    scalarlist4 = ydiv3 ./ xdiv3
-    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
-    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
-    scalarlist6 = ydiv1 ./ xdiv1
-    scalarlist7 = ydiv2 ./ xdiv2
-    scalarlist8 = ydiv3 ./ xdiv3
-    scalarlist9 = ydiv3 ./ xdiv3
-    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
-    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
-    scalarlist10 = ydiv1 ./ xdiv1
-    scalarlist11 = ydiv2 ./ xdiv2
-    scalarlist12 = ydiv3 ./ xdiv3
-    scalarlist13 = ydiv3 ./ xdiv3
-    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
-    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
-    scalarlist14 = ydiv1 ./ xdiv1
-    scalarlist15 = ydiv2 ./ xdiv2
-    scalarlist16 = ydiv3 ./ xdiv3
-    scalarlist17 = ydiv3 ./ xdiv3
-    xdiv1,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv2,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv3,x = Lathe.preprocess.SortSplit(x,.05)
-    xdiv4,x = Lathe.preprocess.SortSplit(x,.05)
-    ydiv1,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv2,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv3,y = Lathe.preprocess.SortSplit(y,.05)
-    ydiv4,y = Lathe.preprocess.SortSplit(y,.05)
-    scalarlist18 = ydiv1 ./ xdiv1
-    scalarlist19 = ydiv2 ./ xdiv2
-    scalarlist20 = y ./ x
-    # Now we sortsplit the x train
-    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt,.05)
-    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2,.05)
-    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2,.05)
-    xtdiv4,null = Lathe.preprocess.SortSplit(xt2,.05)
-    range1 = minimum(xtdiv1):maximum(xtdiv1)
-    range2 = minimum(xtdiv2):maximum(xtdiv2)
-    range3 = minimum(xtdiv3):maximum(xtdiv3)
-    range4 = minimum(xtdiv4):maximum(xtdiv4)
-    range5 = minimum(null):maximum(null)
-    returnlist = []
-    for i in xt
-        if i in range1
-            res = i * rand(scalarlist1)
-            append!(returnlist,res)
-        elseif i in range2
-            predlist = []
-            res = i * rand(scalarlist2)
-            append!(returnlist,res)
-
-        elseif i in range3
-            predlist = []
-            res = i * rand(scalarlist3)
-            append!(returnlist,res)
-        elseif i in range4
-            predlist = []
-            res = i * rand(scalarlist4)
-            append!(returnlist,res)
-        else
-            predlist = []
-            res = i * rand(scalarlist20)
-            append!(returnlist,res)
-        end
-    end
-    return(returnlist)
-end
 #======================================================================
 =======================================================================
             CATEGORICAL MODELS             CATEGORICAL MODELS
@@ -967,40 +877,6 @@ function pred_catbaseline(m,xt)
 
 end
 #
-#----------------------------------------------
-end
-#================
-Pipeline
-    Module
-================#
-module Pipelines
-
-# Note to future self, or other programmer:
-# It is not necessary to store these as constructors!
-# They can just be strings, and use the model's X and Y!
-using Lathe
-mutable struct Pipeline
-    model
-    categoricalenc
-    contenc
-    imputer
-end
-mutable struct fitpipeline
-    pipeline
-    catx
-    conx
-    y
-end
-function pipe_predict(fitpipeline,xtcats,xtcons)
-    """ Takes a fit pipeline, and an X and predicts. """
-    fitpipeline.conx = fitpipeline.pipeline.contenc(x)
-    ypr = Lathe.models.predict(fitpipeline.pipeline.model(fitpipeline.conx,
-    fitpipeline.y),xt)
-    return(ypr)
-end
-function serialize(fitpipeline,filename)
-    """Outputs pipeline as sav file."""
-end
 #----------------------------------------------
 end
 #==
