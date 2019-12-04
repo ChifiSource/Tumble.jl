@@ -465,7 +465,7 @@ function showmodels()
     println("-----------------")
     println("_____Linear_____")
     println("meanBaseline(y)")
-    println("LinearLeastSquare(x,y,Type)"
+    println("LinearLeastSquare(x,y,Type)")
     println("LinearRegression(x,y)")
     println("-----------------")
 #Takes model, and X to predict, and returns a y prediction
