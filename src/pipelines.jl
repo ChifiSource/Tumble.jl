@@ -15,7 +15,7 @@ function predict(pipe,xt)
         append!(fx,u)
     end
     m.x = fx
-    pr = Lathe.models.predict(model,xt)
+    pr = Lathe.models.predict(m,xt)
     return(pr)
 end
 function serialize(pip,uri)
