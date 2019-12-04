@@ -29,6 +29,7 @@ Stats
 ================#
 module stats
 #<----Mean---->
+"""Mean"""
 function mean(array)
     observations = length(array)
     average = sum(array)/observations
@@ -464,13 +465,9 @@ function showmodels()
     println("-----------------")
     println("_____Linear_____")
     println("meanBaseline(y)")
-    println("LinearLeastSquare(x,y,Type)")
+    println("LinearLeastSquare(x,y,Type)"
     println("LinearRegression(x,y)")
     println("-----------------")
-    println("___Non-Linear___")
-    println("FourSquare(x,y)")
-    println("ExponentialScalar(x,y)")
-end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
     if typeof(m) == FourSquare
