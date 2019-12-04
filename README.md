@@ -1,4 +1,4 @@
-<div align="center"><img src="http://www.emmettboudreau.com/gallery_gen/264eea1c311d372967c97298b03a367b_120x120.png" />
+<div align="center"><img src="http://emmettboudreau.com/Lathe/logo.png" />
   <h1>Lathe 0.0.6<h1>
     <h4>Easily ML<h4>
       <h3>Documentation<h3>
