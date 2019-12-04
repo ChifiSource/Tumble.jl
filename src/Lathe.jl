@@ -14,7 +14,9 @@ Thank you for your forks!
 DataFrames.jl
 Random.jl
 ================================#
+
 module Lathe
+"""Lathe - Easily ML"""
 # <------- PARTS ----->
 include("nlp.jl")
 include("pipelines.jl")
@@ -29,6 +31,13 @@ Stats
 ================#
 module stats
 #<----Mean---->
+@doc """
+      Calculates the mean of a given array.
+      array = [5,10,15]
+      mean = Lathe.stats.mean(array)
+      println(array)
+        10
+       """ ->
 function mean(array)
     observations = length(array)
     average = sum(array)/observations
@@ -274,6 +283,11 @@ function cond_prob(p,a,b)
     cond = p*(a|b)
     return(cond)
 end
+#=========================
+Distributions section!!!!!
+~Added Lathe 0.0.6 ~
+=========================#
+
 
 #---------------------------
 end
@@ -463,9 +477,6 @@ function showmodels()
     println("LinearLeastSquare(x,y,Type)")
     println("LinearRegression(x,y)")
     println("-----------------")
-    println("___Non-Linear___")
-    println("FourSquare(x,y)")
-    println("ExponentialScalar(x,y)")
 end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
@@ -849,7 +860,33 @@ function pred_logisticregression(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
-
+    # (LLSQ Base, may allow changing with hyper-parameters
+    # in the future)
+    x = m.x
+    y = m.y
+    # Summatation of x*y
+    xy = x .* y
+    sxy = sum(xy)
+    # N
+    n = length(x)
+    # Summatation of x^2
+    x2 = x .^ 2
+    sx2 = sum(x2)
+    # Summatation of x and y
+    sx = sum(x)
+    sy = sum(y)
+    # Calculate the slope:
+    slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+    # Calculate the y intercept
+    b = (sy - (slope*sx)) / n
+    # Empty prediction list:
+    #    (For Loop)
+    xmean = Lathe.stats.mean(xt)
+    y_pred = []
+    for i in xt
+        pred = (slope*i) + b + (i - xmean)
+        append!(y_pred,pred)
+    end
 end
 #======================================================================
 =======================================================================

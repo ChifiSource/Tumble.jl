@@ -9,14 +9,23 @@ mutable struct Pipeline
 end
 function predict(pipe,xt)
     fx = []
+    newx = []
     m = pipe.model
-    for i in pipe.steps
-        u = i(m.x)
+    for step in pipe.steps
+        u = step(m.x)
+        w = step(xt)
         append!(fx,u)
+        append!(newx,w)
     end
-    model.x = fx
-    pr = Lathe.models.predict(model,xt)
+    m.x = fx
+    pr = Lathe.models.predict(m,newx)
     return(pr)
+end
+function serialize(pip,uri)
+
+end
+function deserialize(pip,uri)
+
 end
 #------------------
 end
