@@ -273,11 +273,12 @@ function cond_prob(p,a,b)
     psterior = bay_ther(p,a,b)
     cond = p*(a|b)
     return(cond)
+end
 #=========================
 Distributions section!!!!!
 ~Added Lathe 0.0.6 ~
 =========================#
-end
+
 
 #---------------------------
 end
