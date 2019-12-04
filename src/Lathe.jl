@@ -14,7 +14,16 @@ Thank you for your forks!
 DataFrames.jl
 Random.jl
 ================================#
-"""Lathe - Easily ML |.stats|.preprocess|.validate|.models|.pipelines|.nlp|"""
+@doc """
+       Lathe - Easily ML
+        - Lathe.stats
+        - Lathe.pipelines
+        - Lathe.nlp
+        - Lathe.validate
+        - Lathe.models
+        - Lathe.preprocess
+        - Lathe.models
+       """ ->
 module Lathe
 # <------- PARTS ----->
 include("nlp.jl")
