@@ -468,6 +468,7 @@ function showmodels()
     println("LinearLeastSquare(x,y,Type)")
     println("LinearRegression(x,y)")
     println("-----------------")
+end
 #Takes model, and X to predict, and returns a y prediction
 function predict(m,x)
     if typeof(m) == FourSquare
