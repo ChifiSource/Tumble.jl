@@ -30,7 +30,6 @@ Stats
 module stats
 #<----Mean---->
 function mean(array)
-    """Lathe mean"""
     observations = length(array)
     average = sum(array)/observations
     return(average)
