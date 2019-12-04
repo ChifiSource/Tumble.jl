@@ -9,7 +9,7 @@ mutable struct Pipeline
 end
 function predict(pipe,xt)
     fx = []
-    neewx = []
+    newx = []
     m = pipe.model
     for step in pipe.steps
         u = step(m.x)
