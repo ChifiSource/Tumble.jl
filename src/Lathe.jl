@@ -874,9 +874,11 @@ function pred_logisticregression(m,xt)
     b = (sy - (slope*sx)) / n
     # Empty prediction list:
     #    (For Loop)
+    xmean = Lathe.stats.mean(xt)
+    errors = [x = x - xmean for x in xt]
     y_pred = []
     for i in xt
-        pred = (slope*i)+b
+        pred = (slope*i)+b + errors[i]
         append!(y_pred,pred)
     end
 end
