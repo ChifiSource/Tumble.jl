@@ -14,17 +14,9 @@ Thank you for your forks!
 DataFrames.jl
 Random.jl
 ================================#
-@doc """
-       Lathe - Easily ML
-        - Lathe.stats
-        - Lathe.pipelines
-        - Lathe.nlp
-        - Lathe.validate
-        - Lathe.models
-        - Lathe.preprocess
-        - Lathe.models
-       """ ->
+
 module Lathe
+"""Lathe - Easily ML"""
 # <------- PARTS ----->
 include("nlp.jl")
 include("pipelines.jl")
@@ -39,6 +31,13 @@ Stats
 ================#
 module stats
 #<----Mean---->
+@doc """
+      Calculates the mean of a given array.
+      array = [5,10,15]
+      mean = Lathe.stats.mean(array)
+      println(array)
+        10
+       """ ->
 function mean(array)
     observations = length(array)
     average = sum(array)/observations
