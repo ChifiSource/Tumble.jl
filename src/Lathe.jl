@@ -14,7 +14,6 @@ Thank you for your forks!
 DataFrames.jl
 Random.jl
 ================================#
-"""Easily ML |.stats|.preprocess|.models|.pipes|.NLP|"""
 module Lathe
 # <------- PARTS ----->
 include("nlp.jl")
