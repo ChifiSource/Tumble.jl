@@ -12,10 +12,12 @@ function predict(pipe,xt)
     m = pipe.model
     for step in pipe.steps
         u = step(m.x)
+        w = step(xt)
         append!(fx,u)
+        append(newx,w)
     end
     m.x = fx
-    pr = Lathe.models.predict(m,xt)
+    pr = Lathe.models.predict(m,newx)
     return(pr)
 end
 function serialize(pip,uri)
