@@ -9,10 +9,10 @@ mutable struct Pipeline
 end
 function pippredict(pipe,xt)
     for step in steps
-        eval(Meta.parse(step)
+        eval(Meta.parse(step))
     end
     ypr = Lathe.models.predict(pipe.model,xt)
-        return(ypr)
+    return(ypr)
 end
 function serialize(pip,uri)
 
