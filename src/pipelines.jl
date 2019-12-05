@@ -12,13 +12,8 @@ function pippredict(pipe,xt)
         xt = step(xt)
     end
     ypr = Lathe.models.predict(pipe.model,xt)
+
     return(ypr)
-end
-function serialize(pip,uri)
-
-end
-function deserialize(pip,uri)
-
 end
 #------------------
 end
