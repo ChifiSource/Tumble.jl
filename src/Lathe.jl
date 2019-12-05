@@ -233,16 +233,6 @@ end
 function wilcoxsr(var1,var2)
 
 end
-#<---- Binomial Probability ---->
-function binomialprob(positives,size)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    n = size
-    x = positives
-    factn = factorial(n)
-    factx = factorial(x)
-    nx = factn / (factx * (n-x))
-    return(nx)
-end
 #<---- Sign Test ---->
 function sign(var1,var2)
     sets = var1 .- var2
@@ -286,7 +276,19 @@ end
 Distributions section!!!!!
 ~Added Lathe 0.0.6 ~
 =========================#
+#<---- Binomial Distribution ---->
+function binomial_dist(positives,size)
+    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    n = size
+    x = positives
+    factn = factorial(n)
+    factx = factorial(x)
+    nx = factn / (factx * (n-x))
+    return(nx)
+end
+function bernoulli_dist()
 
+end
 
 #---------------------------
 end
