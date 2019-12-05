@@ -179,6 +179,16 @@ function paired_t(var1,var2)
     d = var1 .- var2
     d̄ = mean(x)
 end
+#<---- Binomial Distribution ---->
+function binomial_prob(positives,size)
+    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    n = size
+    x = positives
+    factn = factorial(n)
+    factx = factorial(x)
+    nx = factn / (factx * (n-x))
+    return(nx)
+end
 #<---- Correlations ---->
 # - Spearman
 function spearman(var1,var2)
@@ -276,18 +286,11 @@ end
 Distributions section!!!!!
 ~Added Lathe 0.0.6 ~
 =========================#
-#<---- Binomial Distribution ---->
-function binomial_dist(positives,size)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    n = size
-    x = positives
-    factn = factorial(n)
-    factx = factorial(x)
-    nx = factn / (factx * (n-x))
-    return(nx)
-end
 function bernoulli_dist()
-
+    # P(x) = P^x(1-P)^1-x for x=0 eller 1
+end
+function binomial_dist()
+    # P(X) = nCxp^x(1-p)^n-x
 end
 
 #---------------------------
