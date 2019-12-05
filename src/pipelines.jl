@@ -7,19 +7,12 @@ mutable struct Pipeline
     steps
     model
 end
-function predict(pipe,xt)
-    fx = []
-    newx = []
-    m = pipe.model
-    for step in pipe.steps
-        u = step(m.x)
-        w = step(xt)
-        append!(fx,u)
-        append!(newx,w)
+function pippredict(pipe,xt)
+    for step in steps
+        eval(Meta.parse(step)
     end
-    m.x = fx
-    pr = Lathe.models.predict(m,newx)
-    return(pr)
+    ypr = Lathe.models.predict(pipe.model,xt)
+        return(ypr)
 end
 function serialize(pip,uri)
 
