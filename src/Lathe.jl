@@ -19,7 +19,6 @@ module Lathe
 """Lathe - Easily ML"""
 # <------- PARTS ----->
 include("nlp.jl")
-include("pipelines.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
@@ -507,8 +506,19 @@ function predict(m,x)
     if typeof(m) == MultipleLinearRegression
         y_pred = pred_multiplelinearregression(m,x)
     end
+    if typeof(m) == Pipeline
+        for step in pipe.steps
+            xt = step(xt)
+        end
+        ypr = Lathe.models.predict(pipe.model,xt)
+
+        return(ypr)
+    end
     return(y_pred)
 end
+#===========
+Accessories
+===========#
 # The help function:
 function help(args)
     if typeof(args) == LogisticRegression
@@ -517,7 +527,12 @@ function help(args)
         println("MeanBaseline")
     end
 end
-#======================================================================
+mutable struct Pipeline
+    steps
+    model
+end
+#==============
+========================================================
 =======================================================================
             CONTINUOS MODELS               CONTINUOS MODELS
             CONTINUOS MODELS               CONTINUOS MODELS
