@@ -512,7 +512,7 @@ function predict(m,x)
         y_pred = pred_multiplelinearregression(m,x)
     end
     if typeof(m) == Pipeline
-        for step in pipe.steps
+        for step in m.steps
             xt = step(xt)
         end
         ypr = Lathe.models.predict(pipe.model,xt)
