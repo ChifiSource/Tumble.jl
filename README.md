@@ -9,14 +9,15 @@
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, DataFrame tools, Preprocessing, Machine-Learning Models, and Model Validation.</p>
         </div>
         </div>
-    
-        ##Features
-        - Pipelines
-        - An ever-expanding category of models meant to work with the 2 line clutch algorithm
-        - Easy! Machine learning is simplified!
-        - More documentation to be expanded on! So excited!
-        - Categorical models coming soon
-        - Stats library
-        - Preprocessing
-        - Validation
-        - Model constructors
+      
+
+## Features
+- Pipelines
+- An ever-expanding category of models meant to work with the 2 line clutch algorithm
+- Easy! Machine learning is simplified!
+- More documentation to be expanded on! So excited!
+- Categorical models coming soon
+- Stats library
+- Preprocessing
+- Validation
+- Model constructors
