@@ -513,9 +513,9 @@ function predict(m,x)
     end
     if typeof(m) == Pipeline
         for step in m.steps
-            xt = step(xt)
+            x = step(x)
         end
-        ypr = Lathe.models.predict(pipe.model,xt)
+        ypr = Lathe.models.predict(pipe.model,x)
 
         return(ypr)
     end
