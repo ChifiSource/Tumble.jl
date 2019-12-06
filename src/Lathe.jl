@@ -515,7 +515,7 @@ function predict(m,x)
         for step in m.steps
             x = step(x)
         end
-        ypr = Lathe.models.predict(pipe.model,x)
+        ypr = Lathe.models.predict(m.model,x)
 
         return(ypr)
     end
