@@ -19,7 +19,6 @@ module Lathe
 """Lathe - Easily ML"""
 # <------- PARTS ----->
 include("nlp.jl")
-include("pipelines.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
@@ -180,6 +179,16 @@ function paired_t(var1,var2)
     d = var1 .- var2
     d̄ = mean(x)
 end
+#<---- Binomial Distribution ---->
+function binomial_prob(positives,size)
+    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    n = size
+    x = positives
+    factn = factorial(n)
+    factx = factorial(x)
+    nx = factn / (factx * (n-x))
+    return(nx)
+end
 #<---- Correlations ---->
 # - Spearman
 function spearman(var1,var2)
@@ -234,16 +243,6 @@ end
 function wilcoxsr(var1,var2)
 
 end
-#<---- Binomial Probability ---->
-function binomialprob(positives,size)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    n = size
-    x = positives
-    factn = factorial(n)
-    factx = factorial(x)
-    nx = factn / (factx * (n-x))
-    return(nx)
-end
 #<---- Sign Test ---->
 function sign(var1,var2)
     sets = var1 .- var2
@@ -287,7 +286,12 @@ end
 Distributions section!!!!!
 ~Added Lathe 0.0.6 ~
 =========================#
-
+function bernoulli_dist()
+    # P(x) = P^x(1-P)^1-x for x=0 eller 1
+end
+function binomial_dist()
+    # P(X) = nCxp^x(1-p)^n-x
+end
 
 #---------------------------
 end
@@ -507,8 +511,19 @@ function predict(m,x)
     if typeof(m) == MultipleLinearRegression
         y_pred = pred_multiplelinearregression(m,x)
     end
+    if typeof(m) == Pipeline
+        for step in m.steps
+            x = step(x)
+        end
+        ypr = Lathe.models.predict(m.model,x)
+
+        return(ypr)
+    end
     return(y_pred)
 end
+#===========
+Accessories
+===========#
 # The help function:
 function help(args)
     if typeof(args) == LogisticRegression
@@ -517,7 +532,12 @@ function help(args)
         println("MeanBaseline")
     end
 end
-#======================================================================
+mutable struct Pipeline
+    steps
+    model
+end
+#==============
+========================================================
 =======================================================================
             CONTINUOS MODELS               CONTINUOS MODELS
             CONTINUOS MODELS               CONTINUOS MODELS

@@ -1,6 +1,6 @@
 <div align="center"><img src="http://emmettboudreau.com/Lathe/logo.png" />
   <h4> (Please push all commits to the #Unstable branch!) <h4>
-  <h1>Lathe 0.0.6<h1>
+  <h1>Lathe 0.0.7<h1>
     <h4>Easily ML<h4>
        <strong>Documentation Refresh deprecation coming in 0.1.0</strong>
       <h3>Documentation<h3>
@@ -9,4 +9,17 @@
 </div>
 <div align="left">
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, DataFrame tools, Preprocessing, Machine-Learning Models, and Model Validation.</p>
+        </div>
+        </div>
+      
 
+## Features
+- Pipelines
+- An ever-expanding category of models meant to work with the 2 line clutch algorithm
+- Easy! Machine learning is simplified!
+- More documentation to be expanded on! So excited!
+- Categorical models coming soon
+- Stats library
+- Preprocessing
+- Validation
+- Model constructors

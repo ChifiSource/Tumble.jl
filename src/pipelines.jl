@@ -7,25 +7,19 @@ mutable struct Pipeline
     steps
     model
 end
-function predict(pipe,xt)
-    fx = []
-    newx = []
-    m = pipe.model
+function pippredict(pipe,xt)
+    println("---DEPRECATION WARNING---")
+    println("Lathe.pipelines is set to be deprecated in Lathe 0.1.0")
+    println("! Use Pipeline([steps],model) from Lathe.models")
+    println("julia> using Lathe.models: Pipeline, predict")
+    println("pipe = Pipeline([StandardScalar],LinearRegression(StandardScalar(trainX),trainy))
+    println("predict(pipe,Xtrain)")
     for step in pipe.steps
-        u = step(m.x)
-        w = step(xt)
-        append!(fx,u)
-        append!(newx,w)
+        xt = step(xt)
     end
-    m.x = fx
-    pr = Lathe.models.predict(m,newx)
-    return(pr)
-end
-function serialize(pip,uri)
+    ypr = Lathe.models.predict(pipe.model,xt)
 
-end
-function deserialize(pip,uri)
-
+    return(ypr)
 end
 #------------------
 end
