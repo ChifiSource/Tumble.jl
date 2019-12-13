@@ -14,7 +14,6 @@ Thank you for your forks!
 DataFrames.jl
 Random.jl
 ================================#
-module Lathe
 @doc """
       Lathe 0.0.8 - Easily ML \n
       ================= \n
@@ -31,8 +30,11 @@ module Lathe
       home over at http://emmettboudreau.com/Lathe
 
        """ ->
+module Lathe
+
 # <------- PARTS ----->
 include("nlp.jl")
+include("pipelines.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
