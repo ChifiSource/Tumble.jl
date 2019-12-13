@@ -16,10 +16,19 @@ Random.jl
 ================================#
 @doc """
       |====== Lathe - Easily ML =====\n
+      |           v. 0.0.8           |
+      |==============================\n
       |__________Lathe.stats\n
       |__________Lathe.validate\n
       |__________Lathe.preprocess\n
-      |__________Lathe.models
+      |__________Lathe.models\n
+      |______________________________\n
+      Use ?(Lathe.package) for information!\n
+      [uuid]
+      38d8eb38-e7b1-11e9-0012-376b6c802672
+      [deps]
+      DataFrames.jl
+      Random.jl
        """ ->
 module Lathe
 # <------- PARTS ----->
@@ -36,8 +45,35 @@ Stats
 ================#
 @doc """
       |====== Lathe.stats ======\n
+      |____________/ Base \___________\n
       |_____stats.mean(array)\n
-      |_____stats.mode(array)
+      |_____stats.mode(array)\n
+      |_____stats.variance(array)\n
+      |_____stats.confiints(data,confidence = .95)\n
+      |_____stats.standarderror(array)\n
+      |_____stats.std(data)\n
+      |_____stats.correlationcoeff(x,y)\n
+      |_____stats.z(array)\n
+      |_____stats.firstquar(array)\n
+      |_____stats.secondquar(array)\n
+      |_____stats.thirdquar(array)\n
+      |_____stats.getranks(array,rev = false)\n
+      |___________/ Inferential \___________\n
+      |_____stats.inf_sum(sample,general)\n
+      |_____stats.independent_t(sample,general)\n
+      |_____stats.paired_t(array)\n
+      |_____stats.binomial_prob(positives,size)\n
+      |_____stats.spearman(var1,var2)\n
+      |_____stats.pearson(x,y)\n
+      |_____stats.chisqu(array)\n
+      |_____stats.sign(array)\n
+      |_____stats.f_test(sample,general)\n
+      |_____stats.anova(arra)\n
+      |____________/ Bayesian \___________\n
+      |_____stats.bay_ther(p,a,b)\n
+      |_____stats.cond_prob(p,a,b)\n
+      |___________/ Distributions \___________\n
+      |_____stats.bournelli_dist(array)\n
        """ ->
 module stats
 #<----Mean---->
@@ -223,21 +259,6 @@ function pearson(x,y)
     corrcoff = sq / n1
     return(corrcoff)
 end
-# <---- Chi Distribution --->
-function chidist(x,e)
-# it is tough to calculate -> is it really needed?
-    # A little less necessary, as its certainly not the most useful,
-    # But this stats library could serve as a foundation for models that
-    # Utilize Chi-Distributions, and although I wouldn't say having
-    # A function to do so is urgent, It definitely would be cool,
-    # Rather than an end user having to add another package just
-    # To do one or two things, if you know what I mean.
-    # But certainly there are other more important things to get through
-    # Before 1.0, and I wouldn't consider any of these statistics incredibly
-    # Necessary, but the template is there for what I want to include,
-    # So people adding the module now can kindof know what to expect.
-    # So hopefully that answers your question!
-end
 #<---- Chi-Square ---->
 function chisq(var1,var2)
     chistat(obs, exp) = (obs - exp)^2/exp
@@ -304,7 +325,10 @@ end
 function binomial_dist()
     # P(X) = nCxp^x(1-p)^n-x
 end
-
+# <---- Chi Distribution --->
+function chidist(x,e)
+    #
+end
 #---------------------------
 end
 #================
@@ -312,6 +336,14 @@ Model
     Validation
         Module
 ================#
+@doc """
+      |====== Lathe.validate ======\n
+      |____________/ Metrics \___________\n
+      |_____validate.mae(actual,pred)\n
+      |_____validate.r2(actual,pred)\n
+      |___________/ Feature-Selection \___________\n
+      |_____validate.permutation(model)
+       """ ->
 module validate
 #-------Model Metrics--------____________
 using Lathe
@@ -342,7 +374,7 @@ function r2(actual,pred)
     return(rsq)
 end
 # --- Get Permutation ---
-function getPermutation(model)
+function permutation(model)
 
 end
 #--------------------------------------------
