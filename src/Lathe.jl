@@ -73,7 +73,7 @@ Stats
       |_____stats.bay_ther(p,a,b)\n
       |_____stats.cond_prob(p,a,b)\n
       |___________/ Distributions \___________\n
-      |_____stats.bournelli_dist(array)\n
+      |_____stats.bournelli_dist(array)
        """ ->
 module stats
 #<----Mean---->
