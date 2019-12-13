@@ -24,7 +24,7 @@ Random.jl
       |_____Lathe.models\n
       -----------------\n
       You can use ? on any of these four modules to see the functions inside of them\n
-      \n
+      -----------------\n
       Lathe is an all-in-one inclusive package for data-science, statistics, and
       machine-learning inside of Julia. For more information, you can see our
       home over at http://emmettboudreau.com/Lathe
@@ -44,11 +44,17 @@ using Random
 Stats
     Module
 ================#
-
+@doc """
+      Lathe.stats\n
+      __/^-^-^-^-^-^\n
+      stats.mean(array)\n
+      stats.mode(array)\n
+       """ ->
 module stats
 #<----Mean---->
 @doc """
       Calculates the mean of a given array.\n
+      --------------------
       array = [5,10,15]\n
       mean = Lathe.stats.mean(array)\n
       println(array)\n
