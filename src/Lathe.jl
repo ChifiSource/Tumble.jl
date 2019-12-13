@@ -15,7 +15,13 @@ DataFrames.jl
 Random.jl
 ================================#
 module Lathe
-"""Lathe - Easily ML"""
+@doc """
+      |====== Lathe - Easily ML =====\n
+      |__________Lathe.stats\n
+      |__________Lathe.validate\n
+      |__________Lathe.preprocess\n
+      |__________Lathe.models
+       """ ->
 # <------- PARTS ----->
 include("nlp.jl")
 include("pipelines.jl")
@@ -29,10 +35,9 @@ Stats
     Module
 ================#
 @doc """
-      Lathe.stats\n
-      __/^-^-^-^-^-^\n
-      stats.mean(array)\n
-      stats.mode(array)\n
+      |====== Lathe.stats ======\n
+      |_____stats.mean(array)\n
+      |_____stats.mode(array)
        """ ->
 module stats
 #<----Mean---->
