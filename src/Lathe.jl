@@ -29,9 +29,24 @@ Random.jl
       machine-learning inside of Julia. For more information, you can see our
       home over at http://emmettboudreau.com/Lathe
 
-       """ ->
+       """
 module Lathe
+@doc """
+      Lathe 0.0.8 - Easily ML \n
+      ================= \n
+      |\n
+      |_____Lathe.stats\n
+      |_____Lathe.validate\n
+      |_____Lathe.preprocess\n
+      |_____Lathe.models\n
+      -----------------\n
+      You can use ? on any of these four modules to see the functions inside of them\n
+      \n
+      Lathe is an all-in-one inclusive package for data-science, statistics, and
+      machine-learning inside of Julia. For more information, you can see our
+      home over at http://emmettboudreau.com/Lathe
 
+       """
 # <------- PARTS ----->
 include("nlp.jl")
 include("pipelines.jl")
