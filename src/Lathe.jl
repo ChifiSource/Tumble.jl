@@ -44,6 +44,13 @@ using Random
 Stats
     Module
 ================#
+@doc """
+      Calculates the mean of a given array.\n
+      array = [5,10,15]\n
+      mean = Lathe.stats.mean(array)\n
+      println(array)\n
+        10
+       """ ->
 module stats
 #<----Mean---->
 @doc """
