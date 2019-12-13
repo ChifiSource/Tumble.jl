@@ -14,7 +14,6 @@ Thank you for your forks!
 DataFrames.jl
 Random.jl
 ================================#
-module Lathe
 @doc """
       |====== Lathe - Easily ML =====\n
       |__________Lathe.stats\n
@@ -22,6 +21,7 @@ module Lathe
       |__________Lathe.preprocess\n
       |__________Lathe.models
        """ ->
+module Lathe
 # <------- PARTS ----->
 include("nlp.jl")
 include("pipelines.jl")
