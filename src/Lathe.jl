@@ -28,7 +28,6 @@ Random.jl
       Lathe is an all-in-one inclusive package for data-science, statistics, and
       machine-learning inside of Julia. For more information, you can see our
       home over at http://emmettboudreau.com/Lathe
-
        """ ->
 module Lathe
 
