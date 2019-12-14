@@ -16,7 +16,7 @@ Random.jl
 ================================#
 @doc """
       |====== Lathe - Easily ML =====\n
-      |           v. 0.0.8           |
+      |           v. 0.0.8           |\n
       |==============================\n
       |__________Lathe.stats\n
       |__________Lathe.validate\n
@@ -91,11 +91,27 @@ function mean(array)
     return(average)
 end
 #<----Mode---->
+@doc """
+      Calculates the mean of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      mean = Lathe.stats.mean(array)\n
+      println(array)\n
+        10
+       """ ->
 function mode(array)
     m = findmax(array)
     return(m)
 end
 #<----Variance---->
+@doc """
+      Calculates the mean of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      mean = Lathe.stats.mean(array)\n
+      println(array)\n
+        10
+       """ ->
 function variance(array)
     me = mean(array)
     sq = sum(array) - me
@@ -103,6 +119,14 @@ function variance(array)
     return(squared_mean)
 end
 #<----Confidence Intervals---->
+@doc """
+      Calculates the mean of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      mean = Lathe.stats.mean(array)\n
+      println(array)\n
+        10
+       """ ->
 function confiints(data, confidence=.95)
     mean = mean(data)
     std = std(data)
@@ -111,6 +135,14 @@ function confiints(data, confidence=.95)
 #    return (mean-interval, mean+interval)
 end
 #<----Standard Error---->
+@doc """
+      Calculates the mean of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      mean = Lathe.stats.mean(array)\n
+      println(array)\n
+        10
+       """ ->
 function standarderror(data)
     std = std(data)
     sample = length(data)
@@ -118,6 +150,14 @@ function standarderror(data)
     return(ste)
 end
 #<----Standard Deviation---->
+@doc """
+      Calculates the mean of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      mean = Lathe.stats.mean(array)\n
+      println(array)\n
+        10
+       """ ->
 function std(array3)
     m = mean(array3)
     [i = (i-m) ^ 2 for i in array3]
@@ -229,6 +269,13 @@ function paired_t(var1,var2)
 end
 #<---- Binomial Distribution ---->
 function binomial_prob(positives,size)
+    @doc """
+          Calculates a probability value using binomial distribution.
+          Binomial probability is used primarily for statistical tests,
+              such as the signs test (Lathe.stats.sign)\n
+          --------------------\n
+          Documentation Sample not yet written.
+           """ ->
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
