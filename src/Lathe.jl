@@ -45,7 +45,7 @@ Stats
 ================#
 @doc """
       |====== Lathe.stats ======\n
-      |____________/ Base \___________\n
+      |____________/ Base ___________\n
       |_____stats.mean(array)\n
       |_____stats.mode(array)\n
       |_____stats.variance(array)\n
@@ -58,7 +58,7 @@ Stats
       |_____stats.secondquar(array)\n
       |_____stats.thirdquar(array)\n
       |_____stats.getranks(array,rev = false)\n
-      |___________/ Inferential \___________\n
+      |___________/ Inferential ___________\n
       |_____stats.inf_sum(sample,general)\n
       |_____stats.independent_t(sample,general)\n
       |_____stats.paired_t(array)\n
@@ -69,10 +69,10 @@ Stats
       |_____stats.sign(array)\n
       |_____stats.f_test(sample,general)\n
       |_____stats.anova(arra)\n
-      |____________/ Bayesian \___________\n
-      |_____stats.bay_ther(p,a,b)\n
+      |____________/ Bayesian ___________\n
+      |_____stats.bay_ther(p,a,b)n
       |_____stats.cond_prob(p,a,b)\n
-      |___________/ Distributions \___________\n
+      |___________/ Distributions ___________\n
       |_____stats.bournelli_dist(array)\n
        """ ->
 module stats
@@ -338,10 +338,10 @@ Model
 ================#
 @doc """
       |====== Lathe.validate ======\n
-      |____________/ Metrics \___________\n
+      |____________/ Metrics ___________\n
       |_____validate.mae(actual,pred)\n
       |_____validate.r2(actual,pred)\n
-      |___________/ Feature-Selection \___________\n
+      |___________/ Feature-Selection ___________\n
       |_____validate.permutation(model)
        """ ->
 module validate
