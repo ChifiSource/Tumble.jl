@@ -269,13 +269,6 @@ function paired_t(var1,var2)
 end
 #<---- Binomial Distribution ---->
 function binomial_prob(positives,size)
-    @doc """
-          Calculates a probability value using binomial distribution.
-          Binomial probability is used primarily for statistical tests,
-              such as the signs test (Lathe.stats.sign)\n
-          --------------------\n
-          Documentation Sample not yet written.
-           """ ->
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
