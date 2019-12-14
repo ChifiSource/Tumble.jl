@@ -24,11 +24,11 @@ Random.jl
       |__________Lathe.models\n
       |______________________________\n
       Use ?(Lathe.package) for information!\n
-      [uuid]
-      38d8eb38-e7b1-11e9-0012-376b6c802672
-      [deps]
-      DataFrames.jl
-      Random.jl
+      [uuid]\n
+      38d8eb38-e7b1-11e9-0012-376b6c802672\n
+      [deps]\n
+      DataFrames.jl\n
+      Random.jl\n
        """ ->
 module Lathe
 # <------- PARTS ----->
@@ -73,13 +73,13 @@ Stats
       |_____stats.bay_ther(p,a,b)\n
       |_____stats.cond_prob(p,a,b)\n
       |___________/ Distributions \___________\n
-      |_____stats.bournelli_dist(array)
+      |_____stats.bournelli_dist(array)\n
        """ ->
 module stats
 #<----Mean---->
 @doc """
       Calculates the mean of a given array.\n
-      --------------------
+      --------------------\n
       array = [5,10,15]\n
       mean = Lathe.stats.mean(array)\n
       println(array)\n
