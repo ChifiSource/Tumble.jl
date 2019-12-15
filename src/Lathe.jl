@@ -68,7 +68,7 @@ Stats
       |_____stats.f_test(sample,general)\n
       |_____stats.anova(arra)\n
       | ~~~~~~~~~~ Bayesian ~~~~~~~~~~~\n
-      |_____stats.bay_ther(p,a,b)n
+      |_____stats.bay_ther(p,a,b)\n
       |_____stats.cond_prob(p,a,b)\n
       | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
       |_____stats.bournelli_dist(array)\n
@@ -291,6 +291,13 @@ function paired_t(var1,var2)
 end
 #<---- Correlations ---->
 # - Spearman
+@doc """
+      Returns a probability using a Spearman correlation.\n
+      --------------------\n
+      var1 = [5,10,15]\n
+      var2 = [5,4,3,5,6]\n
+      r = Lathe.stats.spearman(var1,var2)\n
+       """ ->
 function spearman(var1,var2)
     rgX = getranks(var1)
     rgY = getranks(var2)
@@ -298,6 +305,13 @@ function spearman(var1,var2)
     return(ρ)
 end
 # - Pearson
+@doc """
+      Returns a probability using a Pearson correlation.\n
+      --------------------\n
+      x = [5,10,15]\n
+      y = [5,4,3,5,6]\n
+      r = Lathe.stats.spearman(x,y)\n
+       """ ->
 function pearson(x,y)
     sx = std(x)
     sy = std(y)
@@ -312,23 +326,61 @@ function pearson(x,y)
     return(corrcoff)
 end
 #<---- Chi-Square ---->
+@doc """
+      Returns a probability using a chi squared distribution.\n
+      --------------------\n
+      var1 = [5,10,15]\n
+      var2 = [5,4,3,5,6]\n
+      p = Lathe.stats.chisq(var1,var2)\n
+       """ ->
 function chisq(var1,var2)
     chistat(obs, exp) = (obs - exp)^2/exp
     return chistat.(x, e) |> sum
 end
 #<---- ANOVA ---->
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Anova is used to analyze variance in an array
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.anova(array)\n
+       """ ->
 function anova(var1,var2)
 
 end
 #<---- Wilcoxon ---->
 # - Wilcoxon Rank-Sum Test
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Wilcox Rank Sum Tests are used to determine a probability with ranks\n
+      --------------------\n
+      var1 = [5,10,15]\n
+      var2 = [19,25,30]\n
+      p = Lathe.stats.wilcoxrs(var1,var2)\n
+       """ ->
 function wilcoxrs(var1,var2)
 
 end
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Wilcox Sum Rank Tests are used to determine a probability with ranks\n
+      --------------------\n
+      var1 = [5,10,15]\n
+      var2 = [19,25,30]\n
+      p = Lathe.stats.wilcoxsr(var1,var2)\n
+       """ ->
 function wilcoxsr(var1,var2)
 
 end
 #<---- Sign Test ---->
+@doc """
+      The Sign test determines correlation through negative and positive
+      placement with binomial distribution.\n
+      --------------------\n
+      var1 = [5,10,15]\n
+      var2 = [19,25,30]\n
+      p = Lathe.stats.sign(var1,var2)\n
+       """ ->
 function sign(var1,var2)
     sets = var1 .- var2
     positives = []
@@ -349,6 +401,13 @@ function sign(var1,var2)
     return(ans)
 end
 #<---- F-Test---->
+@doc """
+      An F test returns a probability of correlation, and is used similarly
+      to a T test.\n
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.anova(array)\n
+       """ ->
 function f_test(sample,general)
     totvariance = variance(general)
     sampvar = variance(sample)
@@ -358,10 +417,26 @@ end
 #-------Bayesian--------------___________
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
+@doc """
+      Performs bayes theorem and returns probability.\n
+      --------------------\n
+      prob = .50\n
+      prior = .20\n
+      evidence = .30\n
+      p = Lathe.stats.bay_ther(prob,prior,evidence)\n
+       """ ->
 function bay_ther(p,a,b)
     psterior = (p*(b|a) * p*(a)) / (p*b)
     return(psterior)
 end
+@doc """
+      Performs Bayesian Conditional Probability and returns probability.\n
+      --------------------\n
+      prob = .50\n
+      prior = .20\n
+      evidence = .30\n
+      p = Lathe.stats.cond_prob(prob,prior,evidence)\n
+       """ ->
 function cond_prob(p,a,b)
     psterior = bay_ther(p,a,b)
     cond = p*(a|b)
@@ -371,9 +446,22 @@ end
 Distributions section!!!!!
 ~Added Lathe 0.0.6 ~
 =========================#
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Anova is used to analyze variance in an array
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.anova(array)\n
+       """ ->
 function bernoulli_dist()
     # P(x) = P^x(1-P)^1-x for x=0 eller 1
 end
+@doc """
+      Anova is used to analyze variance in an array\n
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.anova(array)\n
+       """ ->
 function binomial_dist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
@@ -384,6 +472,13 @@ function binomial_dist(positives,size)
     return(nx)
 end
 # <---- Chi Distribution --->
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Anova is used to analyze variance in an array
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.anova(array)\n
+       """ ->
 function chidist(x,e)
     #
 end
