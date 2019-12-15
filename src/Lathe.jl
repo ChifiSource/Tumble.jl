@@ -448,16 +448,18 @@ Distributions section!!!!!
 =========================#
 @doc """
       FUNCTION NOT YET WRITTEN\n
-      Anova is used to analyze variance in an array
+      Bournelli is a probability distribuiton that is well known for its use
+           with decision making models.\n
       --------------------\n
       array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
+      p = Lathe.stats.bournelli+dist(array)\n
        """ ->
 function bernoulli_dist()
     # P(x) = P^x(1-P)^1-x for x=0 eller 1
 end
 @doc """
-      Anova is used to analyze variance in an array\n
+      Binomial Distribution is a distribution well known for its use in
+           statistical tests and decision making models.\n
       --------------------\n
       array = [5,10,15]\n
       r = Lathe.stats.anova(array)\n
@@ -474,7 +476,8 @@ end
 # <---- Chi Distribution --->
 @doc """
       FUNCTION NOT YET WRITTEN\n
-      Anova is used to analyze variance in an array
+      Chi Distribution in another well-known distribution well known for being
+      used in statistical tests.\n
       --------------------\n
       array = [5,10,15]\n
       r = Lathe.stats.anova(array)\n
