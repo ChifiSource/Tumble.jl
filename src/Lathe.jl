@@ -430,14 +430,6 @@ end
 Distributions section!!!!!
 ~Added Lathe 0.0.6 ~
 =========================#
-@doc """
-      FUNCTION NOT YET WRITTEN\n
-      Bournelli is a probability distribuiton that is well known for its use
-           with decision making models.\n
-      --------------------\n
-      array = [5,10,15]\n
-      p = Lathe.stats.bournelli+dist(array)\n
-       """ ->
 function bernoulli_dist()
     # P(x) = P^x(1-P)^1-x for x=0 eller 1
 end
