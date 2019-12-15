@@ -359,7 +359,7 @@ end
       p = Lathe.stats.wilcoxrs(var1,var2)\n
        """ ->
 function wilcoxrs(var1,var2)
-
+    #Hash
 end
 @doc """
       FUNCTION NOT YET WRITTEN\n
@@ -370,7 +370,7 @@ end
       p = Lathe.stats.wilcoxsr(var1,var2)\n
        """ ->
 function wilcoxsr(var1,var2)
-
+    #Hash
 end
 #<---- Sign Test ---->
 @doc """
