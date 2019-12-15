@@ -59,7 +59,6 @@ Stats
       |_____stats.thirdquar(array)\n
       |_____stats.getranks(array,rev = false)\n
       | ~~~~~~~~~~ Inferential ~~~~~~~~~~~\n
-      |_____stats.inf_sum(sample,general)\n
       |_____stats.independent_t(sample,general)\n
       |_____stats.paired_t(array)\n
       |_____stats.binomial_prob(positives,size)\n
@@ -193,7 +192,7 @@ end
       Calculates the Z score of a given array.\n
       --------------------\n
       array = [5,10,15]\n
-      r = Lathe.stats.correlationcoeff(x,y)\n
+      z = Lathe.stats.z(array)\n
        """ ->
 function z(array)
     x̄ = mean(array)
@@ -202,6 +201,12 @@ function z(array)
 end
 #<----Quartiles---->
 # - First
+@doc """
+      Returns the point in an array located at 25 percent of the sorted data.\n
+      --------------------\n
+      array = [5,10,15]\n
+      q1 = Lathe.stats.firstquar(array)\n
+       """ ->
 function firstquar(array)
     m = median(array)
     q15 = array / m
@@ -209,16 +214,37 @@ function firstquar(array)
     return(q)
 end
 # - Second(median)
+@doc """
+      Returns the point in an array located at 50 percent of the sorted data.
+      The second quartile is also known as the median, or the middle of the sorted data.\n
+      --------------------\n
+      array = [5,10,15]\n
+      q2 = Lathe.stats.secondquar(array)\n
+       """ ->
 function secondquar(array)
     m = median(array)
     return(m)
 end
 # - Third
+@doc """
+      Returns the point in an array located at 75 percent of the sorted data.\n
+      --------------------\n
+      array = [5,10,15]\n
+      q2 = Lathe.stats.secondquar(array)\n
+       """ ->
 function thirdquar(array)
     q = median(array)
     q = q * 1.5
 end
 # <---- Rank ---->
+@doc """
+      Ranks indices in an array based on quantitative weight (count of the
+      numbers) and returns a new array of the ranks of each column. This
+      function is made primarily for the Wilcox Rank-Sum test\n
+      --------------------\n
+      array = [5,10,15]\n
+      q2 = Lathe.stats.secondquar(array)\n
+       """ ->
 function getranks(array,rev = false)
     sortedar = sort(array,rev=rev)
     num = 1
@@ -230,35 +256,6 @@ function getranks(array,rev = false)
     return(list)
 end
 #-------Inferential-----------__________
-#<----Inferential Summary---->
-function inf_sum(data,grdata)
-    #Doing our calculations
-    t = independent_t(data,grdata)
-    f = f_test(data,grdata)
-#    low,high = confiints(data)
-    var = variance(data)
-    grvar = variance(grdata)
-    avg = mean(data)
-    gravg = mean(grdata)
-    sampstd = std(data)
-    grstd = std(grdata)
-    #Printing them out
-    println("================")
-    println("     Lathe.stats Inferential Summary")
-    println("     _______________________________")
-    println("N: ",length(grdata))
-    println("x̅: ",avg)
-    println("μ: ",gravg)
-    println("s: ",sampstd)
-    println("σ: ",grstd)
-    println("var(x): ",var)
-    println("σ2: ",grvar)
-#    println("Low Confidence interval: ",low)
-#    println("High Confidence interval: ",high)
-    println("α ",t)
-    println("Fp: ",f)
-    println("================")
-end
 #<----T Test---->
 # - Independent
 function independent_t(sample,general)
