@@ -39,11 +39,11 @@ help?> Lathe.stats.mean
 - Serialization for pipelining, using one prediction function.
 - A small, and expanding distributions library.
 ## Add it!
-**LTS** \
+**LTS** 
  ```julia
  using Pkg; Pkg.add("Lathe")
  ```
- **Unstable** \
+ **Unstable** 
  ```julia
  using Pkg; Pkg.add("Lathe"#Unstable)
  ```
