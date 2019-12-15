@@ -653,81 +653,36 @@ Predictive
 ================#
 module models
 #==
-Baseline
-    Model
+Base
+    Models
+        Functions
 ==#
 using Lathe
 using Random
-#Show models shows all the models that are stable
-#And ready for use in the library
-function showmodels()
-    println("    Lathe.JL    ")
-    println("________________")
-    println("Current")
-    println("    Usable")
-    println("       Models")
-    println("================")
-    println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Continuous Models")
-    println("-----------------")
-    println("_____Linear_____")
-    println("meanBaseline(y)")
-    println("LinearLeastSquare(x,y,Type)")
-    println("LinearRegression(x,y)")
-    println("-----------------")
-end
-#Takes model, and X to predict, and returns a y prediction
-function predict(m,x)
-    if typeof(m) == FourSquare
-        y_pred = pred_foursquare(m,x)
-    end
-    if typeof(m) == majBaseline
-        y_pred = pred_catbaseline(m,x)
-    end
-    if typeof(m) == RegressionTree
-        y_pred = pred_regressiontree(m,x)
-    end
-    if typeof(m) == LinearRegression
-        y_pred = pred_LinearRegression(m,x)
-    end
-    if typeof(m) == meanBaseline
-        y_pred = pred_meanbaseline(m,x)
-    end
-    if typeof(m) == RidgeRegression
-        y_pred = pred_ridgeregression(m,x)
-    end
-    if typeof(m) == LinearLeastSquare
-        y_pred = pred_linearleastsquare(m,x)
-    end
-    if typeof(m) == LogisticRegression
-        y_pred = pred_logisticregression(m,x)
-    end
-    if typeof(m) == MultipleLinearRegression
-        y_pred = pred_multiplelinearregression(m,x)
-    end
-    if typeof(m) == Pipeline
-        for step in m.steps
-            x = step(x)
-        end
-        ypr = Lathe.models.predict(m.model,x)
-
-        return(ypr)
-    end
-    return(y_pred)
-end
+predict(m::meanBaseline,x) = pred_meanbaseline(m,x)
+predict(m::FourSquare,x) = pred_foursquare(m,x)
+predict(m::majBaseline,x) = pred_majbaseline(m,x)
+predict(m::RegressionTree,x) = pred_regressiontree(m,x)
+predict(m::LinearRegression,x) = pred_LinearRegression(m,x)
+predict(m::RidgeRegression,x) = pred_ridgeregression(m,x)
+predict(m::LinearLeastSquare,x) = pred_linearleastsquare(m,x)
+predict(m::LogisticRegression,x) = pred_logisticregression(m,x)
+predict(m::meanBaseline,x) = pred_multiplelinearregression(m,x)
+predict(m::Pipeline,x) = pred_pipeline(m,x)
 #===========
 Accessories
 ===========#
-# The help function:
-function help(args)
-    if typeof(args) == LogisticRegression
-        println("Logistic")
-    elseif typeof(args) == meanBaseline
-        println("MeanBaseline")
-    end
-end
 mutable struct Pipeline
     steps
     model
+end
+function pred_pipeline(m,x)
+    for step in m.steps
+        x = step(x)
+    end
+    x = [x = step(x) for step in m.steps]
+    ypr = Lathe.models.predict(m.model,x)
+    return(ypr)
 end
 #==============
 ========================================================
@@ -1117,7 +1072,7 @@ mutable struct majBaseline
     y
 end
 #----  Callback
-function pred_catbaseline(m,xt)
+function pred_majbaseline(m,xt)
     y = m.y
     e = []
     mode = Lathe.stats.mode(xt)
