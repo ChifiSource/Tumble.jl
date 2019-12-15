@@ -45,7 +45,7 @@ Stats
 ================#
 @doc """
       |====== Lathe.stats ======\n
-      |____________/ Base ___________\n
+      | ~~~~~~~~~~ Base ~~~~~~~~~~~\n
       |_____stats.mean(array)\n
       |_____stats.mode(array)\n
       |_____stats.variance(array)\n
@@ -58,7 +58,7 @@ Stats
       |_____stats.secondquar(array)\n
       |_____stats.thirdquar(array)\n
       |_____stats.getranks(array,rev = false)\n
-      |___________/ Inferential ___________\n
+      | ~~~~~~~~~~ Inferential ~~~~~~~~~~~\n
       |_____stats.inf_sum(sample,general)\n
       |_____stats.independent_t(sample,general)\n
       |_____stats.paired_t(array)\n
@@ -69,10 +69,10 @@ Stats
       |_____stats.sign(array)\n
       |_____stats.f_test(sample,general)\n
       |_____stats.anova(arra)\n
-      |____________/ Bayesian ___________\n
+      | ~~~~~~~~~~ Bayesian ~~~~~~~~~~~\n
       |_____stats.bay_ther(p,a,b)n
       |_____stats.cond_prob(p,a,b)\n
-      |___________/ Distributions ___________\n
+      | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
       |_____stats.bournelli_dist(array)\n
        """ ->
 module stats
@@ -82,7 +82,7 @@ module stats
       --------------------\n
       array = [5,10,15]\n
       mean = Lathe.stats.mean(array)\n
-      println(array)\n
+      println(mean)\n
         10
        """ ->
 function mean(array)
@@ -92,11 +92,11 @@ function mean(array)
 end
 #<----Mode---->
 @doc """
-      Calculates the mean of a given array.\n
+      Gives the digit most common in a given array\n
       --------------------\n
-      array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(array)\n
+      array = [5,10,15,15,10,5,10]\n
+      mode = Lathe.stats.mode(array)\n
+      println(mode)\n
         10
        """ ->
 function mode(array)
@@ -105,12 +105,10 @@ function mode(array)
 end
 #<----Variance---->
 @doc """
-      Calculates the mean of a given array.\n
+      Gives the variance of an array..\n
       --------------------\n
       array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(array)\n
-        10
+      variance = Lathe.stats.variance(array)\n
        """ ->
 function variance(array)
     me = mean(array)
@@ -120,12 +118,16 @@ function variance(array)
 end
 #<----Confidence Intervals---->
 @doc """
-      Calculates the mean of a given array.\n
+      Returns the confidence intervals of given data.\n
       --------------------\n
       array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(array)\n
-        10
+      confidence = .98\n
+      low, high = Lathe.stats.confints(array,confidence)\n
+      --------------------\n
+      PARAMETERS\n
+      confidence: Confidence is a float percentage representing the level of
+      confidence required in your test. The confidence metric is used
+      exclusively for calculating the interval.
        """ ->
 function confiints(data, confidence=.95)
     mean = mean(data)
@@ -136,12 +138,10 @@ function confiints(data, confidence=.95)
 end
 #<----Standard Error---->
 @doc """
-      Calculates the mean of a given array.\n
+      Calculates the Standard Error of an array.\n
       --------------------\n
       array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(array)\n
-        10
+      ste = Lathe.stats.standarderror(array)\n
        """ ->
 function standarderror(data)
     std = std(data)
@@ -151,12 +151,10 @@ function standarderror(data)
 end
 #<----Standard Deviation---->
 @doc """
-      Calculates the mean of a given array.\n
+      Calculates the Standard Deviation of a given array.\n
       --------------------\n
       array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(array)\n
-        10
+      std = Lathe.stats.std(array)\n
        """ ->
 function std(array3)
     m = mean(array3)
@@ -166,6 +164,13 @@ function std(array3)
     return(m)
 end
 #<---- Correlation Coefficient --->
+@doc """
+      Calculates the Correlation Coeffiecient of between two features\n
+      --------------------\n
+      x = [5,10,15]\n
+      y = [5,10,15]\n
+      r = Lathe.stats.correlationcoeff(x,y)\n
+       """ ->
 function correlationcoeff(x,y)
     n = length(x)
     yl = length(y)
@@ -184,6 +189,12 @@ function correlationcoeff(x,y)
     return(r)
 end
 #<----Z score---->
+@doc """
+      Calculates the Z score of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.correlationcoeff(x,y)\n
+       """ ->
 function z(array)
     x̄ = mean(array)
     σ = std(array)
@@ -424,6 +435,15 @@ end
 Preprocessing
      Module
 ================#
+@doc """
+      |====== Lathe.preprocess =====\n
+      |_____preprocess.TrainTestSplit(array)\n
+      |_____preprocess.ArraySplit(array)\n
+      |_____preprocess.SortSplit(array)\n
+      |_____preprocess.UniformSplit(array)\n
+      |_____preprocess.Rescalar(array)\n
+
+       """ ->
 module preprocess
 using Random
 using Lathe
