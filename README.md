@@ -1,5 +1,4 @@
 <div align="center"><img src="http://emmettboudreau.com/Lathe/logo.png" />
-  <h4> (Contributors -- READ THE WIKI Thank you.) <h4>
   <h1>Lathe 0.0.8<h1>
     <h4>Easily ML<h4>
       <h3>Documentation<h3>
@@ -49,4 +48,6 @@ help?> Lathe.stats.mean
  using Pkg; Pkg.add("Lathe"#Unstable)
  ```
  The Unstable version of Lathe is typically updated daily, and may not work as planned from time to time. With that in mind, most users should likely stick to the LTS, as Unstable is for development and prototyping. There are still advantages to using Unstable, though, as you will have access to the latest features often weeks before the canvas is merged to LTS. Expect to run Pkg.update() a lot on the Unstable branch. \
+ ## Contributors
+ Thank you for considering contributing. Information on commit eticate is available inside of the Wiki section (and that's its only purpose!
 # Thank you, everyone for your commits and stars! And thank you for using Lathe! 
