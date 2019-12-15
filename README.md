@@ -12,7 +12,7 @@
         </div>
 
 
-**(Note that documentation is most up-to-date and well-written inside of the module, in Julia you can use ?() on any Lathe function to find out what said function does.**
+**(Note that documentation is most up-to-date and well-written inside of the module, in Julia you can use ?() on any Lathe function to find out what said function does.)**
 ```julia
 help?> Lathe.stats.mean
   Calculates the mean of a given array.
