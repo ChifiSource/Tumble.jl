@@ -61,7 +61,6 @@ Stats
       | ~~~~~~~~~~ Inferential ~~~~~~~~~~~\n
       |_____stats.independent_t(sample,general)\n
       |_____stats.paired_t(array)\n
-      |_____stats.binomial_prob(positives,size)\n
       |_____stats.spearman(var1,var2)\n
       |_____stats.pearson(x,y)\n
       |_____stats.chisqu(array)\n
@@ -73,6 +72,7 @@ Stats
       |_____stats.cond_prob(p,a,b)\n
       | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
       |_____stats.bournelli_dist(array)\n
+      |_____stats.binomial_dist(positives,size)\n
        """ ->
 module stats
 #<----Mean---->
@@ -240,7 +240,7 @@ end
 @doc """
       Ranks indices in an array based on quantitative weight (count of the
       numbers) and returns a new array of the ranks of each column. This
-      function is made primarily for the Wilcox Rank-Sum test\n
+      function is made primarily for the Wilcox Rank-Sum test.\n
       --------------------\n
       array = [5,10,15]\n
       q2 = Lathe.stats.secondquar(array)\n
@@ -258,6 +258,13 @@ end
 #-------Inferential-----------__________
 #<----T Test---->
 # - Independent
+@doc """
+      Performs an independent T test.\n
+      --------------------\n
+      sample = [5,10,15]
+      general = [15,25,35]\n
+      t = Lathe.stats.independent_t(sample,general)\n
+       """ ->
 function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
@@ -271,19 +278,16 @@ function independent_t(sample,general)
     return(t)
 end
 # - Paired
+@doc """
+    THIS FUNCTION IS NOT YET WRITTEN\n
+      Paired T (Dependent T) is a T-test that doesn't require a sample.\n
+      --------------------\n
+      array = [5,10,15]\n
+      q2 = Lathe.stats.paired_t(var1,var2)\n
+       """ ->
 function paired_t(var1,var2)
     d = var1 .- var2
     d̄ = mean(x)
-end
-#<---- Binomial Distribution ---->
-function binomial_prob(positives,size)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    n = size
-    x = positives
-    factn = factorial(n)
-    factx = factorial(x)
-    nx = factn / (factx * (n-x))
-    return(nx)
 end
 #<---- Correlations ---->
 # - Spearman
@@ -370,8 +374,14 @@ Distributions section!!!!!
 function bernoulli_dist()
     # P(x) = P^x(1-P)^1-x for x=0 eller 1
 end
-function binomial_dist()
-    # P(X) = nCxp^x(1-p)^n-x
+function binomial_dist(positives,size)
+    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
+    n = size
+    x = positives
+    factn = factorial(n)
+    factx = factorial(x)
+    nx = factn / (factx * (n-x))
+    return(nx)
 end
 # <---- Chi Distribution --->
 function chidist(x,e)
@@ -434,11 +444,19 @@ Preprocessing
 ================#
 @doc """
       |====== Lathe.preprocess =====\n
+      |____________/ Generalized Processing ___________\n
       |_____preprocess.TrainTestSplit(array)\n
       |_____preprocess.ArraySplit(array)\n
       |_____preprocess.SortSplit(array)\n
       |_____preprocess.UniformSplit(array)\n
+      |____________/ Feature Scaling ___________\n
       |_____preprocess.Rescalar(array)\n
+      |_____preprocess.ArbitraryRescale(array)\n
+      |_____preprocess.MeanNormalization(array)\n
+      |_____preprocess.StandardScalar(array)\n
+      |_____preprocess.UnitLScale(array)\n
+      |____________/ Categorical Encoding ___________\n
+      |_____preprocess.OneHotEncode(array)\n
 
        """ ->
 module preprocess
@@ -532,7 +550,7 @@ function StandardScalar(array)
     return(v)
 end
 # ---- Unit L-Scale normalize ----
-function Unit_LScale(array)
+function UnitLScale(array)
 
 end
 #==========
