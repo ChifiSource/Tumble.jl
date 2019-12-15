@@ -49,4 +49,4 @@ help?> Lathe.stats.mean
  using Pkg; Pkg.add("Lathe"#Unstable)
  ```
  The Unstable version of Lathe is typically updated daily, and may not work as planned from time to time. With that in mind, most users should likely stick to the LTS, as Unstable is for development and prototyping. There are still advantages to using Unstable, though, as you will have access to the latest features often weeks before the canvas is merged to LTS. Expect to run Pkg.update() a lot on the Unstable branch. \
- Thank you, everyone for your commits and stars! And thank you for using Lathe! 
+# Thank you, everyone for your commits and stars! And thank you for using Lathe! 
