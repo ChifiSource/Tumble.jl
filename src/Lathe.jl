@@ -350,14 +350,6 @@ function anova(var1,var2)
 end
 #<---- Wilcoxon ---->
 # - Wilcoxon Rank-Sum Test
-@doc """
-      FUNCTION NOT YET WRITTEN\n
-      Wilcox Rank Sum Tests are used to determine a probability with ranks\n
-      --------------------\n
-      var1 = [5,10,15]\n
-      var2 = [19,25,30]\n
-      p = Lathe.stats.wilcoxrs(var1,var2)\n
-       """ ->
 function wilcoxrs(var1,var2)
     #Hash
 end
