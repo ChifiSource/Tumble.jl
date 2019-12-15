@@ -1,5 +1,5 @@
 <div align="center"><img src="http://emmettboudreau.com/Lathe/logo.png" />
-  <h4> (Please push all commits to the #Unstable branch!) <h4>
+  <h4> (Contributors -- READ THE WIKI Thank you.) <h4>
   <h1>Lathe 0.0.8<h1>
     <h4>Easily ML<h4>
       <h3>Documentation<h3>
