@@ -409,14 +409,6 @@ end
 #-------Bayesian--------------___________
 #<----Bayes Theorem---->
 #P = prob, A = prior, B = Evidence,
-@doc """
-      Performs bayes theorem and returns probability.\n
-      --------------------\n
-      prob = .50\n
-      prior = .20\n
-      evidence = .30\n
-      p = Lathe.stats.bay_ther(prob,prior,evidence)
-       """ ->
 function bay_ther(p,a,b)
     psterior = (p*(b|a) * p*(a)) / (p*b)
     return(psterior)
