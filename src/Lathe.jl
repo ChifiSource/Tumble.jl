@@ -681,14 +681,7 @@ Base
 ==#
 using Lathe
 using Random
-predict(m::meanBaseline,x) = pred_meanbaseline(m,x)
-predict(m::FourSquare,x) = pred_foursquare(m,x)
-predict(m::majBaseline,x) = pred_majbaseline(m,x)
-predict(m::RegressionTree,x) = pred_regressiontree(m,x)
-predict(m::LinearRegression,x) = pred_LinearRegression(m,x)
-predict(m::RidgeRegression,x) = pred_ridgeregression(m,x)
-predict(m::LinearLeastSquare,x) = pred_linearleastsquare(m,x)
-predict(m::LogisticRegression,x) = pred_logisticregression(m,x)
+
 predict(m::Pipeline,x) = pred_pipeline(m,x)
 #===========
 Accessories
