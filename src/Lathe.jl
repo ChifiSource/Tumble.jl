@@ -802,9 +802,9 @@ Accessories
       performed on the xtrain set. Note that it will not be applied to the
       train set, so preprocessing for the train set should be done before
       model construction.\n
-      model:: Takes any Lathe model, uses Lathe.models.predict, so
-      method assersion is still do-able with the dispatch, meaning any model
-      designed to work with Lathe.models (and Lathe.models.predict) will work
+      model:: Takes any Lathe model, uses Lathe.models.predict,\n
+      method assersion is still do-able with the dispatch, meaning any model\n
+      designed to work with Lathe.models (and Lathe.models.predict) will work\n
       inside of a Lathe pipeline.
        """ ->
 mutable struct Pipeline
