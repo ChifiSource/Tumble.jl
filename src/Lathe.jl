@@ -893,6 +893,7 @@ Four
     Square
 ==#
 # Model Type
+#==
 @doc """
       One hot encoder replaces a single feature with sub arrays containing
       boolean values (1 or 0) for each individual category.\n
@@ -900,6 +901,7 @@ Four
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 mutable struct FourSquare
     x
     y
@@ -1071,6 +1073,7 @@ end
 Linear
     Regression
 ==#
+#==
 @doc """
       Linear Regression is a well-known linear function used for predicting
       continuous features with a mostly linear or semi-linear slope.\n
@@ -1081,6 +1084,7 @@ Linear
       model = Lathe.models.LinearRegression(x,y)
       y_pred = Lathe.models.predict(model,xtrain)\n
        """ ->
+       ==#
 mutable struct LinearRegression
     x
     y
@@ -1163,6 +1167,7 @@ end
 Ridge
     Regression
 ==#
+#==
 @doc """
       FUNCTION NOT YET WRITTEN\n
       One hot encoder replaces a single feature with sub arrays containing
@@ -1171,6 +1176,7 @@ Ridge
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 mutable struct RidgeRegression
     x
     y
@@ -1193,6 +1199,7 @@ Majority
         Baseline
 ==#
 # Model Type
+#==
 @doc """
       FUNCTION NOT YET WRITTEN\n
       One hot encoder replaces a single feature with sub arrays containing
@@ -1201,6 +1208,7 @@ Majority
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 mutable struct majBaseline
     y
 end
@@ -1218,6 +1226,7 @@ end
 Logistic
     Regression
 ==#
+#==
 @doc """
       One hot encoder replaces a single feature with sub arrays containing
       boolean values (1 or 0) for each individual category.\n
@@ -1225,6 +1234,7 @@ Logistic
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 mutable struct LogisticRegression
     x
     y
