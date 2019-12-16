@@ -564,6 +564,17 @@ Generalized
         Processing
 ===============#
 # Train-Test-Split-----
+@doc """
+      Train Test split is used to create a validation set to toy accuracy
+      with. TrainTestSplit() takes a DataFrame and splits it at a certain
+      percentage of the data.\n
+      --------------------\n
+      df = DataFrame(:A => [1,2,3],:B => [4,5,6])\n
+      test,train = Lathe.preprocess.TrainTestSplit(df,at = 0.75)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.
+       """ ->
 function TrainTestSplit(df,at = 0.75)
     sample = randsubseq(1:size(df,1), at)
     trainingset = df[sample, :]
@@ -572,6 +583,16 @@ function TrainTestSplit(df,at = 0.75)
     return(trainingset,testset)
 end
 # Array-Split ----------
+@doc """
+      Array Split does the exact same thing as TrainTestSplit(), but to an
+      an array instead of a DataFrame\n
+      --------------------\n
+      array = [5,10,15]\n
+      test, train = Lathe.preprocess.ArraySplit(array,at = 0.75)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.
+       """ ->
 function ArraySplit(data, at = 0.7)
     n = length(data)
     idx = Random.shuffle(1:n)
@@ -673,6 +694,24 @@ Predictive
     Learning
         Models
 ================#
+@doc """
+      |====== Lathe.models =====\n
+      |____________/ Accessories ___________\n
+      |_____models.predict(m,xt)\n
+      |_____models.Pipeline([steps],model)\n
+      |____________/ Continuous models ___________\n
+      |_____models.meanBaseline(y)\n
+      |_____models.RegressionTree(x,y,n_divisions)\n
+      |_____models.FourSquare(x,y)\n
+      |_____models.IsotonicRegression(x,y)\n
+      |_____models.MultipleLinearRegression([x],y)\n
+      |_____models.RidgeRegression(x,y)\n
+      |_____models.LinearRegression(x,y)\n
+      |_____models.LinearLeastSquare(x,y,Type)\n
+      |____________/ Categorical Models ___________\n
+      |_____models.LogisticRegression(x,y)\n
+      |_____models.majBaseline\n
+       """ ->
 module models
 #==
 Base
