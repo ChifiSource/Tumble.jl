@@ -976,6 +976,7 @@ end
 Isotonic
     Regression
 ==#
+#==
 @doc """
       FUNCTION NOT YET WRITTEN\n
       One hot encoder replaces a single feature with sub arrays containing
@@ -984,6 +985,7 @@ Isotonic
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 mutable struct IsotonicRegression
     x
     y
