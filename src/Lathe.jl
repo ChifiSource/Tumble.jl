@@ -553,6 +553,7 @@ Preprocessing
       |_____preprocess.UnitLScale(array)\n
       |____________/ Categorical Encoding ___________\n
       |_____preprocess.OneHotEncode(array)\n
+      |_____preprocess.InvertEncode(array)\n
 
        """ ->
 module preprocess
@@ -700,6 +701,7 @@ function StandardScalar(array)
 end
 # ---- Unit L-Scale normalize ----
 @doc """
+      FUNCTION NOT YET WRITTEN\n
       Unit L Scaling uses eigen values to normalize the data.\n
       --------------------\n
       array = [5,10,15]\n
@@ -720,17 +722,30 @@ Categorical
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
-function OneHotEncode(array::Number)
-    flatarr = Iterators.flatten(array)
-    len = size(flatarr, 2)
-    poslen = size(unique(flatarr), 2)
-    out = Array{Number}(undef, len, poslen)
-    for i in 1:len
-        el = flatarr[i]
-        idx = findall(x -> x == el, flatarr |> unique)[1][2]
-        out[i, idx] = 1
-    end
-    return(out)
+function OneHotEncode(array)
+    # define a mapping of chars to integers
+    char_to_int = dict((c, i) for i, c in enumerate(array))
+    int_to_char = dict((i, c) for i, c in enumerate(array))
+    # integer encode input data
+    integer_encoded = [char_to_int[char] for char in data]
+    # one hot encode
+    onehot_encoded = []
+    for value in integer_encoded:
+    	letter = [0 for _ in 0:len(alphabet)]
+    	letter[value] = 1
+    	onehot_encoded.append(letter)
+    return(onehot_encoded)
+end
+# <---- Invert Encoder ---->
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Invert Encoder (Not written.)\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
+function InvertEncode(array)
+
 end
 #-----------------------------
 end
@@ -768,6 +783,30 @@ using Random
 #===========
 Accessories
 ===========#
+@doc """
+      Pipelines can contain a predictable Lathe model with preprocessing that
+      occurs automatically.\n
+      --------------------\n
+      x = [7,6,5,6,5]\n
+      y  = [3.4.5.6.3]\n
+      xtrain = [7,5,4,5,3,5,7,8]\n
+      model = Lathe.models.meanBaseline(y)\n
+      StandardScalar = Lathe.preprocess.StandardScalar\n
+      MeanNormalization = Lathe.preprocess.MeanNormalization\n
+      steps = [StandardScalar,MeanNormalization]\n
+      pipeline = Lathe.models.Pipeline(steps,model)\n
+      y_pred = Lathe.models.predict(pipeline,xtrain)\n
+      --------------------\n
+      HYPER PARAMETERS\n
+      steps:: Iterable list (important, use []) of processing methods to be
+      performed on the xtrain set. Note that it will not be applied to the
+      train set, so preprocessing for the train set should be done before
+      model construction.\n
+      model:: Takes any Lathe model, uses Lathe.models.predict, so
+      method assersion is still do-able with the dispatch, meaning any model
+      designed to work with Lathe.models (and Lathe.models.predict) will work
+      inside of a Lathe pipeline.
+       """ ->
 mutable struct Pipeline
     steps
     model
@@ -792,6 +831,16 @@ Mean
     Baseline
 ==#
  # Model Type
+ @doc """
+       A mean baseline is great for getting a basic accuracy score in order
+           to make a valid direction for your model.\n
+       --------------------\n
+       x = [7,6,5,6,5]\n
+       y  = [3.4.5.6.3]\n
+       xtrain = [7,5,4,5,3,5,7,8]\n
+       model = Lathe.models.meanBaseline(y)
+       y_pred = Lathe.models.predict(model,xtrain)\n
+        """ ->
 mutable struct meanBaseline
     y
 end
@@ -812,55 +861,39 @@ Multi-
  - A quad range predictor, on steroids. -
 ==#
 # Model Type
+@doc """
+      Pipelines can contain a predictable Lathe model with preprocessing that
+      occurs automatically.\n
+      --------------------\n
+      x = [7,6,5,6,5]\n
+      y  = [3.4.5.6.3]\n
+      xtrain = [7,5,4,5,3,5,7,8]\n
+      model = Lathe.models.meanBaseline(y)\n
+      --------------------\n
+      HYPER PARAMETERS\n
+      n_divisions::
+       """ ->
 mutable struct RegressionTree
     x
     y
     n_divisions
-    divisionsize
 end
 #----  Callback
 function pred_regressiontree(m,xt)
-    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
-    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
-    # Original 4 quartile math ^^
-        x = m.x
-        y = m.y
-        xtcopy = xt
-        divs = m.n_divisions
-        size = m.divisionsize
-        # Go ahead and throw an error for the wrong input shape:
-        xlength = length(x)
-        ylength = length(y)
-        if xlength != ylength
-            throw(ArgumentError("The array shape does not match!"))
-        end
-        # Now we also need an error for when the total output of the
-        #    division size and n divisions is > 100 percent
-        divisions = size * divs
-        if divisions != 1
-            throw(ArgumentError("Invalid hyperparameters!: divisions * number of
-            divisions must be = to 100 percent!"))
-        end
-        # Empty list
-        e = []
-        while divs > 0
-            predictorx,x = Lathe.preprocess.SortSplit(x,size)
-            predictory,y = Lathe.preprocess.SortSplit(y,size)
-            predictorxt,xtcopy = Lathe.preprocess.SortSplit(xtcopy,size)
-            currentrange = (minimum(predictorxt):maximum(predictorxt))
-            linregmod = LinearRegression(predictorx,predictory)
-            # Recursion replacement method:
-            [predict(LinearRegression(predictorx,
-            predictory),x) for x in currentrange]
-            divs = divs - 1
-        end
-        return(xt)
+
 end
 #==
 Four
     Square
 ==#
 # Model Type
+@doc """
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
 mutable struct FourSquare
     x
     y
@@ -941,6 +974,14 @@ end
 Isotonic
     Regression
 ==#
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
 mutable struct IsotonicRegression
     x
     y
@@ -955,6 +996,14 @@ Multiple
     Linear
         Regression
 ==#
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
 mutable struct MultipleLinearRegression
     x
     y
@@ -1012,6 +1061,16 @@ end
 Linear
     Regression
 ==#
+@doc """
+      Linear Regression is a well-known linear function used for predicting
+      continuous features with a mostly linear or semi-linear slope.\n
+      --------------------\n
+      x = [7,6,5,6,5]\n
+      y  = [3.4.5.6.3]\n
+      xtrain = [7,5,4,5,3,5,7,8]\n
+      model = Lathe.models.LinearRegression(x,y)
+      y_pred = Lathe.models.predict(model,xtrain)\n
+       """ ->
 mutable struct LinearRegression
     x
     y
@@ -1094,6 +1153,14 @@ end
 Ridge
     Regression
 ==#
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
 mutable struct RidgeRegression
     x
     y
@@ -1103,46 +1170,7 @@ function pred_ridgeregression(m,xt)
         throw(ArgumentError("The array shape does not match!"))
     end
 end
-#==
-Logistic
-    Regression
-==#
-mutable struct LogisticRegression
-    x
-    y
-end
-function pred_logisticregression(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
-    # (LLSQ Base, may allow changing with hyper-parameters
-    # in the future)
-    x = m.x
-    y = m.y
-    # Summatation of x*y
-    xy = x .* y
-    sxy = sum(xy)
-    # N
-    n = length(x)
-    # Summatation of x^2
-    x2 = x .^ 2
-    sx2 = sum(x2)
-    # Summatation of x and y
-    sx = sum(x)
-    sy = sum(y)
-    # Calculate the slope:
-    slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
-    # Calculate the y intercept
-    b = (sy - (slope*sx)) / n
-    # Empty prediction list:
-    #    (For Loop)
-    xmean = Lathe.stats.mean(xt)
-    y_pred = []
-    for i in xt
-        pred = (slope*i) + b + (i - xmean)
-        append!(y_pred,pred)
-    end
-end
+
 #======================================================================
 =======================================================================
             CATEGORICAL MODELS             CATEGORICAL MODELS
@@ -1155,6 +1183,14 @@ Majority
         Baseline
 ==#
 # Model Type
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
 mutable struct majBaseline
     y
 end
@@ -1167,6 +1203,26 @@ function pred_majbaseline(m,xt)
         append!(e,i)
     end
 
+end
+#==
+Logistic
+    Regression
+==#
+@doc """
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
+mutable struct LogisticRegression
+    x
+    y
+end
+function pred_logisticregression(m,xt)
+    if length(m.x) != length(m.y)
+        throw(ArgumentError("The array shape does not match!"))
+    end
 end
 #=====
 Prediction
