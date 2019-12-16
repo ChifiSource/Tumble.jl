@@ -724,17 +724,17 @@ Categorical
        """ ->
 function OneHotEncode(array)
     # define a mapping of chars to integers
-    char_to_int = dict((c, i) for i, c in enumerate(array))
-    int_to_char = dict((i, c) for i, c in enumerate(array))
+#    char_to_int = dict((c, i) for i, c in enumerate(array))
+#    int_to_char = dict((i, c) for i, c in enumerate(array))
     # integer encode input data
-    integer_encoded = [char_to_int[char] for char in data]
+#    integer_encoded = [char_to_int[char] for char in data]
     # one hot encode
-    onehot_encoded = []
-    for value in integer_encoded:
-    	letter = [0 for _ in 0:len(alphabet)]
-    	letter[value] = 1
-    	onehot_encoded.append(letter)
-    return(onehot_encoded)
+#    onehot_encoded = []
+#    for value in integer_encoded:
+#    	letter = [0 for _ in 0:len(alphabet)]
+#    	letter[value] = 1
+#    	onehot_encoded.append(letter)
+#    return(onehot_encoded)
 end
 # <---- Invert Encoder ---->
 @doc """
