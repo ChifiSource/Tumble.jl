@@ -652,13 +652,9 @@ Numerical
       scaled_feature = Lathe.preprocess.Rescalar(array)\n
        """ ->
 function Rescalar(array)
-    v = []
     min = minimum(array)
     max = maximum(array)
-    for i in array
-        x = (i-min) / (max - min)
-        append!(v,x)
-    end
+    v = [i = (i-min) / (max - min) for i in array]
     return(v)
 end
 # ---- Arbitrary Rescalar ----
@@ -670,13 +666,9 @@ end
       scaled_feature = Lathe.preprocess.Rescalar(array)\n
        """ ->
 function ArbitraryRescale(array)
-    v = []
     a = minimum(array)
     b = maximum(array)
-    for i in array
-        x = a + ((i-a*i)*(b-a)) / (b-a)
-        append!(v,x)
-    end
+    v = [x = a + ((i-a*i)*(b-a)) / (b-a) for x in array]
     return(v)
 end
 # ---- Mean Normalization ----
@@ -688,13 +680,10 @@ end
        """ ->
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
-    v = []
     a = minimum(array)
     b = maximum(array)
-    for i in array
-        m = (i-avg) / (b-a)
-        append!(v,m)
-    end
+    v = [i = (i-avg) / (b-a) for i in array]
+    return(v)
 end
 # ---- Z Normalization ----
 @doc """
@@ -706,11 +695,7 @@ end
 function StandardScalar(array)
     q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
-    v = []
-    for i in array
-        y = (i-avg) / q
-        append!(v,y)
-    end
+    v = [i = (i-avg) / q for i in array]
     return(v)
 end
 # ---- Unit L-Scale normalize ----
