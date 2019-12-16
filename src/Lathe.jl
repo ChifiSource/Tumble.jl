@@ -689,7 +689,6 @@ predict(m::LinearRegression,x) = pred_LinearRegression(m,x)
 predict(m::RidgeRegression,x) = pred_ridgeregression(m,x)
 predict(m::LinearLeastSquare,x) = pred_linearleastsquare(m,x)
 predict(m::LogisticRegression,x) = pred_logisticregression(m,x)
-predict(m::meanBaseline,x) = pred_multiplelinearregression(m,x)
 predict(m::Pipeline,x) = pred_pipeline(m,x)
 #===========
 Accessories
