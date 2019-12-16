@@ -969,7 +969,7 @@ function pred_LinearRegression(m,xt)
     a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
-    [i = a+(b*i) for i in xt]
+    xt = [i = a+(b*i) for i in xt]
     return(xt)
 end
 #==
@@ -989,27 +989,18 @@ function pred_linearleastsquare(m,xt)
     if m.Type == :REG
         x = m.x
         y = m.y
-        # Summatation of x*y
         xy = x .* y
         sxy = sum(xy)
-        # N
         n = length(x)
-        # Summatation of x^2
         x2 = x .^ 2
         sx2 = sum(x2)
-        # Summatation of x and y
         sx = sum(x)
         sy = sum(y)
         # Calculate the slope:
         slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
         # Calculate the y intercept
         b = (sy - (slope*sx)) / n
-        # Empty prediction list:
-        y_pred = []
-        for i in xt
-            pred = (slope*i)+b
-            append!(y_pred,pred)
-        end
+        y_pred = [x = (slope * x) + b for x in xt]
     end
     if m.Type == :OLS
 
