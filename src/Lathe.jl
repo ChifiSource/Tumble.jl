@@ -602,6 +602,18 @@ function ArraySplit(data, at = 0.7)
     return(test_idx,train_idx)
 end
 # Sort-Split -------------
+@doc """
+      SortSplit sorts the data from least to greatest, and then splits it,
+      ideal for quartile calculations.\n
+      --------------------\n
+      array = [5,10,15]\n
+      top25, lower75 = Lathe.preprocess.SortSplit(array,at = 0.75,rev = false)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.\n
+      rev:: Reverse, false by default, determines whether to sort least to
+      greatest, or greatest to least.\n
+       """ ->
 function SortSplit(data, at = 0.25, rev=false)
   n = length(data)
   sort!(data, rev=rev)  # Sort in-place
@@ -610,7 +622,17 @@ function SortSplit(data, at = 0.25, rev=false)
   return(test_idx,train_idx)
 end
 # Unshuffled Split ----
-function Uniform_Split(data, at = 0.7)
+@doc """
+      Uniform Split does the exact same thing as ArraySplit(), but observations
+      are returned split, but unsorted and unshuffled.\n
+      --------------------\n
+      array = [5,10,15]\n
+      test, train = Lathe.preprocess.UniformSplit(array,at = 0.75)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.
+       """ ->
+function UniformSplit(data, at = 0.7)
     n = length(data)
     idx = data
     train_idx = view(idx, 1:floor(Int, at*n))
@@ -623,6 +645,12 @@ Numerical
     Scaling
 =======#
 # ---- Rescalar (Standard Deviation) ---
+@doc """
+      Rescalar scales a feature based on the minimum and maximum of the array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.Rescalar(array)\n
+       """ ->
 function Rescalar(array)
     v = []
     min = minimum(array)
@@ -634,6 +662,13 @@ function Rescalar(array)
     return(v)
 end
 # ---- Arbitrary Rescalar ----
+@doc """
+      Arbitrary Rescaling scales a feature based on the minimum and maximum
+       of the array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.Rescalar(array)\n
+       """ ->
 function ArbitraryRescale(array)
     v = []
     a = minimum(array)
@@ -645,6 +680,12 @@ function ArbitraryRescale(array)
     return(v)
 end
 # ---- Mean Normalization ----
+@doc """
+      Mean Normalization normalizes the data based on the mean.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.MeanNormalization(array)\n
+       """ ->
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
     v = []
@@ -656,6 +697,12 @@ function MeanNormalization(array)
     end
 end
 # ---- Z Normalization ----
+@doc """
+      Standard Scalar z-score normalizes a feature.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.StandardScalar(array)\n
+       """ ->
 function StandardScalar(array)
     q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
@@ -667,6 +714,12 @@ function StandardScalar(array)
     return(v)
 end
 # ---- Unit L-Scale normalize ----
+@doc """
+      Unit L Scaling uses eigen values to normalize the data.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.UnitLScale(array)\n
+       """ ->
 function UnitLScale(array)
 
 end
@@ -675,6 +728,13 @@ Categorical
     Encoding
 ==========#
 # <---- One Hot Encoder ---->
+@doc """
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
 function OneHotEncode(array::Number)
     flatarr = Iterators.flatten(array)
     len = size(flatarr, 2)
