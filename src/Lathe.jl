@@ -715,6 +715,7 @@ Categorical
     Encoding
 ==========#
 # <---- One Hot Encoder ---->
+#==
 @doc """
       One hot encoder replaces a single feature with sub arrays containing
       boolean values (1 or 0) for each individual category.\n
@@ -722,6 +723,7 @@ Categorical
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 function OneHotEncode(array)
     # define a mapping of chars to integers
 #    char_to_int = dict((c, i) for i, c in enumerate(array))
@@ -737,6 +739,7 @@ function OneHotEncode(array)
 #    return(onehot_encoded)
 end
 # <---- Invert Encoder ---->
+#==
 @doc """
       FUNCTION NOT YET WRITTEN\n
       Invert Encoder (Not written.)\n
@@ -744,6 +747,7 @@ end
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
+       ==#
 function InvertEncode(array)
 
 end
