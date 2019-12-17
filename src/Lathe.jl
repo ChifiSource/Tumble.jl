@@ -786,7 +786,6 @@ using Random
 #===========
 Accessories
 ===========#
-
 @doc """
       Pipelines can contain a predictable Lathe model with preprocessing that
       occurs automatically.\n
@@ -809,8 +808,7 @@ Accessories
       model:: Takes any Lathe model, uses Lathe.models.predict,\n
       method assersion is still do-able with the dispatch, meaning any model\n
       designed to work with Lathe.models (and Lathe.models.predict) will work\n
-      inside of a Lathe pipeline.
-       """ ->
+      inside of a Lathe pipeline."""
 mutable struct Pipeline
     steps
     model
