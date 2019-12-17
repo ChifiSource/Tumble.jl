@@ -788,7 +788,8 @@ Accessories
 ===========#
 @doc """
       Pipelines can contain a predictable Lathe model with preprocessing that
-      occurs automatically.\n
+      occurs automatically. This is done by putting X array processing methods
+      into the iterable steps, and then putting your Lathe model in.\n
       --------------------\n
       x = [7,6,5,6,5]\n
       y  = [3.4.5.6.3]\n
@@ -858,9 +859,8 @@ function pred_meanbaseline(m,xt)
     return(e)
 end
 #==
-Multi-
-    Gap
- - A quad range predictor, on steroids. -
+Regression
+    Tree
 ==#
 # Model Type
 @doc """
@@ -870,11 +870,12 @@ Multi-
       x = [7,6,5,6,5]\n
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
-      model = Lathe.models.meanBaseline(y)\n
+      n_divisions = 4\n
+      model = Lathe.models.RegressionTree(x,y,n_divisions)\n
       --------------------\n
       HYPER PARAMETERS\n
-      n_divisions::
-       """ ->
+      n_divisions:: n_divisions determines the number of divisions that the
+      regression tree should take."""
 mutable struct RegressionTree
     x
     y
@@ -888,16 +889,15 @@ end
 Four
     Square
 ==#
-# Model Type
-#==
 @doc """
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+      A FourSquare splits data into four linear least squares, and then
+      predicts variables depending on their location in the data (in
+      quartile range.) With the corresponding model for said quartile.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
-       """ ->
-       ==#
+      x = [7,6,5,6,5]\n
+      y  = [3.4.5.6.3]\n
+      xtrain = [7,5,4,5,3,5,7,8]\n
+      model = Lathe.models.FourSquare(x,y)\n"""
 mutable struct FourSquare
     x
     y
@@ -978,16 +978,12 @@ end
 Isotonic
     Regression
 ==#
-#==
 @doc """
       FUNCTION NOT YET WRITTEN\n
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+      Isotonic Regression\n
       --------------------\n
       array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
-       """ ->
-       ==#
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n"""
 mutable struct IsotonicRegression
     x
     y
