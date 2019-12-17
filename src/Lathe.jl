@@ -1064,7 +1064,7 @@ end
 Linear
     Regression
 ==#
-#==
+
 @doc """
       Linear Regression is a well-known linear function used for predicting
       continuous features with a mostly linear or semi-linear slope.\n
@@ -1074,8 +1074,7 @@ Linear
       xtrain = [7,5,4,5,3,5,7,8]\n
       model = Lathe.models.LinearRegression(x,y)
       y_pred = Lathe.models.predict(model,xtrain)\n
-       """ ->
-       ==#
+       """
 mutable struct LinearRegression
     x
     y
@@ -1115,6 +1114,25 @@ Linear
     Least
      Square
 ==#
+@doc """
+      Linear Least Square (LLSQ) is ideal for predicting continous features.
+      Many models use LLSQ as a base to build off of.\n
+      --------------------\n
+      x = [7,6,5,6,5]\n
+      y  = [3.4.5.6.3]\n
+      xtrain = [7,5,4,5,3,5,7,8]\n
+      Type = :REG
+      model = Lathe.models.LinearLeastSquare(x,y,Type)\n
+      y_pred = Lathe.models.predict(model,xtrain)\n
+      -------------------\n
+      HYPER PARAMETERS\n
+      Type:: Type determines which Linear Least Square algorithm to use,
+      :REG, :OLS, :WLS, and :GLS are the three options.\n
+      - :REG = LLSQ Regression\n
+      - :OLS = Ordinary Least Squares\n
+      - :WLS = Weighted Least Squares\n
+      - :GLS = General Least Squares
+       """
 mutable struct LinearLeastSquare
     x
     y
@@ -1158,16 +1176,13 @@ end
 Ridge
     Regression
 ==#
-#==
 @doc """
-      FUNCTION NOT YET WRITTEN\n
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+      Ridge Regression is another regressor ideal for predicting linear,
+          continuous features.\n
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
-       """ ->
-       ==#
+       """
 mutable struct RidgeRegression
     x
     y
@@ -1189,17 +1204,12 @@ Majority
     Class
         Baseline
 ==#
-# Model Type
-#==
 @doc """
       FUNCTION NOT YET WRITTEN\n
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+      Majority class baseline is used to find the most often interpreted
+      classification in an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
-       """ ->
-       ==#
+       """
 mutable struct majBaseline
     y
 end
