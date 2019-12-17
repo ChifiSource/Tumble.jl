@@ -715,7 +715,7 @@ Categorical
     Encoding
 ==========#
 # <---- One Hot Encoder ---->
-#==
+
 @doc """
       One hot encoder replaces a single feature with sub arrays containing
       boolean values (1 or 0) for each individual category.\n
@@ -723,7 +723,6 @@ Categorical
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
-       ==#
 function OneHotEncode(array)
     # define a mapping of chars to integers
 #    char_to_int = dict((c, i) for i, c in enumerate(array))
@@ -787,7 +786,7 @@ using Random
 #===========
 Accessories
 ===========#
-#==
+
 @doc """
       Pipelines can contain a predictable Lathe model with preprocessing that
       occurs automatically.\n
@@ -812,7 +811,6 @@ Accessories
       designed to work with Lathe.models (and Lathe.models.predict) will work\n
       inside of a Lathe pipeline.
        """ ->
-       ==#
 mutable struct Pipeline
     steps
     model
