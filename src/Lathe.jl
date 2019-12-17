@@ -980,7 +980,8 @@ Isotonic
 ==#
 @doc """
       FUNCTION NOT YET WRITTEN\n
-      Isotonic Regression\n
+      Isotonic Regression is used to predict continuous features with high
+      variance.\n
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n"""
@@ -998,16 +999,14 @@ Multiple
     Linear
         Regression
 ==#
-#==
 @doc """
-      FUNCTION NOT YET WRITTEN\n
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+      Multiple Linear Regression is used to influence LinearRegression with
+      multiple features by averaging their predictions.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
-       """ ->
-       ==#
+      x = [7,6,5,6,5]\n
+      y  = [3.4.5.6.3]\n
+      xtrain = [7,5,4,5,3,5,7,8]\n
+      model = Lathe.models.MultipleLinearRegression(x,y)\n"""
 mutable struct MultipleLinearRegression
     x
     y
