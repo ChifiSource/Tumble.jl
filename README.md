@@ -1,5 +1,5 @@
 <div align="center"><img src="http://emmettboudreau.com/Lathe/logo.png" />
-  <h1>Lathe 0.0.8<h1>
+  <h1>Lathe 0.0.9<h1>
     <h4>Easily ML<h4>
       <h3>Documentation<h3>
     <a href="http://emmettboudreau.com/Lathe/doc.html"><img src="https://cdn3.iconfinder.com/data/icons/documentation-blue-red/60/057_-_Document_Info-512.png" width="82" height="86" title="Documentation" alt="Documentation"></a>
