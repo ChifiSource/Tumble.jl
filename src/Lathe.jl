@@ -160,7 +160,7 @@ function std(array3)
     m = mean(array3)
     [i = (i-m) ^ 2 for i in array3]
     m = mean(array3)
-    m = sqrt(m)
+    m = sqrt(Complex(m))
     return(m)
 end
 #<---- Correlation Coefficient --->
