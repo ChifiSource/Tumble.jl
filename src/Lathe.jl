@@ -666,7 +666,7 @@ function OneHotEncode(array)
 #    	letter = [0 for _ in 0:len(alphabet)]
 #    	letter[value] = 1
 #    	append!(oonehot_encoded,letter)
-     end
+#     end
 #    return(onehot_encoded)
 end
 # <---- Invert Encoder ---->
