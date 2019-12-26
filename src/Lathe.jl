@@ -1180,7 +1180,7 @@ end
 Prediction
     Dispatch
 =====#
-predict(m::Lathe.models.meanBaseline,x) = pred_meanbaseline(m,x)
+predict(m::meanBaseline,x) = pred_meanbaseline(m,x)
 predict(m::FourSquare,x) = pred_foursquare(m,x)
 predict(m::majBaseline,x) = pred_majbaseline(m,x)
 predict(m::RegressionTree,x) = pred_regressiontree(m,x)
