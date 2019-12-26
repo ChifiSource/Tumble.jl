@@ -90,6 +90,22 @@ function mean(array)
     average = sum(array)/observations
     return(average)
 end
+#<----Median---->
+function median(array)
+    n = length(array)
+    half = n / 2
+    current = 1
+    sorted = sort!(array,rev = false)
+    median = 0
+    for i in sorted
+        if current >= half
+            median = i
+        else
+        current = current + 1
+    end
+    end
+    return(median)
+end
 #<----Mode---->
 @doc """
       Gives the digit most common in a given array\n
