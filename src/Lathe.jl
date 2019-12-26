@@ -226,9 +226,8 @@ end
        """ ->
 function firstquar(array)
     m = median(array)
-    q15 = array / m
-    q1 = array / m
-    return(q)
+    q1 = array * .5
+    return(q1)
 end
 # - Second(median)
 @doc """
@@ -251,7 +250,8 @@ end
        """ ->
 function thirdquar(array)
     q = median(array)
-    q = q * 1.5
+    q3 = q * 1.5
+    return(q3)
 end
 # <---- Rank ---->
 @doc """
