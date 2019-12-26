@@ -662,10 +662,11 @@ function OneHotEncode(array)
 #    integer_encoded = [char_to_int[char] for char in data]
     # one hot encode
 #    onehot_encoded = []
-#    for value in integer_encoded:
+#    for value in integer_encoded
 #    	letter = [0 for _ in 0:len(alphabet)]
 #    	letter[value] = 1
-#    	onehot_encoded.append(letter)
+#    	append!(oonehot_encoded,letter)
+     end
 #    return(onehot_encoded)
 end
 # <---- Invert Encoder ---->
@@ -861,11 +862,11 @@ function pred_foursquare(m,xt)
         x4,xrange4 = Lathe.preprocess.SortSplit(x3)
         xrange5 = y5
         # Fitting the 4 linear regression models ---->
-        regone = LinearLeastSquare(xrange1,range1)
-        regtwo = LinearLeastSquare(xrange2,range2)
-        regthree = LinearLeastSquare(xrange3,range3)
-        regfour = LinearLeastSquare(xrange4,range4)
-        regfive = LinearLeastSquare(xrange5,yrange5)
+        regone = LinearLeastSquare(xrange1,range1, :REG)
+        regtwo = LinearLeastSquare(xrange2,range2, :REG)
+        regthree = LinearLeastSquare(xrange3,range3, :REG)
+        regfour = LinearLeastSquare(xrange4,range4, :REG)
+        regfive = LinearLeastSquare(xrange5,yrange5, :REG)
         # Split the train Data
         xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
         xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
@@ -900,7 +901,6 @@ function pred_foursquare(m,xt)
             else
                 ypred = predict(regfive,i)
             end
-
             append!(e,ypred)
         end
         return(e)
