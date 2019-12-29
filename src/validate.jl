@@ -35,6 +35,20 @@ function mae(actual,pred)
     end
     return(maeunf)
 end
+# <---- Mean Squared Error ---->
+@doc """
+      Mean Square error (MSE) subtracts two arrays, squares the
+      difference, and averages the result\n
+      --------------------\n
+      array = [5,10,15]\n
+      r = Lathe.stats.anova(array)\n
+       """
+function mse(y,ŷ)
+    diff = y .- ŷ
+    diff = diff .^ 2
+    Σdiff = sum(diff)
+    return(Σdiff)
+end
 # <---- R Squared ---->
 @doc """
       R squared is the correlation coefficient of regression, and is found
