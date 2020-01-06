@@ -27,6 +27,7 @@ help?> Lathe.stats.mean
   10
 
 ```
+**Attention! :** Lathe is moving! We'll be moving to http://lathe.ai starting in Lathe 0.1.0 "Butterball", Lathe will be expanded with a wrapper using JuliaCall in both Python, and R. This will allow a wrapper to be created while still technically using Julia as a backend, controlled from the languages we all know and love. Additionally, Lathe is going to be ported to common Lisp! **Lathe is being ported to Lisp, Python, and R** because of familiarity and cross-platform domain. Starting version 0.1.0, you will be able to use Lathe in **4 different languages**.
 ## Features
 - Pipelines
 - An ever-expanding library of models for predicting continous features, and soon categorical features.
