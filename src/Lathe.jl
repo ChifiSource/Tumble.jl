@@ -91,6 +91,14 @@ function mean(array)
     return(average)
 end
 #<----Median---->
+@doc """
+      Calculates the median (numerical center) of a given array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      median = Lathe.stats.median(array)\n
+      println(median)\n
+        10
+       """
 function median(array)
     n = length(array)
     half = n / 2
@@ -633,6 +641,12 @@ function MeanNormalization(array)
     v = [i = (i-avg) / (b-a) for i in array]
     return(v)
 end
+# ---- Quartile Normalization ----
+function QuartileNormalization(array)
+    q1 = firstquar(array)
+    q2 = thirdquar(array)
+
+end
 # ---- Z Normalization ----
 @doc """
       Standard Scalar z-score normalizes a feature.\n
@@ -1053,8 +1067,8 @@ function pred_LinearRegression(m,xt)
     a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
-    xt = [i = a+(b*i) for i in xt]
-    return(xt)
+    xt = [i = a + (b * i) for i in xt]
+    return(xt   )
 end
 #==
 Linear
