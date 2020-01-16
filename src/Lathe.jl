@@ -7,6 +7,12 @@ MIT General Open Source License
     (V 3.0.0)
         Free for Modification and
         Redistribution
+=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=|
+         CONTRIBUTORS
+=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=|
+        ~ emmettgb
+        ~ stefanches7
+/><><><><><><><><><><><><><><><><\
 Thank you for your forks!
 <-----------Lathe.jl----------->
 38d8eb38-e7b1-11e9-0012-376b6c802672
@@ -187,7 +193,7 @@ function std(array3)
     m = sqrt(Complex(m))
     return(m)
 end
-#<---- Correlation Coefficient --->
+#<---- correlation Coefficient --->
 @doc """
       Calculates the Correlation Coeffiecient of between two features\n
       --------------------\n
@@ -414,7 +420,7 @@ function sign(var1,var2)
     end
     totalpos = length(positives)
     totallen = length(sets)
-    ans = binomialprob(positives,totallen)
+    ans = binomial_dist(positives,totallen)
     return(ans)
 end
 #<---- F-Test---->
@@ -469,8 +475,8 @@ function binomial_dist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
-    factn = factorial(n)
-    factx = factorial(x)
+    factn = factorial(big(n))
+    factx = factorial(big(x))
     nx = factn / (factx * (n-x))
     return(nx)
 end
@@ -1050,7 +1056,7 @@ function pred_LinearRegression(m,xt)
     # Get our x and y as easier variables
     x = m.x
     y = m.y
-    # Get our Summatations:
+    # Get our Summations:
     Σx = sum(x)
     Σy = sum(y)
     # dot x and y
