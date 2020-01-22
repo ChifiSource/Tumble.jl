@@ -2,7 +2,7 @@
   <h1>Lathe 0.0.9<h1>
     <h4>Easily ML<h4>
       <h3>Documentation<h3>
-    <a href="http://emmettboudreau.com/Lathe/doc.html"><img src="https://cdn3.iconfinder.com/data/icons/documentation-blue-red/60/057_-_Document_Info-512.png" width="82" height="86" title="Documentation" alt="Documentation"></a>
+    <a href="http://lathe.ai/doc.html"><img src="https://cdn3.iconfinder.com/data/icons/documentation-blue-red/60/057_-_Document_Info-512.png" width="82" height="86" title="Documentation" alt="Documentation"></a>
 </div>
         <h4>For information on release canvases, visit the projects tab</h4>
 <div align="left">
