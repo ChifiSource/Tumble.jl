@@ -1224,6 +1224,9 @@ function pred_logisticregression(m,xt)
         throw(ArgumentError("The array shape does not match!"))
     end
 end
+function logistic_loss(h, y)
+    return (-y * log(h) - (1 - y) * log(1 - h)).mean()
+end
 #=====
 Prediction
     Dispatch
