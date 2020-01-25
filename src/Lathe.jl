@@ -1223,9 +1223,34 @@ function pred_logisticregression(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
+
 end
-function logistic_loss(h, y)
-    return (-y * log(h) - (1 - y) * log(1 - h)).mean()
+function log_train()
+    z = features .* weights
+    return log_sigmoid(z)
+end
+function log_decision_boundary(prob):
+  return 1 if prob >= .5 else 0
+function log_sigmoid(z)
+  return 1.0 / (1 + exp(-z))
+end
+function log_cost_function(features, labels, weights)
+    n = len(labels)
+    predictions = predict(features, weights)
+    class1_cost = -labels * log(predictions)
+    class2_cost = (1 - labels) * log(1 - predictions)
+    cost = class1_cost - class2_cost
+    cost = cost.sum() / n
+    return(cost)
+end
+function update_weights(features, labels, weights, lr)
+    N = len(features)
+    predictions = log_train(features, weights)
+    gradient = transpose(features) .* (predictions - labels)
+    gradient /= N
+    gradient *= lr
+    weights -= gradient
+    return(weights)
 end
 #=====
 Prediction
