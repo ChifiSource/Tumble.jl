@@ -1082,25 +1082,25 @@ Linear
      Square
 ==#
 @doc """
-      Linear Least Square (LLSQ) is ideal for predicting continous features.
-      Many models use LLSQ as a base to build off of.\n
+      Least Squares is ideal for predicting continous features.
+      Many models use Least Squares as a base to build off of.\n
       --------------------\n
       x = [7,6,5,6,5]\n
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
-      Type = :REG
-      model = Lathe.models.LinearLeastSquare(x,y,Type)\n
+      Type = :LIN
+      model = Lathe.models.LeastSquare(x,y,Type)\n
       y_pred = Lathe.models.predict(model,xtrain)\n
       -------------------\n
       HYPER PARAMETERS\n
       Type:: Type determines which Linear Least Square algorithm to use,
-      :REG, :OLS, :WLS, and :GLS are the three options.\n
-      - :REG = LLSQ Regression\n
+      :LIN, :OLS, :WLS, and :GLS are the three options.\n
+      - :LIN = Linear Least Square Regression\n
       - :OLS = Ordinary Least Squares\n
       - :WLS = Weighted Least Squares\n
       - :GLS = General Least Squares
        """
-mutable struct LinearLeastSquare
+mutable struct LeastSquare
     x
     y
     Type
@@ -1109,7 +1109,7 @@ function pred_linearleastsquare(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
-    if m.Type == :REG
+    if m.Type == :LIN
         x = m.x
         y = m.y
         xy = x .* y
@@ -1188,6 +1188,18 @@ function pred_majbaseline(m,xt)
     for i in xt
         append!(e,i)
     end
+
+end
+#==
+Multinomial
+    Naive
+        Bayes
+==#
+mutable struct MultinomialNB
+    x
+    y
+end
+function pred_multinomialnb(m,xt)
 
 end
 #==
