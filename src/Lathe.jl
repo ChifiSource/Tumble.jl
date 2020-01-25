@@ -38,9 +38,6 @@ Random.jl
        """ ->
 module Lathe
 # <------- PARTS ----->
-include("nlp.jl")
-include("pipelines.jl")
-include("validate.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
@@ -1105,7 +1102,7 @@ mutable struct LeastSquare
     y
     Type
 end
-function pred_linearleastsquare(m,xt)
+function pred_leastsquare(m,xt)
     if length(m.x) != length(m.y)
         throw(ArgumentError("The array shape does not match!"))
     end
@@ -1225,33 +1222,6 @@ function pred_logisticregression(m,xt)
     end
 
 end
-function log_train()
-    z = features .* weights
-    return log_sigmoid(z)
-end
-function log_decision_boundary(prob):
-  return 1 if prob >= .5 else 0
-function log_sigmoid(z)
-  return 1.0 / (1 + exp(-z))
-end
-function log_cost_function(features, labels, weights)
-    n = len(labels)
-    predictions = predict(features, weights)
-    class1_cost = -labels * log(predictions)
-    class2_cost = (1 - labels) * log(1 - predictions)
-    cost = class1_cost - class2_cost
-    cost = cost.sum() / n
-    return(cost)
-end
-function update_weights(features, labels, weights, lr)
-    N = len(features)
-    predictions = log_train(features, weights)
-    gradient = transpose(features) .* (predictions - labels)
-    gradient /= N
-    gradient *= lr
-    weights -= gradient
-    return(weights)
-end
 #=====
 Prediction
     Dispatch
@@ -1262,7 +1232,7 @@ predict(m::majBaseline,x) = pred_majbaseline(m,x)
 predict(m::RegressionTree,x) = pred_regressiontree(m,x)
 predict(m::LinearRegression,x) = pred_LinearRegression(m,x)
 predict(m::RidgeRegression,x) = pred_ridgeregression(m,x)
-predict(m::LinearLeastSquare,x) = pred_linearleastsquare(m,x)
+predict(m::LeastSquare,x) = pred_leastsquare(m,x)
 predict(m::LogisticRegression,x) = pred_logisticregression(m,x)
 predict(m::Pipeline,x) = pred_pipeline(m,x)
 #
