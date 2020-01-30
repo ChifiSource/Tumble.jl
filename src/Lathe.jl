@@ -78,7 +78,7 @@ Stats
       | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
       |_____stats.bournelli_dist(array)\n
       |_____stats.binomial_dist(positives,size)\n
-       """ ->
+       """
 module stats
 #<----Mean---->
 @doc """
