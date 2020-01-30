@@ -38,6 +38,7 @@ Random.jl
        """ ->
 module Lathe
 # <------- PARTS ----->
+include("validate.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
