@@ -38,7 +38,6 @@ Random.jl
        """ ->
 module Lathe
 # <------- PARTS ----->
-include("validate.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
@@ -864,81 +863,86 @@ Four
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
       model = Lathe.models.FourSquare(x,y)\n"""
-mutable struct FourSquare
-    x
-    y
-end
-#----  Callback
-function pred_foursquare(m,xt)
-    # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
-    # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
-        x = m.x
-        y = m.y
-        # Go ahead and throw an error for the wrong input shape:
-        xlength = length(x)
-        ylength = length(y)
-        if xlength != ylength
-            throw(ArgumentError("The array shape does not match!"))
-        end
-        # Our empty Y prediction list==
-        e = []
-        # Quad Splitting the data ---->
-        # Split the Y
-        y2,range1 = Lathe.preprocess.SortSplit(y)
-        y3,range2 = Lathe.preprocess.SortSplit(y2)
-        y4,range3 = Lathe.preprocess.SortSplit(y3)
-        y5,range4 = Lathe.preprocess.SortSplit(y4)
-        yrange5 = y5
-        # Split the x train
-        x1,xrange1 = Lathe.preprocess.SortSplit(x)
-        x2,xrange2 = Lathe.preprocess.SortSplit(x1)
-        x3,xrange3 = Lathe.preprocess.SortSplit(x2)
-        x4,xrange4 = Lathe.preprocess.SortSplit(x3)
-        xrange5 = y5
-        # Fitting the 4 linear regression models ---->
-        regone = LinearLeastSquare(xrange1,range1, :REG)
-        regtwo = LinearLeastSquare(xrange2,range2, :REG)
-        regthree = LinearLeastSquare(xrange3,range3, :REG)
-        regfour = LinearLeastSquare(xrange4,range4, :REG)
-        regfive = LinearLeastSquare(xrange5,yrange5, :REG)
-        # Split the train Data
-        xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
-        xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
-        xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
-        xt4,xtrange4 = Lathe.preprocess.SortSplit(xt3)
-        xtrange5 = xt4
-        # Get min-max
-        xtrange1min = minimum(xtrange1)
-        xtrange1max = maximum(xtrange1)
-        xtrange2min = minimum(xtrange2)
-        xtrange2max = maximum(xtrange2)
-        xtrange3min = minimum(xtrange3)
-        xtrange3max = maximum(xtrange3)
-        xtrange4min = minimum(xtrange4)
-        xtrange4max = maximum(xtrange4)
-        xtrange5min = minimum(xtrange5)
-        # Ranges for ifs
-        condrange1 = (xtrange1min:xtrange1max)
-        condrange2 = (xtrange2min:xtrange2max)
-        condrange3 = (xtrange3min:xtrange3max)
-        condrange4 = (xtrange4min:xtrange4max)
-        # This for loop is where the dimension's are actually used:
-        for i in xt
-            if i in condrange1
-                ypred = predict(regone,i)
-            elseif i in condrange2
-                ypred = predict(regtwo,i)
-            elseif i in condrange3
-                ypred = predict(regthree,i)
-            elseif i in condrange4
-                ypred = predict(regfour,i)
-            else
-                ypred = predict(regfive,i)
-            end
-            append!(e,ypred)
-        end
-        return(e)
-end
+      #==
+      Four
+          Square
+      ==#
+      # Model Type
+      mutable struct FourSquare
+          x
+          y
+      end
+      #----  Callback
+      function pred_foursquare(m,xt)
+          # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
+          # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
+              x = m.x
+              y = m.y
+              # Go ahead and throw an error for the wrong input shape:
+              xlength = length(x)
+              ylength = length(y)
+              if xlength != ylength
+                  throw(ArgumentError("The array shape does not match!"))
+              end
+              # Our empty Y prediction list==
+              e = []
+              # Quad Splitting the data ---->
+              # Split the Y
+              y2,range1 = Lathe.preprocess.SortSplit(y)
+              y3,range2 = Lathe.preprocess.SortSplit(y2)
+              y4,range3 = Lathe.preprocess.SortSplit(y3)
+              y5,range4 = Lathe.preprocess.SortSplit(y4)
+              yrange5 = y5
+              # Split the x train
+              x1,xrange1 = Lathe.preprocess.SortSplit(x)
+              x2,xrange2 = Lathe.preprocess.SortSplit(x1)
+              x3,xrange3 = Lathe.preprocess.SortSplit(x2)
+              x4,xrange4 = Lathe.preprocess.SortSplit(x3)
+              xrange5 = y5
+              # Fitting the 4 linear regression models ---->
+              regone = LeastSquare(xrange1,range1,:LIN)
+              regtwo = LeastSquare(xrange2,range2,:LIN)
+              regthree = LeastSquare(xrange3,range3,:LIN)
+              regfour = LeastSquare(xrange4,range4,:LIN)
+              regfive = LeastSquare(xrange5,yrange5,:LIN)
+              # Split the train Data
+              xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
+              xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
+              xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
+              xt4,xtrange4 = Lathe.preprocess.SortSplit(xt3)
+              xtrange5 = xt4
+              # Get min-max
+              xtrange1min = minimum(xtrange1)
+              xtrange1max = maximum(xtrange1)
+              xtrange2min = minimum(xtrange2)
+              xtrange2max = maximum(xtrange2)
+              xtrange3min = minimum(xtrange3)
+              xtrange3max = maximum(xtrange3)
+              xtrange4min = minimum(xtrange4)
+              xtrange4max = maximum(xtrange4)
+              xtrange5min = minimum(xtrange5)
+              # Ranges for ifs
+              condrange1 = (xtrange1min:xtrange1max)
+              condrange2 = (xtrange2min:xtrange2max)
+              condrange3 = (xtrange3min:xtrange3max)
+              condrange4 = (xtrange4min:xtrange4max)
+              # This for loop is where the dimension's are actually used:
+              for i in xt
+                  if i in condrange1
+                      ypred = predict(regone,i)
+                  elseif i in condrange2
+                      ypred = predict(regtwo,i)
+                  elseif i in condrange3
+                      ypred = predict(regthree,i)
+                  elseif i in condrange4
+                      ypred = predict(regfour,i)
+                  else
+                      ypred = predict(regfive,i)
+                  end
+                  append!(e,ypred)
+              end
+              return(e)
+      end
 #==
 Isotonic
     Regression
@@ -981,49 +985,6 @@ function pred_multiplelinearregression(m,xt)
         throw(ArgumentError("Bad Feature Shape |
         Training Features are not equal!",))
     end
-    y_pred = []
-    for z in xt
-        r = 0
-        predavg = []
-        for i in z
-            m = LinearRegression(z,m.y)
-            pred = predict(m,z)
-            append!(predavg,pred)
-        end
-        append!(y_pred,predavg)
-    end
-    len = length(y_pred[1])
-    yprl = length(y_pred)
-    pr = []
-    numbers = collect(1:yprl)
-    oddsonly = numbers[numbers .% 2 .== 0]
-    oddsonly = filter!(e->e≠0,oddsonly)
-    if yprl in oddsonly
-        truonly = true
-    else
-        truonly = false
-    end
-        for z in oddsonly
-            cp = z + 1
-            for i in 1:len
-                s = z[i]
-                v = cp[i]
-                d = Lathe.stats.mean([s,v])
-                append!(pr,d)
-            end
-        end
-        if truonly == true
-            fn = maximum(oddsonly)
-            z = fn
-            cp = fn + 1
-            for i in 1:len
-                s = z[i]
-                v = cp[i]
-                d = Lathe.stats.mean([s,v])
-                append!(pr,d)
-            end
-        end
-    return(pr)
 end
 #==
 Linear
@@ -1157,7 +1118,66 @@ function pred_ridgeregression(m,xt)
         throw(ArgumentError("The array shape does not match!"))
     end
 end
+#==
+Exponential
+    Scalar
+==#
+mutable struct ExponentialScalar
+    x
+    y
+end
+function pred_exponentialscalar(m,xt)
+    x = m.x
+    y = m.y
+    xdiv1,x = Lathe.preprocess.SortSplit(x)
+    xdiv2,x = Lathe.preprocess.SortSplit(x)
+    xdiv3,x = Lathe.preprocess.SortSplit(x)
+    xdiv4,x = Lathe.preprocess.SortSplit(x)
+    ydiv1,y = Lathe.preprocess.SortSplit(y)
+    ydiv2,y = Lathe.preprocess.SortSplit(y)
+    ydiv3,y = Lathe.preprocess.SortSplit(y)
+    ydiv4,y = Lathe.preprocess.SortSplit(y)
+    scalarlist1 = ydiv1 ./ xdiv1
+    scalarlist2 = ydiv2 ./ xdiv2
+    scalarlist3 = ydiv3 ./ xdiv3
+    scalarlist4 = ydiv3 ./ xdiv3
+    scalarlist5 = y ./ x
+    # Now we sortsplit the x train
+    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
+    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
+    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2)
+    xtdiv4,null = Lathe.preprocess.SortSplit(xt2)
+    range1 = minimum(xtdiv1):maximum(xtdiv1)
+    range2 = minimum(xtdiv2):maximum(xtdiv2)
+    range3 = minimum(xtdiv3):maximum(xtdiv3)
+    range4 = minimum(xtdiv4):maximum(xtdiv4)
+    range5 = minimum(null):maximum(null)
+    returnlist = []
+    for i in xt
+        if i in range1
+            res = i * rand(scalarlist1)
+            append!(returnlist,res)
+        elseif i in range2
+            predlist = []
+            res = i * rand(scalarlist2)
+            append!(returnlist,res)
 
+        elseif i in range3
+            predlist = []
+            res = i * rand(scalarlist3)
+            append!(returnlist,res)
+        elseif i in range4
+            predlist = []
+            res = i * rand(scalarlist4)
+            append!(returnlist,res)
+        else
+            predlist = []
+            res = i * rand(scalarlist5)
+            append!(returnlist,res)
+        end
+    end
+    return(returnlist)
+end
 #======================================================================
 =======================================================================
             CATEGORICAL MODELS             CATEGORICAL MODELS
