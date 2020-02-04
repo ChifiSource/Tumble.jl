@@ -59,7 +59,7 @@ Random.jl
       [deps]\n
       DataFrames.jl\n
       Random.jl\n
-       """ ->
+       """
 module Lathe
 # <------- PARTS ----->
 # <------- PARTS ----->
