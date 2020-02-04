@@ -21,6 +21,30 @@ DataFrames.jl
 Random.jl
 ================================#
 @doc """
+**        %
+/*       ((
+../*****
+////*/(((((#
+,*****////*#             (////////****#                            /########
+,*,*,*,,.,.,.,(            (/(/**/*//               */********//   ####    &###(
+,,,,,,,.......%##          (///*****/                   &,,%% ..%%...%%*./#   ##
+,*,*,*,,.,.,..%%##         (/(/**/*//           ,*,*,*,*,**/.. . . . . .,//# ###
+,,,,,,,.......%#(          (///*****/                        /**.       *#%(##(
+,*,*,*,,.,.,.,   ((((((,,,,..........,,,,,,,,,,,,,,,,,,,,,,, ,., . . . ..//(
+(((((((//////////****/(.........................,(####/,....//**.       .///
+(((((((/*/////////*/*((,.,*####(,,.,.,.,.,.,.*###(,,.*(###,,///*.. . . ..///
+(,,,,,,............(/.###*...(##*.........(##,,#/../#,*##*..............
+%%(******,,,,,,,,,,,*((/#/.,##(,.(#..,.,.,.,##(,.,####.,.###*,,,,,,,,,,,,*%%
+(,,,,,,            ((.##(/..,#(#/........./##*(#,..,#//##,             *
+(*,*,*,. . . . . . ((,.,(#####*,.,&/%(,,.,.,####(**(####., . . . . . . *
+(,,,,,,            ((.............&/#/,........*/((/,.....             *
+///////**********/*/*((,.,.,.,.,.,.,&/#(*(*..,.,.,.,.,.,.,.,****************
+(#########//////********************/****************((((((/
+//(/(/(/(//*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+          ,,,,.....*                        #,,,,......
+          *,*,,.,.,*                        #,*,*.,.,..
+          ,,,,.....*                        #,,,,......
+     **,*,*,*.,.,.,,,,,,*               *,*,*,*,,.,.,.,,,,,%
       |====== Lathe - Easily ML =====\n
       |= = = = = v. 0.0.9 = = = = = |\n
       |==============================\n
@@ -38,7 +62,6 @@ Random.jl
        """ ->
 module Lathe
 # <------- PARTS ----->
-include("validate.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
@@ -78,7 +101,7 @@ Stats
       | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
       |_____stats.bournelli_dist(array)\n
       |_____stats.binomial_dist(positives,size)\n
-       """
+       """ ->
 module stats
 #<----Mean---->
 @doc """
@@ -689,19 +712,18 @@ Categorical
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
 function OneHotEncode(array)
-    # define a mapping of chars to integers
-#    char_to_int = dict((c, i) for i, c in enumerate(array))
-#    int_to_char = dict((i, c) for i, c in enumerate(array))
-    # integer encode input data
-#    integer_encoded = [char_to_int[char] for char in data]
-    # one hot encode
-#    onehot_encoded = []
-#    for value in integer_encoded
-#    	letter = [0 for _ in 0:len(alphabet)]
-#    	letter[value] = 1
-#    	append!(oonehot_encoded,letter)
-#     end
-#    return(onehot_encoded)
+    char_to_int = [(c, i) for (i, c) in enumerate(array)]
+    int_to_char = [(i, c) for (i, c) in enumerate(array)]
+           # integer encode input data
+    integer_encoded = [char_to_int[char] for char in array]
+           # one hot encode
+    onehot_encoded = []
+    for value in integer_encoded
+        letter = [0 for _ in 0:len(alphabet)]
+        letter[value] = 1
+        append!(oonehot_encoded,letter)
+    end
+    return(onehot_encoded)
 end
 # <---- Invert Encoder ---->
 #==
