@@ -711,19 +711,10 @@ Categorical
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
-function OneHotEncode(array)
-    char_to_int = [(c, i) for (i, c) in enumerate(array)]
-    int_to_char = [(i, c) for (i, c) in enumerate(array)]
-           # integer encode input data
-    integer_encoded = [char_to_int[char] for char in array]
-           # one hot encode
-    onehot_encoded = []
-    for value in integer_encoded
-        letter = [0 for _ in 0:len(alphabet)]
-        letter[value] = 1
-        append!(oonehot_encoded,letter)
-    end
-    return(onehot_encoded)
+function OneHotEncode(df,symb)
+    for c in unique(df[symb])
+    df[Symbol(c)] = df[symb] .== c
+end
 end
 # <---- Invert Encoder ---->
 #==
