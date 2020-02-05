@@ -502,7 +502,6 @@ Model
       |___________/ Feature-Selection ___________\n
       |_____validate.permutation(model)
        """
-module validate
 #-------Model Metrics--------____________
 using Lathe
 ## <---- Mean Absolute Error ---->
