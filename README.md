@@ -8,8 +8,13 @@
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, DataFrame tools, Preprocessing, Machine-Learning Models, and Model Validation. Lathe features easy one line constructor model fit-predicting, fast dispatch, easy documentation, and a great code-base with strong deployability.</p>
         </div>
         </div>
-
-
+<h3>Also available in these fine languages!</h3>
+            <a href="https://github.com/emmettgb/Lathe.lisp"><img src="https://cdn.rawgit.com/serialhex/language-common-lisp/eaae981b68cff11951f296174f1248f03c7e1083/lisplogo_alien.svg" width="100" title="Lisp" alt="Lisp"></a><a href="https://github.com/emmettgb/Lathe.R"><img src="https://www.r-project.org/logo/Rlogo.svg" width="100" title="R" alt="R"><a href="https://github.com/emmettgb/PyLathe"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png" width="100" title="Python" alt="Python"></a>
+      </a> </br></br></br>
+    <h3>Documentation<h3>
+    <a href="http://lathe.ai/doc.html"><img src="https://cdn3.iconfinder.com/data/icons/documentation-blue-red/60/057_-_Document_Info-512.png" width="100" title="Documentation" alt="Documentation"></a>
+      <h3>Documentation<h3>
+    <a href="http://emmettboudreau.com/Lathe/doc.html"><img src="https://cdn3.iconfinder.com/data/icons/documentation-blue-red/60/057_-_Document_Info-512.png" width="82" height="86" title="Documentation" alt="Documentation"></a>
 **(Note that documentation is most up-to-date and well-written inside of the module, in Julia you can use ?() on any Lathe function to find out what said function does.)**
 
 ```julia
