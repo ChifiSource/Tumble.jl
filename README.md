@@ -12,9 +12,12 @@
         </div>
       </a> </br></br></br>
       <h3>Documentation<h3>
-    <a href="http://emmettboudreau.com/Lathe/doc.html"><img src="https://cdn3.iconfinder.com/data/icons/documentation-blue-red/60/057_-_Document_Info-512.png" width="82" height="86" title="Documentation" alt="Documentation"></a>
-**(Note that documentation is most up-to-date and well-written inside of the module, in Julia you can use ?() on any Lathe function to find out what said function does.)**
-
+  
+  
+  
+  **You can access Lathe documentation using the built in ?() method in Julia:**
+  
+  
 ```julia
 help?> Lathe.stats.mean
   Calculates the mean of a given array.
@@ -30,7 +33,6 @@ help?> Lathe.stats.mean
   10
 
 ```
-**Attention! :** Lathe is moving! We'll be moving to http://lathe.ai starting in Lathe 0.1.0 "Butterball", Lathe will be expanded with a wrapper using JuliaCall in both Python, and R. This will allow a wrapper to be created while still technically using Julia as a backend, controlled from the languages we all know and love. Additionally, Lathe is going to be ported to common Lisp! **Lathe is being ported to Lisp, Python, and R** because of familiarity and cross-platform domain. Starting version 0.1.0, you will be able to use Lathe in **4 different languages**.
 ## Features
 - Pipelines
 - An ever-expanding library of models for predicting continous features, and soon categorical features.
@@ -43,11 +45,11 @@ help?> Lathe.stats.mean
 - Serialization for pipelining, using one prediction function.
 - A small, and expanding distributions library.
 ## Add it!
-**LTS** 
+LTS 
  ```julia
  using Pkg; Pkg.add("Lathe")
  ```
- **Unstable** 
+ Unstable
  ```julia
  using Pkg; Pkg.add("Lathe"#Unstable)
  ```
