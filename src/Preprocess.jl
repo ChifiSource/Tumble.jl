@@ -1,0 +1,217 @@
+#================
+Preprocessing
+     Module
+================#
+@doc """
+      |====== Lathe.preprocess =====\n
+      |____________/ Generalized Processing ___________\n
+      |_____preprocess.TrainTestSplit(array)\n
+      |_____preprocess.ArraySplit(array)\n
+      |_____preprocess.SortSplit(array)\n
+      |_____preprocess.UniformSplit(array)\n
+      |____________/ Feature Scaling ___________\n
+      |_____preprocess.Rescalar(array)\n
+      |_____preprocess.ArbitraryRescale(array)\n
+      |_____preprocess.MeanNormalization(array)\n
+      |_____preprocess.StandardScalar(array)\n
+      |_____preprocess.UnitLScale(array)\n
+      |____________/ Categorical Encoding ___________\n
+      |_____preprocess.OneHotEncode(array)\n
+      |_____preprocess.InvertEncode(array)\n
+
+       """ ->
+module preprocess
+using Random
+using Lathe
+#===============
+Generalized
+    Data
+        Processing
+===============#
+# Train-Test-Split-----
+@doc """
+      Train Test split is used to create a validation set to toy accuracy
+      with. TrainTestSplit() takes a DataFrame and splits it at a certain
+      percentage of the data.\n
+      --------------------\n
+      df = DataFrame(:A => [1,2,3],:B => [4,5,6])\n
+      test,train = Lathe.preprocess.TrainTestSplit(df,at = 0.75)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.
+       """ ->
+function TrainTestSplit(df,at = 0.75)
+    sample = randsubseq(1:size(df,1), at)
+    trainingset = df[sample, :]
+    notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
+    testset = df[notsample, :]
+    return(trainingset,testset)
+end
+# Array-Split ----------
+@doc """
+      Array Split does the exact same thing as TrainTestSplit(), but to an
+      an array instead of a DataFrame\n
+      --------------------\n
+      array = [5,10,15]\n
+      test, train = Lathe.preprocess.ArraySplit(array,at = 0.75)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.
+       """ ->
+function ArraySplit(data, at = 0.7)
+    n = length(data)
+    idx = Random.shuffle(1:n)
+    train_idx = view(idx, 1:floor(Int, at*n))
+    test_idx = view(idx, (floor(Int, at*n)+1):n)
+    data[train_idx,:], data[test_idx,:]
+    return(test_idx,train_idx)
+end
+# Sort-Split -------------
+@doc """
+      SortSplit sorts the data from least to greatest, and then splits it,
+      ideal for quartile calculations.\n
+      --------------------\n
+      array = [5,10,15]\n
+      top25, lower75 = Lathe.preprocess.SortSplit(array,at = 0.75,rev = false)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.\n
+      rev:: Reverse, false by default, determines whether to sort least to
+      greatest, or greatest to least.\n
+       """ ->
+function SortSplit(data, at = 0.25, rev=false)
+  n = length(data)
+  sort!(data, rev=rev)  # Sort in-place
+  train_idx = view(data, 1:floor(Int, at*n))
+  test_idx = view(data, (floor(Int, at*n)+1):n)
+  return(test_idx,train_idx)
+end
+# Unshuffled Split ----
+@doc """
+      Uniform Split does the exact same thing as ArraySplit(), but observations
+      are returned split, but unsorted and unshuffled.\n
+      --------------------\n
+      array = [5,10,15]\n
+      test, train = Lathe.preprocess.UniformSplit(array,at = 0.75)\n
+      -------------------\n
+      PARAMETERS:\n
+      at:: Percentage value used to determine a point to split the data.
+       """ ->
+function UniformSplit(data, at = 0.7)
+    n = length(data)
+    idx = data
+    train_idx = view(idx, 1:floor(Int, at*n))
+    test_idx = view(idx, (floor(Int, at*n)+1):n)
+    data[train_idx,:], data[test_idx,:]
+    return(test_idx,train_idx)
+end
+#=======
+Numerical
+    Scaling
+=======#
+# ---- Rescalar (Standard Deviation) ---
+@doc """
+      Rescalar scales a feature based on the minimum and maximum of the array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.Rescalar(array)\n
+       """ ->
+function Rescalar(array)
+    min = minimum(array)
+    max = maximum(array)
+    v = [i = (i-min) / (max - min) for i in array]
+    return(v)
+end
+# ---- Arbitrary Rescalar ----
+@doc """
+      Arbitrary Rescaling scales a feature based on the minimum and maximum
+       of the array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.Rescalar(array)\n
+       """ ->
+function ArbitraryRescale(array)
+    a = minimum(array)
+    b = maximum(array)
+    v = [x = a + ((i-a*i)*(b-a)) / (b-a) for x in array]
+    return(v)
+end
+# ---- Mean Normalization ----
+@doc """
+      Mean Normalization normalizes the data based on the mean.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.MeanNormalization(array)\n
+       """ ->
+function MeanNormalization(array)
+    avg = Lathe.stats.mean(array)
+    a = minimum(array)
+    b = maximum(array)
+    v = [i = (i-avg) / (b-a) for i in array]
+    return(v)
+end
+# ---- Quartile Normalization ----
+function QuartileNormalization(array)
+    q1 = firstquar(array)
+    q2 = thirdquar(array)
+
+end
+# ---- Z Normalization ----
+@doc """
+      Standard Scalar z-score normalizes a feature.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.StandardScalar(array)\n
+       """ ->
+function StandardScalar(array)
+    q = Lathe.stats.std(array)
+    avg = Lathe.stats.mean(array)
+    v = [i = (i-avg) / q for i in array]
+    return(v)
+end
+# ---- Unit L-Scale normalize ----
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Unit L Scaling uses eigen values to normalize the data.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.UnitLScale(array)\n
+       """ ->
+function UnitLScale(array)
+
+end
+#==========
+Categorical
+    Encoding
+==========#
+# <---- One Hot Encoder ---->
+
+@doc """
+      One hot encoder replaces a single feature with sub arrays containing
+      boolean values (1 or 0) for each individual category.\n
+      --------------------\n
+      df = DataFrame(:A => ['w','b','w'], :B => [5, 10, 15])\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(df,:A)\n
+       """
+function OneHotEncode(df,symb)
+    copy = df
+    for c in unique(copy[!,symb])
+    copy[!,Symbol(c)] = copy[!,symb] .== c
+    end
+    return(copy)
+end
+# <---- Invert Encoder ---->
+#==
+@doc """
+      FUNCTION NOT YET WRITTEN\n
+      Invert Encoder (Not written.)\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
+       """ ->
+       ==#
+function InvertEncode(array)
+
+end
+#-----------------------------
+end
