@@ -522,10 +522,28 @@ function pred_logisticregression(m,xt)
     end
 
 end
+#==
+Nueral
+    Network
+        Framework
+==#
+mutable struct Chain
+    layers
+end
+mutable struct Network
+    chain
+    x
+    y
+end
+# Callback:
+function pred_network(m,x)
+
+end
 #=====
 Prediction
     Dispatch
 =====#
+predict(m::Network,x) = pred_network(m,x)
 predict(m::meanBaseline,x) = pred_meanbaseline(m,x)
 predict(m::FourSquare,x) = pred_foursquare(m,x)
 predict(m::majBaseline,x) = pred_majbaseline(m,x)
