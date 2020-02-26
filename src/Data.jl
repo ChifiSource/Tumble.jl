@@ -296,5 +296,5 @@ function Base.iterate(dl::MiniBatch, state=undef)
 	Threads.unlock(l)
     return ((minibatch), (idxs, count + bs))
 end
-#------------------------------------------------------------
+#-----------------------------------------------------------
 end
