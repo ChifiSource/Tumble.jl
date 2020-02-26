@@ -28,6 +28,7 @@ Random.jl
       |__________Lathe.validate\n
       |__________Lathe.preprocess\n
       |__________Lathe.models\n
+      |__________Lathe.data\n
       |______________________________\n
       Use ?(Lathe.package) for information!\n
       [uuid]\n
@@ -41,6 +42,7 @@ module Lathe
 include("Stats.jl")
 include("Models.jl")
 include("Preprocess.jl")
+include("Data.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
