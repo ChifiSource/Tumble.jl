@@ -105,33 +105,6 @@ function pred_meanbaseline(m,xt)
     return(e)
 end
 #==
-Regression
-    Tree
-==#
-# Model Type
-@doc """
-      Pipelines can contain a predictable Lathe model with preprocessing that
-      occurs automatically.\n
-      --------------------\n
-      x = [7,6,5,6,5]\n
-      y  = [3.4.5.6.3]\n
-      xtrain = [7,5,4,5,3,5,7,8]\n
-      n_divisions = 4\n
-      model = Lathe.models.RegressionTree(x,y,n_divisions)\n
-      --------------------\n
-      HYPER PARAMETERS\n
-      n_divisions:: n_divisions determines the number of divisions that the
-      regression tree should take."""
-mutable struct RegressionTree
-    x
-    y
-    n_divisions
-end
-#----  Callback
-function pred_regressiontree(m,xt)
-
-end
-#==
 Four
     Square
 ==#
@@ -144,17 +117,7 @@ Four
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
       model = Lathe.models.FourSquare(x,y)\n"""
-      #==
-      Four
-          Square
-      ==#
-      # Model Type
-      mutable struct FourSquare
-          x
-          y
-      end
-      #----  Callback
-      function pred_foursquare(m,xt)
+function FourSquare(m,xt)
           # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
           # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
               x = m.x
@@ -225,49 +188,6 @@ Four
               return(e)
       end
 #==
-Isotonic
-    Regression
-==#
-@doc """
-      FUNCTION NOT YET WRITTEN\n
-      Isotonic Regression is used to predict continuous features with high
-      variance.\n
-      --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n"""
-mutable struct IsotonicRegression
-    x
-    y
-end
-function pred_isotonicregression(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
-end
-#==
-Multiple
-    Linear
-        Regression
-==#
-@doc """
-      Multiple Linear Regression is used to influence LinearRegression with
-      multiple features by averaging their predictions.\n
-      --------------------\n
-      x = [7,6,5,6,5]\n
-      y  = [3.4.5.6.3]\n
-      xtrain = [7,5,4,5,3,5,7,8]\n
-      model = Lathe.models.MultipleLinearRegression(x,y)\n"""
-mutable struct MultipleLinearRegression
-    x
-    y
-end
-function pred_multiplelinearregression(m,xt)
-    if length(m.x) != length(xt)
-        throw(ArgumentError("Bad Feature Shape |
-        Training Features are not equal!",))
-    end
-end
-#==
 Linear
     Regression
 ==#
@@ -282,20 +202,12 @@ Linear
       model = Lathe.models.LinearRegression(x,y)
       y_pred = Lathe.models.predict(model,xtrain)\n
        """
-mutable struct LinearRegression
-    x
-    y
-end
-#----  Callback
-function pred_LinearRegression(m,xt)
+function LinearRegression(m,xt)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
-    if length(m.x) != length(m.y)
+    if length(x) != length(y)
         throw(ArgumentError("The array shape does not match!"))
     end
-    # Get our x and y as easier variables
-    x = m.x
-    y = m.y
     # Get our Summations:
     Σx = sum(x)
     Σy = sum(y)
@@ -313,8 +225,9 @@ function pred_LinearRegression(m,xt)
     a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
-    xt = [i = a + (b * i) for i in xt]
-    return(xt)
+    # The part that is super struct:
+    predict(xt) = (xt = [i = a + (b * i) for i in xt])
+    (test)->(a;b;predict)
 end
 #==
 Linear
