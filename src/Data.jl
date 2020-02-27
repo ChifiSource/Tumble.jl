@@ -3,21 +3,6 @@ Serialization
 	Tools
 =====#
 module data
-struct VectorDataset{A,B} <: Dataset
-    x::A
-    y::B
-end
-
-Base.length(ds::VectorDataset) = length(ds.x)
-Base.getindex(ds::VectorDataset, idx) = return (ds.x[idx], ds.y[idx])
-Base.length(ds::JLDDataset) = length(ds.keys)
-
-function Base.getindex(ds::JLDDataset, idx)
-	key = ds.keys[idx]
-	ds.f[key]
-end
-Base.length(ds::JuliaDBDataset) = length(ds.filenames)
-
 struct ImageDataset <: Dataset
     filenames::Vector{String}
     labels::Vector
