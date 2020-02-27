@@ -54,7 +54,7 @@ end
 #==
 TRANSFORMERS
 ==#
-abstract type Transformer end
+struct Transformer end
 
 Base.length(t::Transformer) = length(t.ds)
 function (t::Transformer)(ds)
