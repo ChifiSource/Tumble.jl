@@ -10,14 +10,6 @@ end
 
 Base.length(ds::VectorDataset) = length(ds.x)
 Base.getindex(ds::VectorDataset, idx) = return (ds.x[idx], ds.y[idx])
-
-struct JLDDataset <: Dataset
-	f
-    keys
-
-	JLDDataset(f) = new(f,keys(f))
-end
-
 Base.length(ds::JLDDataset) = length(ds.keys)
 
 function Base.getindex(ds::JLDDataset, idx)
@@ -41,7 +33,6 @@ struct ImageDataset <: Dataset
 		end
 		new(filenames, labels, resize)
 	end
-
 end
 
 Base.length(ds::ImageDataset) = length(ds.filenames)
