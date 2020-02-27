@@ -61,9 +61,6 @@ mutable struct Pipeline
     model
 end
 function pred_pipeline(m,x)
-    for step in m.steps
-        x = step(x)
-    end
     x = [x = step(x) for step in m.steps]
     ypr = model.predict(x)
     return(ypr)
