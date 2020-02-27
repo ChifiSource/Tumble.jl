@@ -431,7 +431,7 @@ function update_param(parameters , grads , learning_rate)
     end
     return parameters
 end
-function Network(X,Y,layers_dimensions)
+function Network(X,Y,layers_dimensions,n_iter)
     params = init_param(layers_dimensions)
     costs = []
     iters = []
