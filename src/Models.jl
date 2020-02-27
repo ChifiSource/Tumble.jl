@@ -65,7 +65,7 @@ function pred_pipeline(m,x)
         x = step(x)
     end
     x = [x = step(x) for step in m.steps]
-    ypr = Lathe.models.predict(m.model,x)
+    ypr = model.predict(x)
     return(ypr)
 end
 #==============
@@ -314,7 +314,7 @@ function pred_LinearRegression(m,xt)
     # Calculate b
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
     xt = [i = a + (b * i) for i in xt]
-    return(xt   )
+    return(xt)
 end
 #==
 Linear
@@ -340,18 +340,11 @@ Linear
       - :WLS = Weighted Least Squares\n
       - :GLS = General Least Squares
        """
-mutable struct LeastSquare
-    x
-    y
-    Type
-end
-function pred_leastsquare(m,xt)
-    if length(m.x) != length(m.y)
+function LeastSquare(x,y,Type)
+    if length(x) != length(y)
         throw(ArgumentError("The array shape does not match!"))
     end
-    if m.Type == :LIN
-        x = m.x
-        y = m.y
+    if Type == :LIN
         xy = x .* y
         sxy = sum(xy)
         n = length(x)
@@ -361,23 +354,14 @@ function pred_leastsquare(m,xt)
         sy = sum(y)
         # Calculate the slope:
         slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
-        # Calculate the y intercept
+     # Calculate the y intercept
         b = (sy - (slope*sx)) / n
-        y_pred = [x = (slope * x) + b for x in xt]
     end
-    if m.Type == :OLS
-
+    predict(xt) =
+    if Type == :LIN
+        (xt = [z = (slope * x) + b for x in xt])
     end
-    if m.Type == :WLS
-
-    end
-    if m.Type == :GLS
-
-    end
-    if m.Type == :GRG
-
-    end
-    return(y_pred)
+    (test)->(slope;b;predict)
 end
 #==
 Ridge
@@ -390,70 +374,10 @@ Ridge
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """
-mutable struct RidgeRegression
-    x
-    y
-end
-#==
-Exponential
-    Scalar
-==#
-mutable struct ExponentialScalar
-    x
-    y
-end
-function pred_exponentialscalar(m,xt)
-    x = m.x
-    y = m.y
-    xdiv1,x = Lathe.preprocess.SortSplit(x)
-    xdiv2,x = Lathe.preprocess.SortSplit(x)
-    xdiv3,x = Lathe.preprocess.SortSplit(x)
-    xdiv4,x = Lathe.preprocess.SortSplit(x)
-    ydiv1,y = Lathe.preprocess.SortSplit(y)
-    ydiv2,y = Lathe.preprocess.SortSplit(y)
-    ydiv3,y = Lathe.preprocess.SortSplit(y)
-    ydiv4,y = Lathe.preprocess.SortSplit(y)
-    scalarlist1 = ydiv1 ./ xdiv1
-    scalarlist2 = ydiv2 ./ xdiv2
-    scalarlist3 = ydiv3 ./ xdiv3
-    scalarlist4 = ydiv3 ./ xdiv3
-    scalarlist5 = y ./ x
-    # Now we sortsplit the x train
-    xtdiv1,xt2 = Lathe.preprocess.SortSplit(xt)
-    xtdiv2,xt2 = Lathe.preprocess.SortSplit(xt2)
-    xtdiv3,xt2 = Lathe.preprocess.SortSplit(xt2)
-    xtdiv4,null = Lathe.preprocess.SortSplit(xt2)
-    range1 = minimum(xtdiv1):maximum(xtdiv1)
-    range2 = minimum(xtdiv2):maximum(xtdiv2)
-    range3 = minimum(xtdiv3):maximum(xtdiv3)
-    range4 = minimum(xtdiv4):maximum(xtdiv4)
-    range5 = minimum(null):maximum(null)
-    returnlist = []
-    for i in xt
-        if i in range1
-            res = i * rand(scalarlist1)
-            append!(returnlist,res)
-        elseif i in range2
-            predlist = []
-            res = i * rand(scalarlist2)
-            append!(returnlist,res)
+function RidgeRegression(x,y)
 
-        elseif i in range3
-            predlist = []
-            res = i * rand(scalarlist3)
-            append!(returnlist,res)
-        elseif i in range4
-            predlist = []
-            res = i * rand(scalarlist4)
-            append!(returnlist,res)
-        else
-            predlist = []
-            res = i * rand(scalarlist5)
-            append!(returnlist,res)
-        end
-    end
-    return(returnlist)
 end
+
 #======================================================================
 =======================================================================
             CATEGORICAL MODELS             CATEGORICAL MODELS
@@ -471,17 +395,7 @@ Majority
       classification in an array.\n
       --------------------\n
        """
-mutable struct majBaseline
-    y
-end
-#----  Callback
-function pred_majbaseline(m,xt)
-    y = m.y
-    e = []
-    mode = Lathe.stats.mode(xt)
-    for i in xt
-        append!(e,i)
-    end
+function MajBaseline
 
 end
 #==
@@ -489,14 +403,7 @@ Multinomial
     Naive
         Bayes
 ==#
-mutable struct MultinomialNB
-    x
-    y
-end
-function pred_multinomialnb(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
+function MultinomialNB(x,y)
 
 end
 #==
@@ -512,14 +419,7 @@ Logistic
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
        ==#
-mutable struct LogisticRegression
-    x
-    y
-end
-function pred_logisticregression(m,xt)
-    if length(m.x) != length(m.y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
+function LogisticRegression(x,y)
 
 end
 #==
@@ -527,32 +427,6 @@ Nueral
     Network
         Framework
 ==#
-mutable struct Chain
-    layers
-end
-mutable struct Network
-    chain
-    x
-    y
-end
-# Callback:
-function pred_network(m,x)
-
-end
-#=====
-Prediction
-    Dispatch
-=====#
-predict(m::Network,x) = pred_network(m,x)
-predict(m::meanBaseline,x) = pred_meanbaseline(m,x)
-predict(m::FourSquare,x) = pred_foursquare(m,x)
-predict(m::majBaseline,x) = pred_majbaseline(m,x)
-predict(m::RegressionTree,x) = pred_regressiontree(m,x)
-predict(m::LinearRegression,x) = pred_LinearRegression(m,x)
-predict(m::RidgeRegression,x) = pred_ridgeregression(m,x)
-predict(m::LeastSquare,x) = pred_leastsquare(m,x)
-predict(m::LogisticRegression,x) = pred_logisticregression(m,x)
-predict(m::Pipeline,x) = pred_pipeline(m,x)
 #
 #----------------------------------------------
 end
