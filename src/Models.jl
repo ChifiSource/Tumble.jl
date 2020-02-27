@@ -89,20 +89,12 @@ Mean
        xtrain = [7,5,4,5,3,5,7,8]\n
        model = Lathe.models.meanBaseline(y)
        y_pred = Lathe.models.predict(model,xtrain)\n
-        """ ->
-mutable struct meanBaseline
-    y
-end
-#----  Callback
-function pred_meanbaseline(m,xt)
-    e = []
+        """
+function MeanBaseline(y)
     m = Lathe.stats.mean(m.y)
-    print("-Lathe.models Mean Baseline-")
-    print("mean: ",m)
-    for i in xt
-        append!(e,m)
-    end
-    return(e)
+    predict(xt) =
+    xt = [v = m for v in xt]
+    (test)->(m;predict)
 end
 #==
 Four
