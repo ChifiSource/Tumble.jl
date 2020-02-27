@@ -3,12 +3,35 @@ Serialization
 	Tools
 =====#
 module data
-struct ImageDataset <: Dataset
+struct Vector{A,B} <: DataFrame
+    x::A
+    y::B
+end
+
+Base.length(ds::VectorDataFrame) = length(ds.x)
+Base.getindex(ds::VectorDataFrame, idx) = return (ds.x[idx], ds.y[idx])
+
+struct JLDDataFrame <: DataFrame
+	f
+    keys
+
+	JLDDataFrame(f) = new(f,keys(f))
+end
+
+Base.length(ds::JLDDataFrame) = length(ds.keys)
+
+function Base.getindex(ds::JLDDataFrame, idx)
+	key = ds.keys[idx]
+	ds.f[key]
+end
+Base.length(ds::JuliaDBDataFrame) = length(ds.filenames)
+
+struct ImageDataFrame <: DataFrame
     filenames::Vector{String}
     labels::Vector
 	resize::Union{Nothing,Tuple}
 
-	function ImageDataset(filenames, labels; resize=nothing)
+	function ImageDataFrame(filenames, labels; resize=nothing)
 		@assert length(filenames) == length(labels)
 		try
 			@eval import Images
@@ -18,11 +41,12 @@ struct ImageDataset <: Dataset
 		end
 		new(filenames, labels, resize)
 	end
+
 end
 
-Base.length(ds::ImageDataset) = length(ds.filenames)
+Base.length(ds::ImageDataFrame) = length(ds.filenames)
 
-function Base.getindex(ds::ImageDataset, idx)
+function Base.getindex(ds::ImageDataFrame, idx)
 	filename = ds.filenames[idx]
 	# img = Images.load(filename) has multi-thread issue
     img = ImageMagick.load(filename)
@@ -35,32 +59,32 @@ function Base.getindex(ds::ImageDataset, idx)
 	return (img, ds.labels[idx])
 end
 
-struct DFDataset <: Dataset
+struct DFDataFrame <: DataFrame
 	df
     X::Vector{Symbol}
 	Y::Vector{Symbol}
 
-	DFDataset(df,X,Y) = new(df, makeArray(X), makeArray(Y))
+	DFDataFrame(df,X,Y) = new(df, makeArray(X), makeArray(Y))
 end
 
-Base.length(ds::DFDataset) = size(df,1)
+Base.length(ds::DFDataFrame) = size(df,1)
 
-function Base.getindex(ds::DFDataset, idx)
+function Base.getindex(ds::DFDataFrame, idx)
 	df = ds.df
 	(Vector(df[idx, ds.X]), Vector(df[idx, ds.Y]))
 end
 #==
 TRANSFORMERS
 ==#
-abstract type Transformer <: Dataset end
+abstract type Transformer <: DataFrame end
 
 Base.length(t::Transformer) = length(t.ds)
-function (t::Transformer)(ds::Dataset)
+function (t::Transformer)(ds::DataFrame)
     t.ds = ds
     return t
 end
 mutable struct NoisingTransfomer <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
 	noiselevel
 	axis
 
@@ -82,7 +106,7 @@ function Base.getindex(t::NoisingTransfomer, idx)
 	return (X,Y)
 end
 mutable struct Normalizer <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
 	dims::Array{Int}
 	means
 	stds
@@ -109,7 +133,7 @@ function Base.getindex(t::Normalizer, idx)
 	return (X,Y)
 end
 mutable struct ImageCrop <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
 	shapeX
 	shapeY
 
@@ -156,7 +180,7 @@ function onehot(X::AbstractArray, labels, dtype::Type)
 end
 
 mutable struct OneHotEncoder <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
 	labels
 	axis
 	dtype::Type
@@ -179,7 +203,7 @@ function Base.getindex(t::OneHotEncoder, idx)
 	return (X,Y)
 end
 mutable struct Subset <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
 	idxs::AbstractArray{Int}
 
     Subset(idxs::AbstractArray{Int}) = new(nothing, idxs)
@@ -189,7 +213,7 @@ Base.length(t::Subset) = length(t.idxs)
 Base.getindex(t::Subset, idx) = t.ds[t.idxs[idx]]
 
 mutable struct Split <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
 	valid_perc::Float64
 	shuffle::Bool
 
@@ -197,7 +221,7 @@ mutable struct Split <: Transformer
 		new(nothing, valid_perc, shuffle)
 end
 
-function (t::Split)(ds::Dataset)
+function (t::Split)(ds::DataFrame)
     t.ds = ds
 	maxl = length(ds)
 
@@ -228,7 +252,7 @@ end
 create_mb(arr::AbstractArray, batchsize) = similar(arr, size(arr)..., batchsize)
 create_mb(t::Tuple, batchsize)= Tuple(collect(create_mb(elem, batchsize) for elem in t))
 mutable struct MiniBatch <: Transformer
-    ds::Union{Dataset, Nothing}
+    ds::Union{DataFrame, Nothing}
     batchsize::Int
     shuffle::Bool
 
@@ -257,7 +281,7 @@ function Base.iterate(dl::MiniBatch, state=undef)
 
 		idx = i + count - 1
 		sample = dl.ds[idx]
-		@assert sample isa Tuple "Datasets should return Tuples, not $(typeof(sample))"
+		@assert sample isa Tuple "DataFrames should return Tuples, not $(typeof(sample))"
 
 		if minibatch === nothing
 			Threads.lock(l)
