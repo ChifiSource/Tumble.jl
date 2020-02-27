@@ -418,7 +418,89 @@ function relu(X)
     rel = max.(0,X)
     return rel , X
 end
+
+function backward_relu(dA , cache_activation)
+    return dA.*(cache_activation.>0)
+end
+
+function backward_sigmoid(dA , cache_activation)
+    return dA.*(sigmoid(cache_activation)[1].*(1 .- sigmoid(cache_activation)[1]))
+end
+
+function backward_activation_step(dA , cache , activation)
+
+    linear_cache , cache_activation = cache
+    if (activation == "relu")
+
+        dZ = backward_relu(dA , cache_activation)
+        dW , db , dA_prev = backward_linear_step(dZ , linear_cache)
+
+    elseif (activation == "sigmoid")
+
+        dZ = backward_sigmoid(dA , cache_activation)
+        dW , db , dA_prev = backward_linear_step(dZ , linear_cache)
+
+    end
+
+    return dW , db , dA_prev
+
+end
+function model_backwards_step(A_l , Y , caches)
+
+    grads = Dict()
+
+    L = length(caches)
+
+    m = size(A_l)[2]
+
+    Y = reshape(Y , size(A_l))
+    dA_l = (-(Y./A_l) .+ ((1 .- Y)./( 1 .- A_l)))
+    current_cache = caches[L]
+    grads[string("dW_" , string(L))] , grads[string("db_" , string(L))] , grads[string("dA_" , string(L-1))] = backward_activation_step(dA_l , current_cache , "sigmoid")
+    for l=reverse(0:L-2)
+        current_cache = caches[l+1]
+        grads[string("dW_" , string(l+1))] , grads[string("db_" , string(l+1))] , grads[string("dA_" , string(l))] = backward_activation_step(grads[string("dA_" , string(l+1))] , current_cache , "relu")
+
+    end
+
+    return grads
+
+end
+
+function update_param(parameters , grads , learning_rate)
+
+    L = Int(length(parameters)/2)
+
+    for l=0:(L-1)
+
+        parameters[string("W_" , string(l+1))] -= learning_rate.*grads[string("dW_" , string(l+1))]
+        parameters[string("b_",string(l+1))] -= learning_rate.*grads[string("db_",string(l+1))]
+
+    end
+
+    return parameters
+
+end
 function Network(x,y,chains)
+    params = init_param(layers_dimensions)
+    costs = []
+    iters = []
+    accuracy = []
+    for i=1:n_iter
+        A_l , caches  = model_forward_step(X , params)
+        cost = cost_function(A_l , Y)
+        acc = check_accuracy(A_l , Y)
+        grads  = model_backwards_step(A_l , Y , caches)
+        params = update_param(params , grads , learning_rate)
+        println("Iteration ->" , i)
+        println("Cost ->" , cost)
+        println("Accuracy -> " , acc)
+        push!(iters , i)
+        push!(costs , cost)
+        push!(accuracy , acc)
+        predict(xt) = (xt + 4)
+        (test)->(costs;params;predict)
+    end
 
 end
 #
