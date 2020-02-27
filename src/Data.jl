@@ -54,14 +54,10 @@ end
 #==
 TRANSFORMERS
 ==#
-struct Transformer end
+abstract type Transformer end
 
 Base.length(t::Transformer) = length(t.ds)
-function (t::Transformer)(ds)
-    t.ds = ds
-    return t
-end
-mutable struct NoisingTransfomer <: Transformer
+mutable struct NoisingTransfomer
     ds::Union{DataFrame, Nothing}
 	noiselevel
 	axis
