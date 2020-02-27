@@ -3,30 +3,8 @@ Serialization
 	Tools
 =====#
 module data
-struct Vector{A,B} <: DataFrame
-    x::A
-    y::B
-end
-
-Base.length(ds::VectorDataFrame) = length(ds.x)
-Base.getindex(ds::VectorDataFrame, idx) = return (ds.x[idx], ds.y[idx])
-
-struct JLDDataFrame <: DataFrame
-	f
-    keys
-
-	JLDDataFrame(f) = new(f,keys(f))
-end
-
-Base.length(ds::JLDDataFrame) = length(ds.keys)
-
-function Base.getindex(ds::JLDDataFrame, idx)
-	key = ds.keys[idx]
-	ds.f[key]
-end
-Base.length(ds::JuliaDBDataFrame) = length(ds.filenames)
-
-struct ImageDataFrame <: DataFrame
+using DataFrames
+struct ImageDataFrame
     filenames::Vector{String}
     labels::Vector
 	resize::Union{Nothing,Tuple}
@@ -59,7 +37,7 @@ function Base.getindex(ds::ImageDataFrame, idx)
 	return (img, ds.labels[idx])
 end
 
-struct DFDataFrame <: DataFrame
+struct DFDataFrame
 	df
     X::Vector{Symbol}
 	Y::Vector{Symbol}
@@ -76,10 +54,10 @@ end
 #==
 TRANSFORMERS
 ==#
-abstract type Transformer <: DataFrame end
+abstract type Transformer end
 
 Base.length(t::Transformer) = length(t.ds)
-function (t::Transformer)(ds::DataFrame)
+function (t::Transformer)(ds)
     t.ds = ds
     return t
 end
