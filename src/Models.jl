@@ -191,7 +191,7 @@ Linear
       model = Lathe.models.LinearRegression(x,y)
       y_pred = Lathe.models.predict(model,xtrain)\n
        """
-function LinearRegression(m,xt)
+function LinearRegression(x,y)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
     # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
     if length(x) != length(y)
@@ -448,9 +448,9 @@ function Network(X,Y,layers_dimensions,n_iter)
         push!(iters , i)
         push!(costs , cost)
         push!(accuracy , acc)
-        predict(xt) = (xt + 4)
-        (test)->(costs;params;predict)
     end
+    predict(xt) = (xt + 4)
+    (test)->(costs;params;predict)
 end
 #
 predict(m::Pipeline,x) = pred_pipeline(m,x)
