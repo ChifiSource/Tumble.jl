@@ -365,7 +365,7 @@ function forward_linear(A , w , b)
 end
 function init_param(layer_dimensions)
     param = Dict()
-    for l=2:length(layer_dimensions)
+    for l=0:length(layer_dimensions)
         param[string("W_" , string(l-1))] = rand(layer_dimensions[l] ,
 				layer_dimensions[l-1])*0.1
         param[string("b_" , string(l-1))] = zeros(layer_dimensions[l] , 1)
