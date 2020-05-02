@@ -34,6 +34,7 @@ Stats
       |_____stats.binomial_dist(positives,size)\n
        """ ->
 module stats
+include("Distributions.jl")
 #<----Mean---->
 @doc """
       Calculates the mean of a given array.\n
@@ -42,7 +43,7 @@ module stats
       mean = Lathe.stats.mean(array)\n
       println(mean)\n
         10
-       """ ->
+       """
 function mean(array)
     observations = length(array)
     average = sum(array)/observations
@@ -409,13 +410,6 @@ function cond_prob(p,a,b)
     cond = p*(a|b)
     return(cond)
 end
-#=========================
-Distributions section!!!!!
-~Added Lathe 0.0.6 ~
-=========================#
-function bernoulli_dist()
-    # P(x) = P^x(1-P)^1-x for x=0 eller 1
-end
 @doc """
       Binomial Distribution is a distribution well known for its use in
            statistical tests and decision making models.\n
@@ -423,31 +417,11 @@ end
       array = [5,10,15]\n
       r = Lathe.stats.anova(array)\n
        """ ->
-function binomial_dist(positives,size)
-    # p = n! / x!(n-x!)*π^x*(1-π)^N-x
-    n = size
-    x = positives
-    factn = factorial(big(n))
-    factx = factorial(big(x))
-    nx = factn / (factx * (n-x))
-    return(nx)
-end
-# <---- Chi Distribution --->
-@doc """
-      FUNCTION NOT YET WRITTEN\n
-      Chi Distribution in another well-known distribution well known for being
-      used in statistical tests.\n
-      --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
-       """ ->
-function chidist(x,e)
-    #
-end
+
+
 #================
 Model
     Validation
-        Module
 ================#
 @doc """
       |====== Lathe.validate ======\n
@@ -458,7 +432,6 @@ Model
       |_____validate.permutation(model)
        """
 #-------Model Metrics--------____________
-using Lathe
 ## <---- Mean Absolute Error ---->
 @doc """
       Mean absolute error (MAE) subtracts two arrays and averages the
@@ -512,18 +485,6 @@ function r2(actual,pred)
     rsq = r^2
     rsq = rsq * 100
     return(rsq)
-end
-# --- Get Permutation ---
-@doc """
-      FUNCTION NOT YET WRITTEN\n
-      Permutations are used when feature importance is taken into account for a
-          model.\n
-      --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
-       """
-function permutation(model)
-
 end
 #---------------------------
 end
