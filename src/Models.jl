@@ -351,8 +351,43 @@ Logistic
       scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
        """ ->
        ==#
-function LogisticRegression(x,y)
+function LogisticRegression(X, y, λ=0.0001, fit_intercept=true, η=0.01, max_iter=1000)
+    θ, 𝐉 = logistic_regression_sgd(X, y, 0.0001, true, 0.3, 3000);
+    predict(xt) = yhat = predict_class(predict_proba(xt,0))
+    cost = 𝐉
+    (var) -> (predict;cost)
+end
+function sigmoid(z)
+    return 1 ./ (1 .+ exp.(.-z))
+end
 
+function regularised_cost(X, y, θ, λ)
+    m = length(y)
+    h = sigmoid(X * θ)
+    positive_class_cost = ((-y)' * log.(h))
+    negative_class_cost = ((1 .- y)' * log.(1 .- h))
+    lambda_regularization = (λ/(2*m) * sum(θ[2 : end] .^ 2))
+    𝐉 = (1/m) * (positive_class_cost - negative_class_cost) + lambda_regularization
+    ∇𝐉 = (1/m) * (X') * (h-y) + ((1/m) * (λ * θ))
+    ∇𝐉[1] = (1/m) * (X[:, 1])' * (h-y)
+           return (𝐉, ∇𝐉)
+end
+function predict_proba(X, θ, fit_intercept=true)
+    m = size(X)[1]
+
+    if fit_intercept
+        constant = ones(m, 1)
+        X = hcat(constant, X)
+    else
+        X
+    end
+
+    h = sigmoid(X * θ)
+    return h
+end
+
+function predict_class(proba, threshold=0.5)
+    return proba .>= threshold
 end
 #==
 Nueral
@@ -410,10 +445,6 @@ function backward_linear_step(dZ , cache)
     db = sum(dZ , dims = 2)/m
     dA_prev = (W')* dZ
     return dW , db , dA_prev
-end
-function sigmoid(X)
-    sigma = 1 ./(1 .+ exp.(.-X))
-    return sigma , X
 end
 function relu(X)
     rel = max.(0,X)
