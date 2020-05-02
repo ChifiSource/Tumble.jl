@@ -7,7 +7,7 @@
       --------------------\n
       array = [5,10,15]\n
       r = Lathe.stats.anova(array)\n
-       """ ->
+       """
 function chidist(x,e)
     #
 end
@@ -36,7 +36,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.StandardScalar(array)\n
-       """ ->
+       """
 function normal(array)
     q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
