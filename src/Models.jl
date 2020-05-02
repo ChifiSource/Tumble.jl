@@ -18,10 +18,11 @@ include("Distributions.jl")
       |_____models.RidgeRegression(x,y)\n
       |_____models.LinearRegression(x,y)\n
       |_____models.LeastSquare(x,y,Type)\n
+      |_____models.PowerLog(prob1,prob2)\n
       |____________/ Categorical Models ___________\n
       |_____models.LogisticRegression(x,y)\n
       |_____models.majBaseline\n
-       """ ->
+       """
 module models
 #==
 Base

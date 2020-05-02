@@ -16,23 +16,24 @@ Stats
       |_____stats.firstquar(array)\n
       |_____stats.secondquar(array)\n
       |_____stats.thirdquar(array)\n
-      |_____stats.getranks(array,rev = false)\n
       | ~~~~~~~~~~ Inferential ~~~~~~~~~~~\n
       |_____stats.independent_t(sample,general)\n
-      |_____stats.paired_t(array)\n
       |_____stats.spearman(var1,var2)\n
       |_____stats.pearson(x,y)\n
       |_____stats.chisqu(array)\n
       |_____stats.sign(array)\n
       |_____stats.f_test(sample,general)\n
-      |_____stats.anova(arra)\n
       | ~~~~~~~~~~ Bayesian ~~~~~~~~~~~\n
       |_____stats.bay_ther(p,a,b)\n
       |_____stats.cond_prob(p,a,b)\n
       | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
-      |_____stats.bournelli_dist(array)\n
-      |_____stats.binomial_dist(positives,size)\n
-       """ ->
+      |=== DISTRIBUTIONS HAVE NOW BEEN MOVED!\n
+      |||||Now you can just use binomial_dist() or normal() for example\n
+      |====== validate ======\n
+      |____________/ Metrics ___________\n
+      |_____validate.mae(actual,pred)\n
+      |_____validate.r2(actual,pred)\n
+       """
 module stats
 include("Distributions.jl")
 #<----Mean---->
@@ -111,7 +112,7 @@ end
       confidence: Confidence is a float percentage representing the level of
       confidence required in your test. The confidence metric is used
       exclusively for calculating the interval.
-       """ ->
+       """
 function confiints(data, confidence=.95)
     mean = mean(data)
     std = std(data)
@@ -125,7 +126,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       ste = Lathe.stats.standarderror(array)\n
-       """ ->
+       """
 function standarderror(data)
     std = std(data)
     sample = length(data)
@@ -138,7 +139,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       std = Lathe.stats.std(array)\n
-       """ ->
+       """
 function std(array3)
     m = mean(array3)
     [i = (i-m) ^ 2 for i in array3]
@@ -153,7 +154,7 @@ end
       x = [5,10,15]\n
       y = [5,10,15]\n
       r = Lathe.stats.correlationcoeff(x,y)\n
-       """ ->
+       """
 function correlationcoeff(x,y)
     n = length(x)
     yl = length(y)
@@ -177,7 +178,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       z = Lathe.stats.z(array)\n
-       """ ->
+       """
 function z(array)
     x̄ = mean(array)
     σ = std(array)
@@ -228,7 +229,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       q2 = Lathe.stats.secondquar(array)\n
-       """ ->
+       """
 function getranks(array,rev = false)
     sortedar = sort(array,rev=rev)
     num = 1
@@ -248,7 +249,7 @@ end
       sample = [5,10,15]
       general = [15,25,35]\n
       t = Lathe.stats.independent_t(sample,general)\n
-       """ ->
+       """
 function independent_t(sample,general)
     sampmean = mean(sample)
     genmean = mean(general)
@@ -262,13 +263,13 @@ function independent_t(sample,general)
     return(t)
 end
 # - Paired
-@doc """
-    THIS FUNCTION IS NOT YET WRITTEN\n
-      Paired T (Dependent T) is a T-test that doesn't require a sample.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q2 = Lathe.stats.paired_t(var1,var2)\n
-       """ ->
+#@doc """
+#    THIS FUNCTION IS NOT YET WRITTEN\n
+#      Paired T (Dependent T) is a T-test that doesn't require a sample.\n
+#      --------------------\n
+#      array = [5,10,15]\n
+#      q2 = Lathe.stats.paired_t(var1,var2)\n
+#       """ ->
 function paired_t(var1,var2)
     d = var1 .- var2
     d̄ = mean(x)
@@ -295,7 +296,7 @@ end
       x = [5,10,15]\n
       y = [5,4,3,5,6]\n
       r = Lathe.stats.spearman(x,y)\n
-       """ ->
+       """
 function pearson(x,y)
     sx = std(x)
     sy = std(y)
@@ -320,17 +321,6 @@ end
 function chisq(var1,var2)
     chistat(obs, exp) = (obs - exp)^2/exp
     return chistat.(x, e) |> sum
-end
-#<---- ANOVA ---->
-@doc """
-      FUNCTION NOT YET WRITTEN\n
-      Anova is used to analyze variance in an array\n
-      --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
-       """ ->
-function anova(var1,var2)
-
 end
 #<---- Wilcoxon ---->
 # - Wilcoxon Rank-Sum Test
@@ -410,27 +400,7 @@ function cond_prob(p,a,b)
     cond = p*(a|b)
     return(cond)
 end
-@doc """
-      Binomial Distribution is a distribution well known for its use in
-           statistical tests and decision making models.\n
-      --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
-       """ ->
 
-
-#================
-Model
-    Validation
-================#
-@doc """
-      |====== Lathe.validate ======\n
-      |____________/ Metrics ___________\n
-      |_____validate.mae(actual,pred)\n
-      |_____validate.r2(actual,pred)\n
-      |___________/ Feature-Selection ___________\n
-      |_____validate.permutation(model)
-       """
 #-------Model Metrics--------____________
 ## <---- Mean Absolute Error ---->
 @doc """
