@@ -1,5 +1,5 @@
 using Lathe.preprocess: StandardScalar
-normal(var) = preprocess.StandardScalar(var)
+normal(var) = pStandardScalar(var)
 export normal
 export chidist
 export binomial_dist
