@@ -43,6 +43,7 @@ include("Stats.jl")
 include("Models.jl")
 include("Preprocess.jl")
 include("Data.jl")
+include("Distributions.jl")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
