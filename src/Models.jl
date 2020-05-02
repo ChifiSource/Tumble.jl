@@ -3,6 +3,7 @@ Predictive
     Learning
         Models
 ================#
+include("Distributions.jl")
 @doc """
       |====== Lathe.models =====\n
       |____________/ Accessories ___________\n
@@ -106,11 +107,11 @@ Four
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
       model = Lathe.models.FourSquare(x,y)\n"""
-function FourSquare(m,xt)
+function FourSquare(x,y)
           # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
           # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
               x = m.x
-              y = m.y
+              y
               # Go ahead and throw an error for the wrong input shape:
               xlength = length(x)
               ylength = length(y)
@@ -301,6 +302,35 @@ function MajBaseline
 
 end
 #==
+Power Log
+==#
+function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0, graph = false, help = false)
+    pd = p2 - p1
+    l1 = p1/(1-p1)
+    l2 = p2/(1-p2)
+    θ = l2 / l1
+    or = θ
+    λ = log(θ)
+    λ2 = λ^2
+    za = quantile(Normal(),1-alpha)
+    println("One-tailed test: alpha = ",alpha,", p1 = ",p1,", p2 = ",p2,", rsq = ",rsq,", odds ratio = ",or)
+    δ = (1 + (1 + λ2)*exp(5 * λ2/4))/(1 + exp(-1*λ2/4))
+    pwr = zeros(Float64,8)
+    nn = zeros(Int64,8)
+
+    i = 1
+    for power = 0.6:.05:.95
+        zb = quantile(Normal(),power)
+
+        N = ((za + zb*exp(-1 * λ2/4))^2 * (1 + 2*p1*δ))/(p1*λ2)
+        N /= (1 - rsq)
+        pwr[i] = power
+        nn[i] = ceil(Int64,N)
+        i += 1
+    end
+    return(pwr,nn)
+end
+#==
 Multinomial
     Naive
         Bayes
@@ -452,6 +482,7 @@ function Network(X,Y,layers_dimensions,n_iter)
     predict(xt) = (xt + 4)
     (test)->(costs;params;predict)
 end
+
 #
 predict(m::Pipeline,x) = pred_pipeline(m,x)
 #----------------------------------------------
