@@ -1,4 +1,4 @@
-using Lathe.preprocess: StandardScalar
+using preprocess: StandardScalar
 normal(var) = pStandardScalar(var)
 export normal
 export chidist
