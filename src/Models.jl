@@ -94,6 +94,7 @@ function MeanBaseline(y)
     xt = [v = m for v in xt]
     (test)->(m;predict)
 end
+
 #==
 Four
     Square
@@ -317,7 +318,6 @@ function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0,
     δ = (1 + (1 + λ2)*exp(5 * λ2/4))/(1 + exp(-1*λ2/4))
     pwr = zeros(Float64,8)
     nn = zeros(Int64,8)
-
     i = 1
     for power = 0.6:.05:.95
         zb = quantile(Normal(),power)
@@ -328,7 +328,7 @@ function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0,
         nn[i] = ceil(Int64,N)
         i += 1
     end
-    return(pwr,nn)
+    (var) -> (pwr)
 end
 #==
 Multinomial
