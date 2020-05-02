@@ -11,11 +11,7 @@ include("Distributions.jl")
       |_____models.Pipeline([steps],model)\n
       |____________/ Continuous models ___________\n
       |_____models.meanBaseline(y)\n
-      |_____models.RegressionTree(x,y,n_divisions)\n
       |_____models.FourSquare(x,y)\n
-      |_____models.IsotonicRegression(x,y)\n
-      |_____models.MultipleLinearRegression([x],y)\n
-      |_____models.RidgeRegression(x,y)\n
       |_____models.LinearRegression(x,y)\n
       |_____models.LeastSquare(x,y,Type)\n
       |_____models.PowerLog(prob1,prob2)\n
@@ -87,7 +83,7 @@ Mean
        y  = [3.4.5.6.3]\n
        xtrain = [7,5,4,5,3,5,7,8]\n
        model = Lathe.models.meanBaseline(y)
-       y_pred = Lathe.models.predict(model,xtrain)\n
+       y_pred = model.predict(xtrain)\n
         """
 function MeanBaseline(y)
     m = Lathe.stats.mean(m.y)
@@ -108,7 +104,8 @@ Four
       x = [7,6,5,6,5]\n
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
-      model = Lathe.models.FourSquare(x,y)\n"""
+      model = Lathe.models.FourSquare(x,y)\n
+      yhat = model.predict(xtrain)"""
 function FourSquare(x,y)
           # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
           # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
@@ -192,7 +189,7 @@ Linear
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
       model = Lathe.models.LinearRegression(x,y)
-      y_pred = Lathe.models.predict(model,xtrain)\n
+      y_pred = model.predict(xtrain)\n
        """
 function LinearRegression(x,y)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
@@ -493,6 +490,11 @@ function update_param(parameters , grads , learning_rate)
     end
     return parameters
 end
+@doc """
+      'Network' specifically constructs a convolutional nueral network,\n
+      though this network is still being worked on in both methodology\n
+      and in a physical manner,\n thanks for understanding.
+       """
 function Network(X,Y,layers_dimensions,n_iter)
     params = init_param(layers_dimensions)
     costs = []
