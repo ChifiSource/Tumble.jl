@@ -1,9 +1,4 @@
-using preprocess: StandardScalar
-normal(var) = pStandardScalar(var)
-export normal
-export chidist
-export binomial_dist
-export bernoulli_dist
+
 # <---- Chi Distribution --->
 @doc """
       FUNCTION NOT YET WRITTEN\n
@@ -35,3 +30,20 @@ function binomial_dist(positives,size)
     nx = factn / (factx * (n-x))
     return(nx)
 end
+# ---- Z Normalization ----
+@doc """
+      Standard Scalar z-score normalizes a feature.\n
+      --------------------\n
+      array = [5,10,15]\n
+      scaled_feature = Lathe.preprocess.StandardScalar(array)\n
+       """ ->
+function normal(array)
+    q = Lathe.stats.std(array)
+    avg = Lathe.stats.mean(array)
+    v = [i = (i-avg) / q for i in array]
+    return(v)
+end
+export normal
+export chidist
+export binomial_dist
+export bernoulli_dist
