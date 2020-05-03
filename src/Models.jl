@@ -358,7 +358,37 @@ end
 function sigmoid(z)
     return 1 ./ (1 .+ exp.(.-z))
 end
+function logistic_regression_sgd(X, y, λ, fit_intercept=true, η=0.01, max_iter=1000)
 
+    # Initialize some useful values
+    m = length(y); # number of training examples
+
+    if fit_intercept
+        # Add a constant of 1s if fit_intercept is specified
+        constant = ones(m, 1)
+        X = hcat(constant, X)
+    else
+        X # Assume user added constants
+    end
+
+    # Use the number of features to initialise the theta θ vector
+    n = size(X)[2]
+    θ = zeros(n)
+
+    # Initialise the cost vector based on the number of iterations
+    𝐉 = zeros(max_iter)
+
+    for iter in range(1, stop=max_iter)
+
+        # Calcaluate the cost and gradient (∇𝐉) for each iter
+        𝐉[iter], ∇𝐉 = regularised_cost(X, y, θ, λ)
+
+        # Update θ using gradients (∇𝐉) for direction and (η) for the magnitude of steps in that direction
+        θ = θ - (η * ∇𝐉)
+    end
+
+    return (θ, 𝐉)
+end
 function regularised_cost(X, y, θ, λ)
     m = length(y)
     h = sigmoid(X * θ)
