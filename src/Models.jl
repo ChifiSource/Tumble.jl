@@ -303,7 +303,7 @@ end
 #==
 Power Log
 ==#
-function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0, graph = false, help = false)
+function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0)
     pd = p2 - p1
     l1 = p1/(1-p1)
     l2 = p2/(1-p2)
@@ -311,14 +311,14 @@ function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0,
     or = θ
     λ = log(θ)
     λ2 = λ^2
-    za = quantile(Normal(),1-alpha)
+    za = quantile(normal(),1-alpha)
     println("One-tailed test: alpha = ",alpha,", p1 = ",p1,", p2 = ",p2,", rsq = ",rsq,", odds ratio = ",or)
     δ = (1 + (1 + λ2)*exp(5 * λ2/4))/(1 + exp(-1*λ2/4))
     pwr = zeros(Float64,8)
     nn = zeros(Int64,8)
     i = 1
     for power = 0.6:.05:.95
-        zb = quantile(Normal(),power)
+        zb = quantile(normal(),power)
 
         N = ((za + zb*exp(-1 * λ2/4))^2 * (1 + 2*p1*δ))/(p1*λ2)
         N /= (1 - rsq)
@@ -358,7 +358,37 @@ end
 function sigmoid(z)
     return 1 ./ (1 .+ exp.(.-z))
 end
+function logistic_regression_sgd(X, y, λ, fit_intercept=true, η=0.01, max_iter=1000)
 
+    # Initialize some useful values
+    m = length(y); # number of training examples
+
+    if fit_intercept
+        # Add a constant of 1s if fit_intercept is specified
+        constant = ones(m, 1)
+        X = hcat(constant, X)
+    else
+        X # Assume user added constants
+    end
+
+    # Use the number of features to initialise the theta θ vector
+    n = size(X)[2]
+    θ = zeros(n)
+
+    # Initialise the cost vector based on the number of iterations
+    𝐉 = zeros(max_iter)
+
+    for iter in range(1, stop=max_iter)
+
+        # Calcaluate the cost and gradient (∇𝐉) for each iter
+        𝐉[iter], ∇𝐉 = regularised_cost(X, y, θ, λ)
+
+        # Update θ using gradients (∇𝐉) for direction and (η) for the magnitude of steps in that direction
+        θ = θ - (η * ∇𝐉)
+    end
+
+    return (θ, 𝐉)
+end
 function regularised_cost(X, y, θ, λ)
     m = length(y)
     h = sigmoid(X * θ)

@@ -82,7 +82,7 @@ end
       mode = Lathe.stats.mode(array)\n
       println(mode)\n
         10
-       """ ->
+       """
 function mode(array)
     m = findmax(array)
     return(m)
@@ -93,7 +93,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       variance = Lathe.stats.variance(array)\n
-       """ ->
+       """
 function variance(array)
     me = mean(array)
     sq = sum(array) - me
@@ -191,7 +191,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       q1 = Lathe.stats.firstquar(array)\n
-       """ ->
+       """
 function firstquar(array)
     m = median(array)
     q1 = array * .5
@@ -204,7 +204,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       q2 = Lathe.stats.secondquar(array)\n
-       """ ->
+       """
 function secondquar(array)
     m = median(array)
     return(m)
@@ -215,7 +215,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       q2 = Lathe.stats.secondquar(array)\n
-       """ ->
+       """
 function thirdquar(array)
     q = median(array)
     q3 = q * 1.5
@@ -317,7 +317,7 @@ end
       var1 = [5,10,15]\n
       var2 = [5,4,3,5,6]\n
       p = Lathe.stats.chisq(var1,var2)\n
-       """ ->
+       """
 function chisq(var1,var2)
     chistat(obs, exp) = (obs - exp)^2/exp
     return chistat.(x, e) |> sum
@@ -334,7 +334,7 @@ end
       var1 = [5,10,15]\n
       var2 = [19,25,30]\n
       p = Lathe.stats.wilcoxsr(var1,var2)\n
-       """ ->
+       """
 function wilcoxsr(var1,var2)
     #Hash
 end
@@ -346,7 +346,7 @@ end
       var1 = [5,10,15]\n
       var2 = [19,25,30]\n
       p = Lathe.stats.sign(var1,var2)\n
-       """ ->
+       """
 function sign(var1,var2)
     sets = var1 .- var2
     positives = []
@@ -373,7 +373,7 @@ end
       --------------------\n
       array = [5,10,15]\n
       r = Lathe.stats.anova(array)\n
-       """ ->
+       """
 function f_test(sample,general)
     totvariance = variance(general)
     sampvar = variance(sample)
@@ -394,7 +394,7 @@ end
       prior = .20\n
       evidence = .30\n
       p = Lathe.stats.cond_prob(prob,prior,evidence)\n
-       """ ->
+       """
 function cond_prob(p,a,b)
     psterior = bay_ther(p,a,b)
     cond = p*(a|b)
@@ -456,5 +456,13 @@ function r2(actual,pred)
     rsq = rsq * 100
     return(rsq)
 end
+function catacc(yhat,testy)
+score = 0
+for (i,w) in zip(yhat,testy)
+    if i == w
+        score += 1
+    end
+end
+acc = score / n
 #---------------------------
 end
