@@ -457,6 +457,10 @@ function r2(actual,pred)
     return(rsq)
 end
 function catacc(yhat,testy)
+    n = length(yhat)
+    if n != length(testy)
+        throw(ArgumentError("The array shape does not match!"))
+    end
     score = 0
     for (i,w) in zip(yhat,testy)
         if i == w
