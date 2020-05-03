@@ -463,7 +463,8 @@ function catacc(yhat,testy)
             score += 1
         end
     end
+    acc = score / n
 end
-acc = score / n
+
 #---------------------------
 end
