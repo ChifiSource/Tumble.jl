@@ -1,7 +1,5 @@
 <div align="center"><img src="https://github.com/emmettgb/Lathe.jl/blob/Unstable/lathelogo.png" />
-  <h2>0.1.1 "ButterBall"<h2>
-    <h4>Easily ML<h4>
-      <h3>Also available in these fine languages!</h3>
+  <h2>0.1.1 "ButterBall"</h2>
 </div>
 <div align="left">
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, DataFrame tools, Preprocessing, Machine-Learning Models, and Model Validation. Lathe features easy one line constructor model fit-predicting, fast dispatch, easy documentation, and a great code-base with strong deployability.</p>
