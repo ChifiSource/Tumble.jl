@@ -478,6 +478,5 @@ function Network(X,Y,layers_dimensions,n_iter)
 end
 
 #
-predict(m::Pipeline,x) = pred_pipeline(m,x)
 #----------------------------------------------
 end
