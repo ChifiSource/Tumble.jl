@@ -54,13 +54,15 @@ Accessories
       method assersion is still do-able with the dispatch, meaning any model\n
       designed to work with Lathe.models (and Lathe.models.predict) will work\n
       inside of a Lathe pipeline."""
-mutable struct Pipeline
-    steps
-    model
+function Pipeline(steps,model)
+    predict(xt) = pipe_pred(xt,model,steps)
+    (var)->(steps;model;predict)
 end
-function pred_pipeline(m,x)
-    x = [x = step(x) for step in m.steps]
-    ypr = model.predict(x)
+function pipe_pred(xt,model,steps)
+    for step in steps
+        step.transform(xt)
+    end
+    ypr = model.predict(xt)
     return(ypr)
 end
 #==============
