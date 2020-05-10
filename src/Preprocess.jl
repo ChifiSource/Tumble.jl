@@ -6,7 +6,6 @@ Preprocessing
       |====== Lathe.preprocess =====\n
       |____________/ Generalized Processing ___________\n
       |_____preprocess.TrainTestSplit(array)\n
-      |_____preprocess.ArraySplit(array)\n
       |_____preprocess.SortSplit(array)\n
       |_____preprocess.UniformSplit(array)\n
       |____________/ Feature Scaling ___________\n
@@ -14,10 +13,8 @@ Preprocessing
       |_____preprocess.ArbitraryRescale(array)\n
       |_____preprocess.MeanNormalization(array)\n
       |_____preprocess.StandardScalar(array)\n
-      |_____preprocess.UnitLScale(array)\n
       |____________/ Categorical Encoding ___________\n
       |_____preprocess.OneHotEncode(array)\n
-      |_____preprocess.InvertEncode(array)\n
 
        """ ->
 module preprocess
@@ -45,6 +42,13 @@ function _ArraySplit(data, at = 0.7)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
 end
+@doc """
+      TrainTestSplit takes either a DataFrame or an Array and splits it according to the at parameter.\n
+      --------------------\n
+      [data] <- Iterable dictionary, dataframe, or Array.\n
+      a <- Percentage value used to determine a point to split the data.\n
+      -------------------\n
+       """
 TrainTestSplit(data::Array, at::Float64) = _ArraySplit(data,at)
 TrainTestSplit(data::DataFrame, at::Float64) = dfTrainTestSplit(data,at)
 # Sort-Split -------------
@@ -59,7 +63,7 @@ TrainTestSplit(data::DataFrame, at::Float64) = dfTrainTestSplit(data,at)
       at:: Percentage value used to determine a point to split the data.\n
       rev:: Reverse, false by default, determines whether to sort least to
       greatest, or greatest to least.\n
-       """ ->
+       """
 function SortSplit(data, at = 0.25, rev=false)
   n = length(data)
   sort!(data, rev=rev)  # Sort in-place
@@ -77,7 +81,7 @@ end
       -------------------\n
       PARAMETERS:\n
       at:: Percentage value used to determine a point to split the data.
-       """ ->
+       """
 function UniformSplit(data, at = 0.7)
     n = length(data)
     idx = data
@@ -96,12 +100,15 @@ Numerical
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.Rescalar(array)\n
+      --------------------\n
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """ ->
 function Rescalar(array)
     min = minimum(array)
     max = maximum(array)
-    v = [i = (i-min) / (max - min) for i in array]
-    return(v)
+    predict(array) = [i = (i-min) / (max - min) for i in array]
+    (var) -> (predict)
 end
 # ---- Arbitrary Rescalar ----
 @doc """
@@ -110,12 +117,15 @@ end
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.Rescalar(array)\n
+      --------------------\n
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """ ->
 function ArbitraryRescale(array)
     a = minimum(array)
     b = maximum(array)
-    v = [x = a + ((i-a*i)*(b-a)) / (b-a) for x in array]
-    return(v)
+    predict(array) = [x = a + ((i-a*i)*(b-a)) / (b-a) for x in array]
+    (var) -> (predict)
 end
 # ---- Mean Normalization ----
 @doc """
@@ -123,13 +133,16 @@ end
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.MeanNormalization(array)\n
+      --------------------\n
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """ ->
 function MeanNormalization(array)
     avg = Lathe.stats.mean(array)
     a = minimum(array)
     b = maximum(array)
-    v = [i = (i-avg) / (b-a) for i in array]
-    return(v)
+    predict(array) = [i = (i-avg) / (b-a) for i in array]
+    (var) -> (predict)
 end
 # ---- Quartile Normalization ----
 function QuartileNormalization(array)
@@ -143,12 +156,15 @@ end
       --------------------\n
       array = [5,10,15]\n
       scaled_feature = Lathe.preprocess.StandardScalar(array)\n
+      --------------------\n
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """ ->
 function StandardScalar(array)
     q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
-    v = [i = (i-avg) / q for i in array]
-    return(v)
+    predict(array) = [i = (i-avg) / q for i in array]
+    (var) -> (predict)
 end
 # ---- Unit L-Scale normalize ----
 @doc """
@@ -179,7 +195,7 @@ function OneHotEncode(df,symb)
     for c in unique(copy[!,symb])
     copy[!,Symbol(c)] = copy[!,symb] .== c
     end
-    return(copy)
+    predict(copy) = copy
 end
 # <---- Invert Encoder ---->
 #==
