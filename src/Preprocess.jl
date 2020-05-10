@@ -29,36 +29,15 @@ Generalized
         Processing
 ===============#
 # Train-Test-Split-----
-@doc """
-      Train Test split is used to create a validation set to toy accuracy
-      with. TrainTestSplit() takes a DataFrame and splits it at a certain
-      percentage of the data.\n
-      --------------------\n
-      df = DataFrame(:A => [1,2,3],:B => [4,5,6])\n
-      test,train = Lathe.preprocess.TrainTestSplit(df,at = 0.75)\n
-      -------------------\n
-      PARAMETERS:\n
-      at:: Percentage value used to determine a point to split the data.
-       """ ->
-function TrainTestSplit(df,at = 0.75)
+
+function _dfTrainTestSplit(df,at = 0.75)
     sample = randsubseq(1:size(df,1), at)
     trainingset = df[sample, :]
     notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
     testset = df[notsample, :]
     return(trainingset,testset)
 end
-# Array-Split ----------
-@doc """
-      Array Split does the exact same thing as TrainTestSplit(), but to an
-      an array instead of a DataFrame\n
-      --------------------\n
-      array = [5,10,15]\n
-      test, train = Lathe.preprocess.ArraySplit(array,at = 0.75)\n
-      -------------------\n
-      PARAMETERS:\n
-      at:: Percentage value used to determine a point to split the data.
-       """ ->
-function ArraySplit(data, at = 0.7)
+function _ArraySplit(data, at = 0.7)
     n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
@@ -66,6 +45,8 @@ function ArraySplit(data, at = 0.7)
     data[train_idx,:], data[test_idx,:]
     return(test_idx,train_idx)
 end
+TrainTestSplit(data::Array, at::Float64) = _ArraySplit(data,at)
+TrainTestSplit(data::DataFrame, at::Float64) = dfTrainTestSplit(data,at)
 # Sort-Split -------------
 @doc """
       SortSplit sorts the data from least to greatest, and then splits it,
