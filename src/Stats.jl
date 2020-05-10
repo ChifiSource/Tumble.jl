@@ -457,12 +457,18 @@ function r2(actual,pred)
     return(rsq)
 end
 function catacc(yhat,testy)
-score = 0
-for (i,w) in zip(yhat,testy)
-    if i == w
-        score += 1
+    n = length(yhat)
+    if n != length(testy)
+        throw(ArgumentError("The array shape does not match!"))
     end
+    score = 0
+    for (i,w) in zip(yhat,testy)
+        if i == w
+            score += 1
+        end
+    end
+    acc = score / n
 end
-acc = score / n
+
 #---------------------------
 end
