@@ -19,6 +19,7 @@ Preprocessing
        """ ->
 module preprocess
 using Random
+using DataFrames
 using Lathe
 #===============
 Generalized
