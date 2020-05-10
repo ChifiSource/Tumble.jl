@@ -25,6 +25,7 @@ Base
 ==#
 using Lathe
 using Random
+using DataFrames
 #===========
 Accessories
 ===========#
