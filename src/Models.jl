@@ -7,10 +7,9 @@ include("Distributions.jl")
 @doc """
       |====== Lathe.models =====\n
       |____________/ Accessories ___________\n
-      |_____models.Pipeline([steps],model)\n
+      |_____models.Pipeline([steps])\n
       |____________/ Continuous models ___________\n
       |_____models.meanBaseline(y)\n
-      |_____models.FourSquare(x,y)\n
       |_____models.LinearRegression(x,y)\n
       |_____models.LeastSquare(x,y,Type)\n
       |_____models.PowerLog(prob1,prob2)\n
@@ -219,6 +218,16 @@ end
 #==
 Power Log
 ==#
+@doc """
+      A powerlog can be used to perform a one-tailed test, as well as get the proper sample size for a testing population.\n
+      --------------------\n
+      ==PARAMETERS==\n
+     p1 <- A Float64 percentage representing the probability of scenario one.\n
+     p2 <- A Float64 percentage representing the probability of scenario two. These two probability values should follow these guidelines: p1 = p1 + x = p2\n
+     alpha = 0.05 <- Sets an alpha value\n
+     --------------------\n
+     Returns power, sample_size
+       """
 function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0)
     pd = p2 - p1
     l1 = p1/(1-p1)
@@ -242,7 +251,7 @@ function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0)
         nn[i] = ceil(Int64,N)
         i += 1
     end
-    (var) -> (pwr)
+    return(pwr, nn)
 end
 #==
 Multinomial
@@ -256,15 +265,20 @@ end
 Logistic
     Regression
 ==#
-#==
 @doc """
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+      Majority class baseline is used to find the most often interpreted
+      classification in an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(array)\n
-       """ ->
-       ==#
+      ==PARAMETERS==\n
+     [X] <- Fill with your trainX values. Should be an array of shape (0,1) or (1,0)\n
+     [y] <- Fill with your trainy values. Should be an array of shape (0,1) or (1,0)\n
+     λ = .0001 <- Lambda Value\n
+     fit_intercept = true <- Boolean determines whether to fit an intercept.\n
+     max_iter = 1000 <- Determines the maximum number of iterations for the model to perform.\n
+     --------------------\n
+     ==Functions==\n
+     predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)\n
+       """
 function LogisticRegression(X, y, λ=0.0001, fit_intercept=true, η=0.01, max_iter=1000)
     θ, 𝐉 = logistic_regression_sgd(X, y, 0.0001, true, 0.3, 3000);
     predict(xt) = yhat = predict_class(predict_proba(xt,0))
