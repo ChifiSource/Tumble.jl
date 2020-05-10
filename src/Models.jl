@@ -7,7 +7,6 @@ include("Distributions.jl")
 @doc """
       |====== Lathe.models =====\n
       |____________/ Accessories ___________\n
-      |_____models.predict(m,xt)\n
       |_____models.Pipeline([steps],model)\n
       |____________/ Continuous models ___________\n
       |_____models.meanBaseline(y)\n
@@ -17,7 +16,7 @@ include("Distributions.jl")
       |_____models.PowerLog(prob1,prob2)\n
       |____________/ Categorical Models ___________\n
       |_____models.LogisticRegression(x,y)\n
-      |_____models.majBaseline\n
+      |_____models.majBaseline(y)\n
        """
 module models
 #==
@@ -35,35 +34,17 @@ Accessories
       occurs automatically. This is done by putting X array processing methods
       into the iterable steps, and then putting your Lathe model in.\n
       --------------------\n
-      x = [7,6,5,6,5]\n
-      y  = [3.4.5.6.3]\n
-      xtrain = [7,5,4,5,3,5,7,8]\n
-      model = Lathe.models.meanBaseline(y)\n
-      StandardScalar = Lathe.preprocess.StandardScalar\n
-      MeanNormalization = Lathe.preprocess.MeanNormalization\n
-      steps = [StandardScalar,MeanNormalization]\n
-      pipeline = Lathe.models.Pipeline(steps,model)\n
-      y_pred = Lathe.models.predict(pipeline,xtrain)\n
+      ==PARAMETERS==\n
+      [steps] <- An iterable list of methods to call for X modification. These mutations should
+      have ALREADY BEEN MADE TO THE TRAIN X.\n
+      pipl = Pipeline([StandardScalar(),LinearRegression(trainX,trainy)])\n
       --------------------\n
-      HYPER PARAMETERS\n
-      steps:: Iterable list (important, use []) of processing methods to be
-      performed on the xtrain set. Note that it will not be applied to the
-      train set, so preprocessing for the train set should be done before
-      model construction.\n
-      model:: Takes any Lathe model, uses Lathe.models.predict,\n
-      method assersion is still do-able with the dispatch, meaning any model\n
-      designed to work with Lathe.models (and Lathe.models.predict) will work\n
-      inside of a Lathe pipeline."""
-function Pipeline(steps,model)
-    predict(xt) = pipe_pred(xt,model,steps)
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+      """
+function Pipeline(steps)
+    predict(xt) = [object.predict(xt) for object in steps]
     (var)->(steps;model;predict)
-end
-function pipe_pred(xt,model,steps)
-    for step in steps
-        step.transform(xt)
-    end
-    ypr = model.predict(xt)
-    return(ypr)
 end
 #==============
 ========================================================
@@ -80,104 +61,20 @@ Mean
  @doc """
        A mean baseline is great for getting a basic accuracy score in order
            to make a valid direction for your model.\n
-       --------------------\n
-       x = [7,6,5,6,5]\n
-       y  = [3.4.5.6.3]\n
-       xtrain = [7,5,4,5,3,5,7,8]\n
-       model = Lathe.models.meanBaseline(y)
-       y_pred = model.predict(xtrain)\n
-        """
+         --------------------\n
+         ==PARAMETERS==\n
+        [y] <- Fill with your trainY values. Should be an array of shape (0,1) or (1,0)\n
+        pipl = Pipeline([StandardScalar(),LinearRegression(trainX,trainy)])\n
+        --------------------\n
+        ==Functions==\n
+        predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+                     """
 function MeanBaseline(y)
     m = Lathe.stats.mean(m.y)
     predict(xt) =
     xt = [v = m for v in xt]
     (test)->(m;predict)
 end
-
-#==
-Four
-    Square
-==#
-@doc """
-      A FourSquare splits data into four linear least squares, and then
-      predicts variables depending on their location in the data (in
-      quartile range.) With the corresponding model for said quartile.\n
-      --------------------\n
-      x = [7,6,5,6,5]\n
-      y  = [3.4.5.6.3]\n
-      xtrain = [7,5,4,5,3,5,7,8]\n
-      model = Lathe.models.FourSquare(x,y)\n
-      yhat = model.predict(xtrain)"""
-function FourSquare(x,y)
-          # x = q1(r(floor:q1)) |x2 = q2(r(q1:μ)) |x3 = q3(r(q2:q3)) |x4 q4(r(q3:cieling))
-          # y' = q1(x * (a / x)) | μ(x * (a / x2)) | q3(x * (a / x3) | q4(x * (a / x4))
-              x = m.x
-              y
-              # Go ahead and throw an error for the wrong input shape:
-              xlength = length(x)
-              ylength = length(y)
-              if xlength != ylength
-                  throw(ArgumentError("The array shape does not match!"))
-              end
-              # Our empty Y prediction list==
-              e = []
-              # Quad Splitting the data ---->
-              # Split the Y
-              y2,range1 = Lathe.preprocess.SortSplit(y)
-              y3,range2 = Lathe.preprocess.SortSplit(y2)
-              y4,range3 = Lathe.preprocess.SortSplit(y3)
-              y5,range4 = Lathe.preprocess.SortSplit(y4)
-              yrange5 = y5
-              # Split the x train
-              x1,xrange1 = Lathe.preprocess.SortSplit(x)
-              x2,xrange2 = Lathe.preprocess.SortSplit(x1)
-              x3,xrange3 = Lathe.preprocess.SortSplit(x2)
-              x4,xrange4 = Lathe.preprocess.SortSplit(x3)
-              xrange5 = y5
-              # Fitting the 4 linear regression models ---->
-              regone = LeastSquare(xrange1,range1,:LIN)
-              regtwo = LeastSquare(xrange2,range2,:LIN)
-              regthree = LeastSquare(xrange3,range3,:LIN)
-              regfour = LeastSquare(xrange4,range4,:LIN)
-              regfive = LeastSquare(xrange5,yrange5,:LIN)
-              # Split the train Data
-              xt1,xtrange1 = Lathe.preprocess.SortSplit(xt)
-              xt2,xtrange2 = Lathe.preprocess.SortSplit(xt1)
-              xt3,xtrange3 = Lathe.preprocess.SortSplit(xt2)
-              xt4,xtrange4 = Lathe.preprocess.SortSplit(xt3)
-              xtrange5 = xt4
-              # Get min-max
-              xtrange1min = minimum(xtrange1)
-              xtrange1max = maximum(xtrange1)
-              xtrange2min = minimum(xtrange2)
-              xtrange2max = maximum(xtrange2)
-              xtrange3min = minimum(xtrange3)
-              xtrange3max = maximum(xtrange3)
-              xtrange4min = minimum(xtrange4)
-              xtrange4max = maximum(xtrange4)
-              xtrange5min = minimum(xtrange5)
-              # Ranges for ifs
-              condrange1 = (xtrange1min:xtrange1max)
-              condrange2 = (xtrange2min:xtrange2max)
-              condrange3 = (xtrange3min:xtrange3max)
-              condrange4 = (xtrange4min:xtrange4max)
-              # This for loop is where the dimension's are actually used:
-              for i in xt
-                  if i in condrange1
-                      ypred = predict(regone,i)
-                  elseif i in condrange2
-                      ypred = predict(regtwo,i)
-                  elseif i in condrange3
-                      ypred = predict(regthree,i)
-                  elseif i in condrange4
-                      ypred = predict(regfour,i)
-                  else
-                      ypred = predict(regfive,i)
-                  end
-                  append!(e,ypred)
-              end
-              return(e)
-      end
 #==
 Linear
     Regression
@@ -187,11 +84,12 @@ Linear
       Linear Regression is a well-known linear function used for predicting
       continuous features with a mostly linear or semi-linear slope.\n
       --------------------\n
-      x = [7,6,5,6,5]\n
-      y  = [3.4.5.6.3]\n
-      xtrain = [7,5,4,5,3,5,7,8]\n
-      model = Lathe.models.LinearRegression(x,y)
-      y_pred = model.predict(xtrain)\n
+      ==PARAMETERS==\n
+     [y] <- Fill with your trainY values. Should be an array of shape (0,1) or (1,0)\n
+     [x] <- Fill in with your trainX values. Should be an array of shape (0,1) or (1,0)\n
+     --------------------\n
+     ==Functions==\n
+     predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
 function LinearRegression(x,y)
     # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
@@ -237,12 +135,15 @@ Linear
       y_pred = Lathe.models.predict(model,xtrain)\n
       -------------------\n
       HYPER PARAMETERS\n
-      Type:: Type determines which Linear Least Square algorithm to use,
+      Type <- Type determines which Linear Least Square algorithm to use,
       :LIN, :OLS, :WLS, and :GLS are the three options.\n
       - :LIN = Linear Least Square Regression\n
       - :OLS = Ordinary Least Squares\n
       - :WLS = Weighted Least Squares\n
       - :GLS = General Least Squares
+      --------------------\n
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
 function LeastSquare(x,y,Type)
     if length(x) != length(y)
@@ -294,13 +195,26 @@ Majority
         Baseline
 ==#
 @doc """
-      FUNCTION NOT YET WRITTEN\n
       Majority class baseline is used to find the most often interpreted
       classification in an array.\n
       --------------------\n
+      ==PARAMETERS==\n
+     [y] <- Fill with your trainY values. Should be an array of shape (0,1) or (1,0)\n
+     --------------------\n
+     ==Functions==\n
+     predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)\n
+     counts() <- Returns a dictionary with the counts of all inserted keys.\n
+     highest() <- Will return a Dictionary key with the count as well as the value for the most interpreted classification.
        """
-function MajBaseline
-
+function majClassBaseline(y)
+    u=unique(y)
+    d=Dict([(i,count(x->x==i,y)) for i in u])
+    d = sort(collect(d), by=x->x[2])
+    maxkey = d[length(d)]
+    predict(xt) = [p = maxkey[1] for p in xt]
+    counts() = d
+    highest() = maxkey
+    (var)->(y;maxkey;d;predict;counts;highest)
 end
 #==
 Power Log
