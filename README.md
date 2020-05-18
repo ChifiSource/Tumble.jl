@@ -26,8 +26,8 @@ help?> Lathe.stats.mean
   println(mean)
 
   10
-
 ```
+
 ## Features
 - Pipelines
 - An ever-expanding library of models for predicting continous features, and soon categorical features.
@@ -39,12 +39,13 @@ help?> Lathe.stats.mean
 - Expandable, dependable, and reliable. Lathe has a big advantage in being written in Julia. Many functions, notably the prediction function utilize Julia's function struct dispatch syntax, allowing end users to quickly modify the function in their environment to make it work for them. This also adds to the long term support, as anyone could develop a model for Lathe, even entirely seperately using Lathe as a code-base to work off of.
 - Serialization for pipelining, using one prediction function.
 - A small, and expanding distributions library.
+
 ## Add it!
 LTS 
  ```julia
  using Pkg; Pkg.add("Lathe")
  ```
- Unstable
+ Unstable (press ] in REPL to go to Pkg mode):
  ```julia
- using Pkg; Pkg.add("Lathe"#Unstable)
+ (v1.3) pkg> add Lathe#Unstable
  ```
