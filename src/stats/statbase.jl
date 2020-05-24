@@ -83,12 +83,11 @@ function confints(data, confidence=.95)
 #    return (mean-interval, mean+interval)
 end
 #<----Standard Error---->
-"""
+@doc """
       Calculates the Standard Error of an array.\n
       --------------------\n
       array = [5,10,15]\n
-      ste = Lathe.stats.standarderror(array)
-      """
+      ste = Lathe.stats.standarderror(array)"""
 function ste(data)
     std = std(data)
     sample = length(data)
