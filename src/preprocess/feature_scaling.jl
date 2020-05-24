@@ -64,7 +64,7 @@ end
       ==Functions==\n
       predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
-function Standardize(array)
+function Normalizer(array)
     q = Lathe.stats.std(array)
     avg = Lathe.stats.mean(array)
     predict(array) = [i = (i-avg) / q for i in array]
