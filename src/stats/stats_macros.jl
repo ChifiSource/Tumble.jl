@@ -42,8 +42,6 @@ macro acc(yhat,ytest)
         catacc(ytest,yhat)
         print("we predicted acc")
     else
-        sample, general = TrainTestSplit(yhat,.5)
-        corr = @r sample general
         if length(unique(yhat)) == 2
             catacc(ytest,yhat)
             print("we predicted acc")
