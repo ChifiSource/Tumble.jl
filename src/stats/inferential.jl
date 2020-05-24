@@ -144,11 +144,11 @@ function sign(var1,var2)
     zeros = []
     for i in sets
         if i == 0
-            zeros.append(i)
+            append!(zeros,i)
         elseif i > 0
-            positives.append(i)
+            append!(positives,i)
         elseif i < 0
-            negatives.append(i)
+            append!(negatives,i)
         end
     end
     totalpos = length(positives)
