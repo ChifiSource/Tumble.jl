@@ -42,5 +42,18 @@ Tools
 ==#
 include("models/toolbox.jl")
 export PowerLog
+#==
+Macros
+==#
+include("models/model_macros.jl")
+#==
+Neural Networks
+==#
+include("models/neural.jl")
+export Network
+#==
+Nonlinear Models
+==#
+include("models/nonlinear_models.jl")
 #----------------------------------------------
 end

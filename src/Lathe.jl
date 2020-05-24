@@ -42,6 +42,7 @@ module Lathe
 include("Stats.jl")
 include("Models.jl")
 include("Preprocess.jl")
+export stats, models, preprocess
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
