@@ -3,7 +3,7 @@ Linear
     Least
      Square
 ==#
-@doc """
+"""
       Least Squares is ideal for predicting continous features.
       Many models use Least Squares as a base to build off of.\n
       --------------------\n
