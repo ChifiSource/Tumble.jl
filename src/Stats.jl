@@ -37,24 +37,29 @@ module stats
 Base
 ==#
 include("stats/statbase.jl")
-export mean, ste, std
+export mean, ste, std, median, mode, variance, confints, ste
+export std, firstquar, secondquar, thirdquar, getranks, z
 #==
 Distributions
 ==#
 include("stats/distributions.jl")
+export chi_dist, bernoulli_dist, binomial_dist, normal_dist
 #==
 Inferential
 ==#
 include("stats/inferential.jl")
-export independent_t, f_test, correlationcoeff
+export independent_t, f_test, correlationcoeff, paired_t, spearman
+export pearson, chisq, wilcoxrs, wilcoxsr, sign, f_test
 #==
 Bayesian
 ==#
 include("stats/bayesian.jl")
+export bay_ther, cond_prob
 #==
 Validate
 ==#
 include("stats/validate.jl")
+export mae, mse, r2, catacc
 #==
 Macros
 ==#

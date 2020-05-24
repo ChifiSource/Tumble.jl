@@ -29,14 +29,18 @@ include("preprocess/data_loading.jl")
 Data Processing
 ==#
 include("preprocess/data_processing.jl")
+export TrainTestSplit, SortSplit, UniformSplit,
 #==
 Encoding
 ==#
 include("preprocess/encoding.jl")
+export OneHotEncode, InvertEncode
 #==
 Feature Scaling
 ==#
 include("preprocess/feature_scaling.jl")
+export Rescalar, ArbitraryRescale, MeanNormalization, QuartileNormalization
+export Standardize, UnitLScale
 #==
 Macros
 ==#
