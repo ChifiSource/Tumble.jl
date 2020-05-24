@@ -2,7 +2,7 @@
 Stats
     Module
 ================#
-@doc """
+"""
       |====== Lathe.stats ======\n
       | ~~~~~~~~~~ Base ~~~~~~~~~~~\n
       |_____stats.mean(array)\n
@@ -37,6 +37,7 @@ module stats
 Base
 ==#
 include("stats/statbase.jl")
+export mean, ste, std
 #==
 Distributions
 ==#
@@ -45,7 +46,7 @@ include("stats/distributions.jl")
 Inferential
 ==#
 include("stats/inferential.jl")
-export independent_t, f_test
+export independent_t, f_test, correlationcoeff
 #==
 Bayesian
 ==#
