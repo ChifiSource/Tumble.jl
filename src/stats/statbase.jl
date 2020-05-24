@@ -1,3 +1,4 @@
+using Lathe.stats
 #<----Mean---->
 """
       Calculates the mean of a given array.\n
