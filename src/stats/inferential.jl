@@ -153,7 +153,7 @@ function sign(var1,var2)
     end
     totalpos = length(positives)
     totallen = length(sets)
-    ans = binomial_dist(positives,totallen)
+    ans = binomial_dist(totalpos,totallen)
     return(ans)
 end
 #<---- F-Test---->
