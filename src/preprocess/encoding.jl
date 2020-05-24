@@ -7,12 +7,21 @@
       df = DataFrame(:A => ['w','b','w'], :B => [5, 10, 15])\n
       scaled_feature = Lathe.preprocess.OneHotEncode(df,:A)\n
        """
-function OneHotEncode(df,symb)
+function OneHotEncoder()
+    predict(copy) = _onehot(copy)
+    ()->(predict)
+end
+function _onehotdf(df,symb)
     copy = df
     for c in unique(copy[!,symb])
-    copy[!,Symbol(c)] = copy[!,symb] .== c
+        copy[!,Symbol(c)] = copy[!,symb] .== c
     end
-    predict(copy) = copy
+    return(copy)
+end
+function _onehot(df,symb)
+    copy = df
+    copy = [copy[c] = copy[c] .== c for c in unique(copy)]
+    return(copy)
 end
 # <---- Invert Encoder ---->
 #==
