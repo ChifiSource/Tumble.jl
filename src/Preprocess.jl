@@ -29,7 +29,7 @@ include("preprocess/data_loading.jl")
 Data Processing
 ==#
 include("preprocess/data_processing.jl")
-export TrainTestSplit, SortSplit, UniformSplit,
+export TrainTestSplit, SortSplit, UniformSplit
 #==
 Encoding
 ==#
