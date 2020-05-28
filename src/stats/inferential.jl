@@ -170,3 +170,12 @@ function f_test(sample,general)
     f =  sampvar / totvariance
     return(f)
 end
+#<---- Degrees of Freedom ---->
+function dog(X, Y):
+    s1 = (stdev(X) ^ 2)
+    s2 = (stdev(Y) ^ 2)
+    dog = (s1 / length(X) + s2 / length(Y)) ^ 2 / ((s1 / len(X))**2 / (length(X) - 1) + (s2 /  length(Y)) ^ 2 / length(Y) - 1)
+    return(dog)
+end
+#<---- Frequency ---->
+function freq()
