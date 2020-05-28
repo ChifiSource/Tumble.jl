@@ -20,7 +20,7 @@ Preprocessing
 module preprocess
 using Random
 using DataFrames
-using Lathe
+using Lathe.stats
 #==
 Data Loading
 ==#
@@ -45,5 +45,6 @@ export Standardize, UnitLScale
 Macros
 ==#
 include("preprocess/preprocess_macros.jl")
+export @tts, @norm, @onehot
 #-----------------------------
 end

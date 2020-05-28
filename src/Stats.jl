@@ -64,5 +64,6 @@ export mae, mse, r2, catacc
 Macros
 ==#
 include("stats/stats_macros.jl")
+export @mu, @sigma, @r, @t, @f, @-, @chi, @p, @acc
 #---------------------------
 end

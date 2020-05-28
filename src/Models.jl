@@ -18,9 +18,9 @@ Predictive
        """
 module models
 # [deps]
-using Lathe
 using Random
 using DataFrames
+using Lathe.stats
 # [deps]
 #==
 Linear Models
@@ -46,6 +46,7 @@ export PowerLog
 Macros
 ==#
 include("models/model_macros.jl")
+export @predict
 #==
 Neural Networks
 ==#
