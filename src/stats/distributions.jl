@@ -1,4 +1,3 @@
-
 # <---- Chi Distribution --->
 """
       FUNCTION NOT YET WRITTEN\n
@@ -31,7 +30,7 @@ function binomial_dist(positives,size)
     nx = factn / (factx * (n-x))
     return(nx)
 end
-# ---- Z Normalization ----
+# ---- Normal Distribution ----
 """
       Standard Scalar z-score normalizes a feature.\n
       --------------------\n
@@ -43,4 +42,13 @@ function normal_dist(array)
     avg = Lathe.stats.mean(array)
     v = [i = (i-avg) / q for i in array]
     return(v)
+end
+# ---- T distribution ----
+function t_dist(sample, general)
+    x̅ = mean(sample)
+    μ = mean(general)
+    s = std(sample)
+    N = length(general)
+    arr = [obso = (x̅ - μ) / (s / sqrt(N)) for obso in sample]
+    return(arr)
 end
