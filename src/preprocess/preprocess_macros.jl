@@ -1,7 +1,6 @@
-macro tts(x,y,at=.75)
+macro tts(x,at=.75)
     x = eval(x)
-    y = eval(y)
-    TrainTestSplit(x,y,at)
+    TrainTestSplit(x,at)
 end
 macro norm(x)
     x = eval(x)
