@@ -43,11 +43,10 @@ include("Stats.jl")
 include("Models.jl")
 include("Preprocess.jl")
     println("=== Lathe 0.1.2 Butterball ===")
-    println("Lathe is not meant to be used directly.")
-    println("To use Lathe, import stats,preprocess, or models.")
-    println("using Lathe.stats")
-    println("using Lathe.preprocess")
-    println("using Lathe.models")
+    println("-0-0- Easily ML -0-0-")
+    println("Thank you for trying Lathe!")
+    println("-0-0- Contributors -0-0-")
+    println("emmettgb","stefanches7", "PallHaraldson")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
