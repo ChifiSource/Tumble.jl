@@ -24,7 +24,7 @@ Random.jl
 ================================#
 @doc """
       |====== Lathe - Easily ML =====\n
-      |= = = = = v. 0.1.0 = = = = = |\n
+      |= = = = = v. 0.1.2 = = = = = |\n
       |==============================\n
       |__________Lathe.stats\n
       |__________Lathe.preprocess\n
@@ -42,7 +42,12 @@ module Lathe
 include("Stats.jl")
 include("Models.jl")
 include("Preprocess.jl")
-export stats, models, preprocess
+    println("=== Lathe 0.1.2 Butterball ===")
+    println("Lathe is not meant to be used directly.")
+    println("To use Lathe, import stats,preprocess, or models.")
+    println("using Lathe.stats")
+    println("using Lathe.preprocess")
+    println("using Lathe.models")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
