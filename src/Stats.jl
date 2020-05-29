@@ -4,33 +4,43 @@ Stats
 ================#
 """
       |====== Lathe.stats ======\n
-      | ~~~~~~~~~~ Base ~~~~~~~~~~~\n
-      |_____stats.mean(array)\n
-      |_____stats.mode(array)\n
-      |_____stats.variance(array)\n
-      |_____stats.confiints(data,confidence = .95)\n
-      |_____stats.standarderror(array)\n
-      |_____stats.std(data)\n
-      |_____stats.correlationcoeff(x,y)\n
-      |_____stats.z(array)\n
-      |_____stats.firstquar(array)\n
-      |_____stats.secondquar(array)\n
-      |_____stats.thirdquar(array)\n
-      | ~~~~~~~~~~ Inferential ~~~~~~~~~~~\n
-      |_____stats.independent_t(sample,general)\n
-      |_____stats.spearman(var1,var2)\n
-      |_____stats.pearson(x,y)\n
-      |_____stats.chisqu(array)\n
-      |_____stats.sign(array)\n
-      |_____stats.f_test(sample,general)\n
-      | ~~~~~~~~~~ Bayesian ~~~~~~~~~~~\n
-      |_____stats.bay_ther(p,a,b)\n
-      |_____stats.cond_prob(p,a,b)\n
-      | ~~~~~~~~~~ Distributions ~~~~~~~~~~~\n
-      |====== validate ======\n
-      |____________/ Metrics ___________\n
-      |_____validate.mae(actual,pred)\n
-      |_____validate.r2(actual,pred)\n
+      | 0-0-0-0- Base -0-0-0-0\n
+      |_____mean(array)\n
+      |_____mode(array)\n
+      |_____variance(array)\n
+      |_____confiints(data,confidence = .95)\n
+      |_____standarderror(array)\n
+      |_____std(data)\n
+      |_____ste(data)\n
+      |_____z(array)\n
+      |_____firstquar(array)\n
+      |_____secondquar(array)\n
+      |_____thirdquar(array)\n
+      |\n
+      | 0-0-0-0- Inferential -0-0-0-0\n
+      |_____independent_t(sample,general)\n
+      |_____spearman(var1,var2)\n
+      |_____pearson(x,y)\n
+      |_____chisqu(array)\n
+      |_____sign(array)\n
+      |_____f_test(sample,general)\n
+      |_____correlationcoeff(x,y)\n
+      |_____dog(sample,general)\n
+      |\n
+      | 0-0-0-0- Bayesian -0-0-0-0\n
+      |_____bay_ther(p,a,b)\n
+      |_____cond_prob(p,a,b)\n
+      | 0-0-0-0- Distributions -0-0-0-0\n
+      |\n
+      |_____t_dist(sample,general)
+      |_____binomial_dist(positives,size)
+      |_____normal_dist(sample)
+      |\n
+      | 0-0-0-0- Validation -0-0-0-0\n
+      |_____mae(actual,pred)\n
+      |_____mse(actual,pred)
+      |_____r2(actual,pred)\n
+
        """
 module stats
 #==
@@ -43,13 +53,13 @@ export std, firstquar, secondquar, thirdquar, getranks, z
 Distributions
 ==#
 include("stats/distributions.jl")
-export chi_dist, bernoulli_dist, binomial_dist, normal_dist
+export chi_dist, bernoulli_dist, binomial_dist, normal_dist, t_dist
 #==
 Inferential
 ==#
 include("stats/inferential.jl")
 export independent_t, f_test, correlationcoeff, paired_t, spearman
-export pearson, chisq, wilcoxrs, wilcoxsr, sign, f_test
+export pearson, chisq, wilcoxrs, wilcoxsr, sign, f_test, dog
 #==
 Bayesian
 ==#
