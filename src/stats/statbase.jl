@@ -77,9 +77,9 @@ end
       exclusively for calculating the interval.
        """
 function confints(data, confidence=.95)
-    mean = mean(data)
+    mean = stats.mean(data)
     std = std(data)
-    stderr = standarderror(data)
+    stderr = ste(data)
 #    interval = stderr * scs.t.ppf((1 + confidence) / 2.0, n-1)
 #    return (mean-interval, mean+interval)
 end

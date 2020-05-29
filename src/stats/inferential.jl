@@ -4,7 +4,7 @@
       --------------------\n
       x = [5,10,15]\n
       y = [5,10,15]\n
-      r = Lathe.stats.correlationcoeff(x,y)\n
+      r = correlationcoeff(x,y)\n
        """
 function correlationcoeff(x,y)
     n = length(x)
@@ -30,7 +30,7 @@ end
       --------------------\n
       sample = [5,10,15]
       general = [15,25,35]\n
-      t = Lathe.stats.independent_t(sample,general)\n
+      t = independent_t(sample,general)
        """
 function independent_t(sample,general)
     sampmean = mean(sample)
@@ -44,18 +44,6 @@ function independent_t(sample,general)
     t = (sampmean - genmean) / (std / sqrt(samples))
     return(t)
 end
-# - Paired
-"""
-    THIS FUNCTION IS NOT YET WRITTEN\n
-      Paired T (Dependent T) is a T-test that doesn't require a sample.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q2 = Lathe.stats.paired_t(var1,var2)\n
-       """
-function paired_t(var1,var2)
-    d = var1 .- var2
-    d̄ = mean(x)
-end
 #<---- Correlations ---->
 # - Spearman
 """
@@ -63,7 +51,7 @@ end
       --------------------\n
       var1 = [5,10,15]\n
       var2 = [5,4,3,5,6]\n
-      r = Lathe.stats.spearman(var1,var2)\n
+      p = spearman(var1,var2)\n
        """
 function spearman(var1,var2)
     rgX = getranks(var1)
@@ -77,7 +65,7 @@ end
       --------------------\n
       x = [5,10,15]\n
       y = [5,4,3,5,6]\n
-      r = Lathe.stats.spearman(x,y)\n
+      p = pearson(x,y)\n
        """
 function pearson(x,y)
     sx = std(x)
@@ -98,35 +86,11 @@ end
       --------------------\n
       var1 = [5,10,15]\n
       var2 = [5,4,3,5,6]\n
-      p = Lathe.stats.chisq(var1,var2)\n
+      p = chisq(var1,var2)\n
        """
 function chisq(var1,var2)
     chistat(obs, exp) = (obs - exp)^2/exp
     return chistat.(x, e) |> sum
-end
-#<---- Wilcoxon ---->
-# - Wilcoxon Rank-Sum Test
-"""
-      FUNCTION NOT YET WRITTEN\n
-      Wilcox Sum Rank Tests are used to determine a probability with ranks\n
-      --------------------\n
-      var1 = [5,10,15]\n
-      var2 = [19,25,30]\n
-      p = Lathe.stats.wilcoxsr(var1,var2)\n
-       """
-function wilcoxrs(var1,var2)
-    #Hash
-end
-"""
-      FUNCTION NOT YET WRITTEN\n
-      Wilcox Sum Rank Tests are used to determine a probability with ranks\n
-      --------------------\n
-      var1 = [5,10,15]\n
-      var2 = [19,25,30]\n
-      p = Lathe.stats.wilcoxsr(var1,var2)\n
-       """
-function wilcoxsr(var1,var2)
-    #Hash
 end
 #<---- Sign Test ---->
 """
@@ -135,7 +99,7 @@ end
       --------------------\n
       var1 = [5,10,15]\n
       var2 = [19,25,30]\n
-      p = Lathe.stats.sign(var1,var2)\n
+      p = sign(var1,var2)\n
        """
 function sign(var1,var2)
     sets = var1 .- var2
@@ -157,12 +121,13 @@ function sign(var1,var2)
     return(ans)
 end
 #<---- F-Test---->
-@doc """
+"""
       An F test returns a probability of correlation, and is used similarly
       to a T test.\n
       --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
+      sample = [5,10,15]\n
+      general = [5,8,9]\n
+      p = f_test(array)
        """
 function f_test(sample,general)
     totvariance = variance(general)
@@ -171,6 +136,12 @@ function f_test(sample,general)
     return(f)
 end
 #<---- Degrees of Freedom ---->
+"""
+      Returns the degrees of freedom of a given array\n
+      --------------------\n
+      array = [5,10,15]\n
+      dog = dog(array)\n
+       """
 function dog(X, Y)
     s1 = (stdev(X) ^ 2)
     s2 = (stdev(Y) ^ 2)

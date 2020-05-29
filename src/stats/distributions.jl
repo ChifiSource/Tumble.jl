@@ -1,25 +1,11 @@
-# <---- Chi Distribution --->
-"""
-      FUNCTION NOT YET WRITTEN\n
-      Chi Distribution in another well-known distribution well known for being
-      used in statistical tests.\n
-      --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
-       """
-function chi_dist(x,e)
-    #
-end
-"""Function Not yet written"""
-function bernoulli_dist()
-    # P(x) = P^x(1-P)^1-x for x=0 eller 1
-end
 """
       Binomial Distribution is a distribution well known for its use in
-           statistical tests and decision making models.\n
+           statistical tests and decision making models. In order to calculate
+           binomial distribution, you will need the positives and size of your array.\n
       --------------------\n
-      array = [5,10,15]\n
-      r = Lathe.stats.anova(array)\n
+      positives = 5\n
+      n = 10\n
+      r = binomial_dist(positives,n)
        """
 function binomial_dist(positives,size)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
@@ -32,10 +18,10 @@ function binomial_dist(positives,size)
 end
 # ---- Normal Distribution ----
 """
-      Standard Scalar z-score normalizes a feature.\n
+      Returns the normal distribution as an array.\n
       --------------------\n
       array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.StandardScalar(array)\n
+      dist = normal_dist(array)
        """
 function normal_dist(array)
     q = Lathe.stats.std(array)
@@ -44,6 +30,12 @@ function normal_dist(array)
     return(v)
 end
 # ---- T distribution ----
+"""
+      Returns the T distribution as an array.\n
+      --------------------\n
+      array = [5,10,15]\n
+      dist = t_dist(array)
+       """
 function t_dist(sample, general)
     x̅ = mean(sample)
     μ = mean(general)
