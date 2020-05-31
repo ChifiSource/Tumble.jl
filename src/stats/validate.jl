@@ -19,7 +19,7 @@ function mae(actual,pred)
         throw(ArgumentError("The array shape does not match!"))
     end
     result = actual-pred
-    maeunf = Lathe.stats.mean(result)
+    maeunf = mean(result)
     if maeunf < 0
         maeunf = (maeunf - maeunf) - maeunf
     end
