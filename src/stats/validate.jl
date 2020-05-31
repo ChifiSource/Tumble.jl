@@ -55,7 +55,7 @@ function r2(actual,pred)
     if l != lp
         throw(ArgumentError("The array shape does not match!"))
     end
-    r = Lathe.stats.correlationcoeff(actual,pred)
+    r = correlationcoeff(actual,pred)
     rsq = r^2
     rsq = rsq * 100
     return(rsq)
