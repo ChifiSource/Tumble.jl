@@ -1,6 +1,5 @@
 using Random
 using DataFrames
-using Lathe
 # Train-Test-Split-----
 function _dfTrainTestSplit(df,at = 0.75)
     sample = randsubseq(1:size(df,1), at)
@@ -25,7 +24,7 @@ end
       -------------------\n
        """
 TrainTestSplit(data::Array, at::Float64) = _ArraySplit(data,at)
-TrainTestSplit(data::DataFrame, at::Float64) = dfTrainTestSplit(data,at)
+TrainTestSplit(data::DataFrame, at::Float64) = _dfTrainTestSplit(data,at)
 # Sort-Split -------------
 @doc """
       SortSplit sorts the data from least to greatest, and then splits it,
