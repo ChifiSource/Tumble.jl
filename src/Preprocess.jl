@@ -51,7 +51,7 @@ end
       -------------------\n
        """
 TrainTestSplit(data::Array, at::Float64) = _ArraySplit(data,at)
-TrainTestSplit(data::DataFrame, at::Float64) = dfTrainTestSplit(data,at)
+TrainTestSplit(data::DataFrame, at::Float64) = _dfTrainTestSplit(data,at)
 # Sort-Split -------------
 @doc """
       SortSplit sorts the data from least to greatest, and then splits it,
