@@ -38,11 +38,16 @@ help?> Lathe.stats.mean
 - Feature Scaling and Encoding
 
 ## Add it!
-Pkg Registry (press ] in the Julia REPL to go to Pkg mode):
+**(press ] in the Julia REPL to go to Pkg REPL)**\
+ #### LTS (Long-term support, reccommended):
+ ```julia
+ (v1.3) pkg> add Lathe#Butterball
+ ```
+ #### Latest (Get the latest stable developments):
  ```julia
  (v1.3) pkg> add Lathe
  ```
- Unstable (press ] in the Julia REPL to go to Pkg mode):
+ #### Unstable (Get the latest undocumented and unstable developments):
  ```julia
  (v1.3) pkg> add Lathe#Unstable
  ```
