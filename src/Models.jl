@@ -23,25 +23,30 @@ using DataFrames
 using Lathe.stats
 # [deps]
 #==
-Linear Models
+Continuous Models
 ==#
-include("models/linear_models.jl")
-export LinearRegression, LeastSquare, RidgeRegression, MeanBaseline
+# Least Square
+include("models/lsq.jl")
+export LeastSquare
+# Linear Regression
+include("models/regressors")
+export LinearRegression,
 #==
 Categorical Models
 ==#
-include("models/cat_models.jl")
-export majClassBaseline, LogisticRegression
+# Logistic Regression
+include("models/logistic.jl")
+export LogisticRegression
 #==
-Pipelines
+Unsupervised Models
 ==#
-include("models/pipelines.jl")
-export Pipeline
+include("models/kmeans.jl")
+export Kmeans
 #==
 Tools
 ==#
 include("models/toolbox.jl")
-export PowerLog
+export PowerLog, majClassBaseline, MeanBaseline, Pipeline
 #==
 Macros
 ==#
@@ -52,9 +57,5 @@ Neural Networks
 ==#
 include("models/neural.jl")
 export Network
-#==
-Nonlinear Models
-==#
-include("models/nonlinear_models.jl")
 #----------------------------------------------
 end
