@@ -36,3 +36,69 @@ function PowerLog(p1::Float64,p2::Float64; alpha::Float64 = 0.05, rsq::Real = 0)
     end
     return(pwr, nn)
 end
+#==
+Mean
+    Baseline
+==#
+ # Model Type
+ @doc """
+       A mean baseline is great for getting a basic accuracy score in order
+           to make a valid direction for your model.\n
+         --------------------\n
+         ==PARAMETERS==\n
+        [y] <- Fill with your trainY values. Should be an array of shape (0,1) or (1,0)\n
+        pipl = Pipeline([StandardScalar(),LinearRegression(trainX,trainy)])\n
+        --------------------\n
+        ==Functions==\n
+        predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+                     """
+function MeanBaseline(y)
+    m = mean(m.y)
+    predict(xt) =
+    xt = [v = m for v in xt]
+    (test)->(m;predict)
+end
+#==
+Majority
+    Class
+        Baseline
+==#
+@doc """
+      Majority class baseline is used to find the most often interpreted
+      classification in an array.\n
+      --------------------\n
+      ==PARAMETERS==\n
+     [y] <- Fill with your trainY values. Should be an array of shape (0,1) or (1,0)\n
+     --------------------\n
+     ==Functions==\n
+     predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)\n
+     counts() <- Returns a dictionary with the counts of all inserted keys.\n
+     highest() <- Will return a Dictionary key with the count as well as the value for the most interpreted classification.
+       """
+function majClassBaseline(y)
+    u=unique(y)
+    d=Dict([(i,count(x->x==i,y)) for i in u])
+    d = sort(collect(d), by=x->x[2])
+    maxkey = d[length(d)]
+    predict(xt) = [p = maxkey[1] for p in xt]
+    counts() = d
+    highest() = maxkey
+    (var)->(y;maxkey;d;predict;counts;highest)
+end
+@doc """
+      Pipelines can contain a predictable Lathe model with preprocessing that
+      occurs automatically. This is done by putting X array processing methods
+      into the iterable steps, and then putting your Lathe model in.\n
+      --------------------\n
+      ==PARAMETERS==\n
+      [steps] <- An iterable list of methods to call for X modification. These mutations should
+      have ALREADY BEEN MADE TO THE TRAIN X.\n
+      pipl = Pipeline([StandardScalar(),LinearRegression(trainX,trainy)])\n
+      --------------------\n
+      ==Functions==\n
+      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+      """
+function Pipeline(steps)
+    predict(xt) = [object.predict(xt) for object in steps]
+    (var)->(steps;predict)
+end
