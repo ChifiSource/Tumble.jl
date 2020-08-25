@@ -1,5 +1,6 @@
 #===============================
 <-----------Lathe.jl----------->
+~~~~~~ 0.1.2 "ButterBall" ~~~~~~
 Programmed by Emmett Boudreau
     <emmett@emmettboudreau.com>
         <http://emmettboudreau.com>
@@ -12,6 +13,7 @@ MIT General Open Source License
 =~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=|
         ~ emmettgb
         ~ stefanches7
+        ~ PallHaraldsson
 /><><><><><><><><><><><><><><><><\
 Thank you for your forks!
 <-----------Lathe.jl----------->
@@ -22,13 +24,11 @@ Random.jl
 ================================#
 @doc """
       |====== Lathe - Easily ML =====\n
-      |= = = = = v. 0.1.0 = = = = = |\n
+      |= = = = = v. 0.1.2 = = = = = |\n
       |==============================\n
       |__________Lathe.stats\n
-      |__________Lathe.validate\n
       |__________Lathe.preprocess\n
       |__________Lathe.models\n
-      |__________Lathe.data\n
       |______________________________\n
       Use ?(Lathe.package) for information!\n
       [uuid]\n
@@ -42,8 +42,11 @@ module Lathe
 include("Stats.jl")
 include("Models.jl")
 include("Preprocess.jl")
-include("Data.jl")
-include("Distributions.jl")
+    println("=== Lathe 0.1.2 Butterball ===")
+    println("-0-0- Easily ML -0-0-")
+    println("Thank you for trying Lathe!")
+    println("-0-0- Contributors -0-0-")
+    println("emmettgb","stefanches7", "PallHaraldson")
 # <------- PARTS ----->
 # <------- DEPS ----->
 using DataFrames
