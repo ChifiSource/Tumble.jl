@@ -4,15 +4,14 @@ Linear
      Square
 ==#
 """
-      Least Squares is ideal for predicting continous features.
-      Many models use Least Squares as a base to build off of.\n
+      Least Square regressors are ideal for predicting continous features.\n
       --------------------\n
       x = [7,6,5,6,5]\n
       y  = [3.4.5.6.3]\n
       xtrain = [7,5,4,5,3,5,7,8]\n
       Type = :LIN\n
-      model = Lathe.models.LeastSquare(x,y,Type)\n
-      y_pred = Lathe.models.predict(model,xtrain)\n
+      model = models.LeastSquare(x,y,Type)\n
+      y_pred = models.predict(model,xtrain)\n
       -------------------\n
       HYPER PARAMETERS\n
       Type <- Type determines which Linear Least Square algorithm to use,
