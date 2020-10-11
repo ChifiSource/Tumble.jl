@@ -1,43 +1,30 @@
 <div align="center"><img src="https://github.com/emmettgb/Lathe.jl/blob/Unstable/lathelogo.png" />
-  <h2>0.1.3 "ButterBall"</h2>
+  <h1>0.1.3 "ButterBall"</h1>
 </div>
 <div align="left">
-  <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, DataFrame tools, Preprocessing, Machine-Learning Models, and Model Validation. Lathe features easy one line constructor model fit-predicting, fast dispatch, easy documentation, and a great code-base with strong deployability.</p>
+  <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.</p>
         </div>
-        </div>
-      </a> </br></br></br>
-      <h3>Documentation<h3>
-  
-  
-## [Latest](http://lathe.ai/doc)
-**You can also access Lathe documentation using the built in ?() method in Julia:**
 
-  
-```julia
-help?> Lathe.stats.mean
-  Calculates the mean of a given array.
+<details class="details-overlay">
+  <summary class="btn"><h2>What's great about Lathe?</h2></summary>
+<div>
 
-  ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#### Easy To Use
+Lathe brings an entirely different methodology to the Julia language. Types are created to adhere to the object-oriented programming paradigm, and syntax is akin to that of Pythonic machine-learning packages, like SkLearn.
+#### Fully Featured
+Lathe includes many of the tools commonly used by machine-learning engineers and scientists out of the box, rather than relying on more dependencies to do so.
+#### Deployable
+Lathe models can be easily serialized and deployed onto production servers using **Genie.jl**, or a similar high-performance web-server. Lathe also has support for pipelines, meaning most pre-processing operations can be automated and performed with one easy call.
+#### Fast
+Lathe uses a faster methodology than most other Julia packages for machine-learning. Furthermore, the package also takes advantage of the natural ability of the language to be fast. As a result, Lathe is also faster than most similar packages for other high-level statistical programming languages.
 
-  array = [5,10,15]
+</div>
+</details>
 
-  mean = Lathe.stats.mean(array)
+<details class="details-overlay">
+  <summary class="btn"><h2>Add Lathe</h2></summary>
+<div>
 
-  println(mean)
-
-  10
-```
-
-## Features
-- Pipelines
-- An ever-expanding library of machine-learning models.
-- A large stats library with distributions and model validation included.
-- Data Processing and Data Loading tools.
-- Neural Network Framework.
-- Fast speed with easy methods.
-- Feature Scaling and Encoding
-
-## Add it!
 **(press ] in the Julia REPL to go to Pkg REPL)**\
  #### LTS (Long-term support, reccommended):
  ```julia
@@ -51,3 +38,16 @@ help?> Lathe.stats.mean
  ```julia
  (v1.3) pkg> add Lathe#Unstable
  ```
+ 
+</div>
+</details>
+
+<details class="details-overlay">
+  <summary class="btn"><h2>Documentation</h2></summary>
+<div>
+
+(null)
+ 
+</div>
+</details>
+
