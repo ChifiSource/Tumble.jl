@@ -8,7 +8,7 @@ function _dfTrainTestSplit(df,at = 0.75)
     testset = df[notsample, :]
     return(trainingset,testset)
 end
-function _ArraySplit(data, at = 0.7)
+function _ArraySplit(data, at = 0.75)
     n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
@@ -17,14 +17,16 @@ function _ArraySplit(data, at = 0.7)
     return(test_idx,train_idx)
 end
 @doc """
-      TrainTestSplit takes either a DataFrame or an Array and splits it according to the at parameter.\n
+      Train test split is a method used to divide data into smaller fragments
+       for testing, training, and validation. The method can take a dataframe
+           or an array.
       --------------------\n
-      [data] <- Iterable dictionary, dataframe, or Array.\n
-      a <- Percentage value used to determine a point to split the data.\n
-      -------------------\n
+      PARAMETERS:\n
+      data:: Iterable dictionary, dataframe, or Array.\n
+      at:: Percentage value used to determine a point to split the data.\n
        """
-TrainTestSplit(data::Array, at::Float64) = _ArraySplit(data,at)
-TrainTestSplit(data::DataFrame, at::Float64) = _dfTrainTestSplit(data,at)
+TrainTestSplit(data::Array, at::Float64=.75) = _ArraySplit(data,at)
+TrainTestSplit(data::DataFrame, at::Float64=.75) = _dfTrainTestSplit(data,at)
 # Sort-Split -------------
 @doc """
       SortSplit sorts the data from least to greatest, and then splits it,
