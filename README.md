@@ -17,6 +17,8 @@ Lathe includes many of the tools commonly used by machine-learning engineers and
 Lathe models can be easily serialized and deployed onto production servers using **Genie.jl**, or a similar high-performance web-server. Lathe also has support for pipelines, meaning most pre-processing operations can be automated and performed with one easy call.
 #### Fast
 Lathe uses a faster methodology than most other Julia packages for machine-learning. Furthermore, the package also takes advantage of the natural ability of the language to be fast. As a result, Lathe is also faster than most similar packages for other high-level statistical programming languages.
+#### Julian
+Lathe is written in 100-percent pure Julia. As a result, the package often takes advantage of very Julian methods of dealing with problems, such as dispatch, macros, and syntactical expressions.
 
 </div>
 </details>
