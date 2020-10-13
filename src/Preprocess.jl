@@ -20,11 +20,7 @@ Preprocessing
 module preprocess
 using Random
 using DataFrames
-
-#==
-Data Loading
-==#
-include("preprocess/data_loading.jl")
+using Lathe.stats
 #==
 Data Processing
 ==#
