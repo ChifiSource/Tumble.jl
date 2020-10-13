@@ -30,7 +30,7 @@ include("models/lsq.jl")
 export LeastSquare
 # Linear Regression
 include("models/regressors")
-export LinearRegression,
+export LinearRegression
 #==
 Categorical Models
 ==#
