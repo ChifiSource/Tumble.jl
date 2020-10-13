@@ -33,7 +33,7 @@ Continuous Models
 include("models/lsq.jl")
 export LeastSquare
 # Linear Regression
-include("models/linreg")
+include("models/linreg.jl")
 export SimpleLinearRegression
 #==
 Categorical Models
