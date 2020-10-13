@@ -22,10 +22,6 @@ using Random
 using DataFrames
 
 #==
-Data Loading
-==#
-include("preprocess/data_loading.jl")
-#==
 Data Processing
 ==#
 include("preprocess/data_processing.jl")
