@@ -5,6 +5,29 @@
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.</p>
         </div>
 
+
+<details class="details-overlay">
+  <summary class="btn"><h2>Add Lathe</h2></summary>
+<div>
+
+**(press ] in the Julia REPL to go to Pkg REPL)**
+ #### LTS (Long-term support, reccommended):
+ ```julia
+ (v1.3) pkg> add Lathe#Butterball
+ ```
+ #### Latest (Get the latest stable developments):
+ ```julia
+ (v1.3) pkg> add Lathe
+ ```
+ #### Unstable (Get the latest undocumented and unstable developments):
+ ```julia
+ (v1.3) pkg> add Lathe#Unstable
+ ```
+ 
+</div>
+</details>
+
+
 <details class="details-overlay">
   <summary class="btn"><h2>What's great about Lathe?</h2></summary>
 <div>
@@ -24,25 +47,37 @@ Lathe is written in 100-percent pure Julia. As a result, the package often takes
 </details>
 
 <details class="details-overlay">
-  <summary class="btn"><h2>Add Lathe</h2></summary>
+  <summary class="btn"><h2>What's Inside?</h2></summary>
 <div>
 
-**(press ] in the Julia REPL to go to Pkg REPL)**\
- #### LTS (Long-term support, reccommended):
- ```julia
- (v1.3) pkg> add Lathe#Butterball
- ```
- #### Latest (Get the latest stable developments):
- ```julia
- (v1.3) pkg> add Lathe
- ```
- #### Unstable (Get the latest undocumented and unstable developments):
- ```julia
- (v1.3) pkg> add Lathe#Unstable
- ```
- 
+### Stats
+- Distributions
+- Statistical tests
+- Bayesian tests
+- Model validation
+- Sampling
+- General Statistics
+
+### Preprocess
+- Scalers
+- Encoders
+- Splitters
+### Models
+- Pipelines
+- Powerlog
+- Logistic Regression
+- Kmeans Clustering
+- Random Forest Classifier
+- Decision Tree Classifier
+- Pipelines
+- Linear Regression
+- Linear Least square
+
 </div>
 </details>
+
+
+
 
 <details class="details-overlay">
   <summary class="btn"><h2>Documentation</h2></summary>
