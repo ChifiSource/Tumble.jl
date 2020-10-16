@@ -6,7 +6,7 @@ struct Result{T, S}
     sc::Vector{Node{T}}
     d::Vector{S}
 end
-function fit(::TREECLASS, X, y, rng = Random.GLOBAL_RNG; max_depth = 6, min_node_records = 1,
+function fit(::TREECLASS, X, y, rng = Random.GLOBAL_RNG, max_depth = 6, min_node_records = 1,
         n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
     if n_features_per_node > size(X, 2)
         n_features_per_node = size(X, 2)
