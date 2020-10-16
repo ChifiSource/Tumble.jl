@@ -20,7 +20,7 @@ module models
 # [deps]
 using Random
 using DataFrames
-using Lathe.stats
+using Lathe.lstats
 # [deps]
 #==
 Continuous Models
