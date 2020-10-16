@@ -1,7 +1,6 @@
 include("tree_base.jl")
 struct TREECLASS end
 using Random
-using StatsBase
 struct Result{T, S}
     sc::Vector{Node{T}}
     d::Vector{S}
