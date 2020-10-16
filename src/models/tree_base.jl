@@ -1,197 +1,240 @@
-export gini, entropy, q_bi_sort!, depth, num_nodes, TreeMeta
-export StopCondition, Tree
-@inline function gini(ns, n)
-    s = 0.0
-    @simd for k in ns
-        s += k * (n - k)
+function information_gain(group, den)
+    res = 0.0
+    for x in group
+        p = x/den
+        res -= p * log2(p)
     end
-    return s / (n * n)
-    # return sum(k * (n - k) for k in ns) / (n * n)
+    return res
 end
 
-
-@inline function entropy(ns, n)
-    # =
-    s = 0.0
-    log_n = log(n)
-    @simd for k in ns
-        if k > 0
-            s += k * log(k)
-        end
-    end
-    return log(n) - s / n
-    # =#
-    # return -sum(k * log(k/n) for k in ns) / n
-
+function information_impurity(information_before, left, right, ll, lr, lt)
+    information_before -
+    ll/lt * information_gain(left, ll) -
+    lr/lt * information_gain(right, lr)
 end
 
-@inline function partition!(v, w, pivot, region)
-    i, j = 1, length(region)
-    r_start = region.start - 1
-    @inbounds while true
-        while w[i] <= pivot; i += 1; end;
-        while w[j]  > pivot; j -= 1; end;
-        i >= j && break
-        ri = r_start + i
-        rj = r_start + j
-        v[ri], v[rj] = v[rj], v[ri]
-        w[i], w[j] = w[j], w[i]
-        i += 1; j -= 1
+function gini_index(group, den)
+    den == 0 && return 0.0
+    res = 0.0
+    for x in group
+        res += (x/den)^2
     end
-    return j
+    return res
 end
 
-function insert_sort!(v, w, lo, hi)
-    @inbounds for i = lo+1:hi
-        j = i
-        x = v[i]
-        y = w[i]
-        while j > lo
-            if x < v[j-1]
-                v[j] = v[j-1]
-                w[j] = w[j-1]
-                j -= 1
-                continue
+function gini_impurity(gini_before, left, right, ll, lr, lt)
+    ll/lt * gini_index(left, ll) +
+    lr/lt * gini_index(right, lr) -
+    gini_before
+end
+mutable struct Node{T}
+    feature_idx::Int
+    feature_val::T
+    value::Int
+    left::Node{T}
+    right::Node{T}
+    is_terminal::Bool
+
+    function Node(feature_idx, feature_val::T) where {T}
+        node = new{T}()
+        node.feature_idx = feature_idx
+        node.feature_val = feature_val
+        node.is_terminal = false
+
+        return node
+    end
+
+    function Node{T}(value) where {T}
+        node = new{T}()
+        node.value = value
+        node.is_terminal = true
+
+        return node
+    end
+
+    function Node(feature_idx, feature_val::T, value, is_terminal=false) where {T}
+        node = new{T}()
+        node.feature_idx = feature_idx
+        node.feature_val = feature_val
+        node.value = value
+        node.is_terminal = is_terminal
+
+        return node
+    end
+
+    function Node{T}() where T
+        node = new{T}()
+        node.is_terminal = false
+        return node
+    end
+end
+
+struct DecisionTreeContainer{T}
+    root::Node{T}
+    n_features_per_node::Int
+    n_classes::Int
+    max_depth::Int
+    min_node_records::Int
+end
+
+"""
+    feature_best_split
+For a given feature search best split value.
+"""
+function feature_best_split(containers, X, y, n_classes, feature)
+    gini_before = containers.gini_before
+    left = containers.left
+    right = containers.right
+    lt = containers.lt
+
+    # prepare initial split
+    left .= 0
+    right .= 0
+    for i in axes(X, 1)
+        right[y[i]] += 1
+    end
+    # TODO: I leave it for now. In the future, sorting should be done before feature split,
+    # so allocations or unsafe arrays would be of no importance.
+    sort_idx = sortperm(@view X[:, feature])
+    ll = 1
+    lr = length(y) - 1
+    i1 = sort_idx[1]
+    left[y[i1]] = 1
+    right[y[i1]] -= 1
+    prev_val = X[i1, feature]
+    best_val = prev_val
+    best_impurity = 0.0
+    @inbounds for idx in 2:length(y)
+        i = sort_idx[idx]
+        if X[i, feature] != prev_val
+            prev_val = X[i, feature]
+            impurity = gini_impurity(gini_before, left, right, ll, lr, lt)
+            if impurity > best_impurity
+                best_impurity = impurity
+                best_val = prev_val
             end
-            break
         end
-        v[j] = x
-        w[j] = y
-    end
-    return v
-end
-
-@inline function _selectpivot!(v, w, lo, hi)
-    @inbounds begin
-        mi = (lo+hi)>>>1
-
-        # sort the values in v[lo], v[mi], v[hi]
-
-        if v[mi] < v[lo]
-            v[mi], v[lo] = v[lo], v[mi]
-            w[mi], w[lo] = w[lo], w[mi]
-        end
-        if v[hi] < v[mi]
-            if v[hi] < v[lo]
-                v[lo], v[mi], v[hi] = v[hi], v[lo], v[mi]
-                w[lo], w[mi], w[hi] = w[hi], w[lo], w[mi]
-            else
-                v[hi], v[mi] = v[mi], v[hi]
-                w[hi], w[mi] = w[mi], w[hi]
-            end
-        end
-
-        # move v[mi] to v[lo] and use it as the pivot
-        v[lo], v[mi] = v[mi], v[lo]
-        w[lo], w[mi] = w[mi], w[lo]
-        pivot = v[lo]
-        w_piv = w[lo]
+        ll += 1
+        lr -= 1
+        left[y[i]] += 1
+        right[y[i]] -= 1
     end
 
-    # return the pivot
-    return pivot, w_piv
+    return (val = best_val, impurity = best_impurity)
 end
 
-
-@inline function _bi_partition!(v, w, lo, hi)
-    pivot, w_piv = _selectpivot!(v, w, lo, hi)
-    # pivot == v[lo], v[hi] > pivot
-    i, j = lo, hi
-    @inbounds while true
-        i += 1; j -= 1
-        while v[i] < pivot; i += 1; end;
-        while pivot < v[j]; j -= 1; end;
-        i >= j && break
-        v[i], v[j] = v[j], v[i]
-        w[i], w[j] = w[j], w[i]
+function create_containers(n_classes, y)
+    left = zeros(Int, n_classes)
+    right = Vector{Int}(undef, n_classes)
+    lt = length(y)
+    for i in 1:lt
+        left[y[i]] += 1
     end
-    v[j], v[lo] = pivot, v[j]
-    w[j], w[lo] = w_piv, w[j]
+    gini_before = gini_index(left, lt)
+    containers = (left = left, right = right, gini_before = gini_before, lt = lt)
 
-    # v[j] == pivot
-    # v[k] >= pivot for k > j
-    # v[i] <= pivot for i < j
-    return j
+    return containers
 end
 
+# Chooses best feature from features
+function best_split(X, target, n_classes, features)
+    containers = create_containers(n_classes, target)
+    best_feature = 0
+    best_val = -Inf
+    best_impurity = -Inf
+    for feature in features
+        val, impurity = feature_best_split(containers, X, target, n_classes, feature)
+        if impurity > best_impurity
+            best_val = val
+            best_feature = feature
+            best_impurity = impurity
+        end
+    end
 
-const SMALL_THRESHOLD  = 20
-function q_bi_sort!(v, w, lo, hi)
-    @inbounds while lo < hi
-        hi-lo <= SMALL_THRESHOLD && return insert_sort!(v, w, lo, hi)
-        j = _bi_partition!(v, w, lo, hi)
-        if j-lo < hi-j
-            # recurse on the smaller chunk
-            # this is necessary to preserve O(log(n))
-            # stack space in the worst case (rather than O(n))
-            lo < (j-1) && q_bi_sort!(v, w, lo, j-1)
-            lo = j+1
+    return (feature = best_feature, val = best_val)
+end
+
+function split_value(X, target, n_classes)
+    res = zeros(Int, n_classes)
+    for i in axes(X, 1)
+        res[target[i]] += 1
+    end
+
+    return argmax(res)
+end
+
+function get_split_indices(X, feature_idx, feature_val)
+    return X[:, feature_idx] .< feature_val, X[:, feature_idx] .>= feature_val
+end
+
+function is_pure(target)
+    return all(target[1] .== target)
+end
+
+###############################
+# Node functions
+###############################
+
+function process_node(dtc::DecisionTreeContainer{T}, node, X, target,
+                      rng = Random.GLOBAL_RNG,
+                      features = sample(rng, 1:size(X, 2), dtc.n_features_per_node, replace = false),
+                      depth = 1) where T
+
+    if depth > dtc.max_depth
+        node.is_terminal = true
+        node.value = split_value(X, target, dtc.n_classes)
+    elseif length(target) <= dtc.min_node_records
+        node.is_terminal = true
+        node.value = split_value(X, target, dtc.n_classes)
+    elseif is_pure(target)
+        node.is_terminal = true
+        node.value = target[1]
+    else
+        feature_idx, feature_val = best_split(X, target, dtc.n_classes, features)
+        node.feature_idx = feature_idx
+        node.feature_val = feature_val
+        left_ids, right_ids = get_split_indices(X, feature_idx, feature_val)
+        left = Node{T}()
+        right = Node{T}()
+        node.left = left
+        node.right = right
+        new_features = sample(rng, 1:size(X, 2), dtc.n_features_per_node, replace = false)
+        process_node(dtc, left, X[left_ids, :], target[left_ids], rng, new_features, depth + 1)
+        process_node(dtc, right, X[right_ids, :], target[right_ids], rng, new_features, depth + 1)
+    end
+end
+
+function create_tree(X, y; rng = Random.GLOBAL_RNG, max_depth = 10, min_node_records = 1,
+                     n_features = size(X, 2))
+    T = eltype(X)
+    root = Node{T}()
+    n_classes = length(Set(y))
+    dtc = DecisionTreeContainer(root, n_features, n_classes, max_depth, min_node_records)
+    process_node(dtc, root, X, y, rng)
+
+    return root
+end
+
+function predict(node::Node, row)
+    if node.is_terminal
+        return node.value
+    else
+        if row[node.feature_idx] < node.feature_val
+            return predict(node.left, row)
         else
-            j+1 < hi && q_bi_sort!(v, w, j+1, hi)
-            hi = j-1
+            return predict(node.right, row)
         end
     end
-    return v
 end
 
-function depth(node)
-    return node.is_leaf ? 1 : 1 + max(depth(node.l), depth(node.r))
-end
-
-function num_nodes(node)
-    return node.is_leaf ? 1 : 1 + num_nodes(node.l) + num_nodes(node.r)
-end
-
-mutable struct Node
-    l           :: Node  # right child
-    r           :: Node  # left child
-
-    label       :: UInt32  # most likely label
-    feature     :: UInt32  # feature used for splitting
-    threshold   :: Float32 # threshold value
-    is_leaf     :: Bool
-
-    depth       :: UInt32
-    region      :: UnitRange{UInt32} # a slice of the samples used to decide the split of the node
-    features    :: Array{UInt32}     # a list of features not known to be constant
-
-    # added by buid_tree
-    purity      :: Float32
-    split_at    :: UInt32            # index of samples
-
-    Node() = new()
-    Node(features, region, depth) = (
-            node = new();
-            node.depth = depth;
-            node.region = region;
-            node.features = features;
-            node.is_leaf = false;
-            node)
-end
-
-struct TreeMeta
-    n_classes    :: UInt32 # number of classes to predict
-    max_features :: UInt32 # number of features to subselect
-end
-
-struct StopCondition
-    max_depth           :: UInt32
-    max_leaf_nodes      :: UInt32
-    min_samples_leaf    :: UInt32
-    min_samples_split   :: UInt32
-    min_purity_increase :: Float32
-
-    StopCondition(a, b, c, d, e) = new(a, b, c, d, e)
-    StopCondition() = new(typemax(UInt32), 0, 1, 2, 0.0)
-end
-
-mutable struct FF # float float int lol
-    purity  :: Float32
-    value   :: Float32
-end
-
-mutable struct Tree{T}
-    meta :: TreeMeta
-    root :: Node
-    list :: Array{T}
+function predict(node::Node, X, i)
+    if node.is_terminal
+        return node.value
+    else
+        if X[i, node.feature_idx] < node.feature_val
+            return predict(node.left, X, i)
+        else
+            return predict(node.right, X, i)
+        end
+    end
 end
