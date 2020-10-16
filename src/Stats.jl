@@ -3,7 +3,7 @@ Stats
     Module
 ================#
 """
-      |====== Lathe.stats ======\n
+      |====== Lathe.lstats ======\n
       | 0-0-0-0- Base -0-0-0-0\n
       |_____mean(array)\n
       |_____mode(array)\n
@@ -42,7 +42,7 @@ Stats
       |_____r2(actual,pred)\n
 
        """
-module stats
+module lstats
 #==
 Base
 ==#
