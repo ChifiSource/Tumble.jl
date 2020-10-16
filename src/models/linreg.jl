@@ -43,7 +43,7 @@ function SimpleLinearRegression(x,y)
 end
 function _srmemory(a, b, newx, newy)
     newmdl = SimpleLinearRegression(newx, newy)
-    newmdl.a = mean(a, newmdl.a)
-    newmdl.b = mean(b, newmdl.b)
+    newmdl.a = mean([a, newmdl.a])
+    newmdl.b = mean([b, newmdl.b])
     return(newmdl)
 end
