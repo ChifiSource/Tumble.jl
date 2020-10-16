@@ -51,7 +51,7 @@ function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
     storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
-    n_features_per_node, n_trees)
+            n_features_per_node, n_trees)
     predict(xt) = predict(storedata, xt)
     (var)->(predict;storedata)
 end
