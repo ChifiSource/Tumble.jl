@@ -241,7 +241,6 @@ function build_tree(X    :: Array{Float32, 2},
     return tree
 end
 const REGRESSING = false
-const lib = REGRESSING ? regressor : classifier
 # meta = lib.TreeMeta(n_classes, max_features)
 # stop = lib.StopCondition(
 #        max_depth,
