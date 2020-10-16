@@ -47,11 +47,19 @@ function predict(scr::Result, X)
     end
     return res
 end
-function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
+function RandomForestClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
     storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
         Int(floor(sqrt(size(X, 2)))), n_trees)
-    predict(xt) = predict(xt, storedata)
+    predict(xt) = rf_predict(storedata, xt)
+    (var)->(predict;storedata)
+end
+function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
+     min_node_records = 1,
+    n_features_per_node = Int(floor(sqrt(size(X, 2)))))
+    storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
+        Int(floor(sqrt(size(X, 2)))), 1)
+    predict(xt) = rf_predict(storedata, xt)
     (var)->(predict;storedata)
 end
