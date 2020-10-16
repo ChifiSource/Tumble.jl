@@ -38,12 +38,5 @@ function SimpleLinearRegression(x,y)
     b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
     # The part that is super struct:
     predict(xt) = (xt = [i = a + (b * i) for i in xt])
-    add(x, y) = _srmemory(a, b, x, y)
-    (var)->(a;b;predict;add)
-end
-function _srmemory(a, b, newx, newy)
-    newmdl = SimpleLinearRegression(newx, newy)
-    newmdl.a = mean([a, newmdl.a])
-    newmdl.b = mean([b, newmdl.b])
-    return(newmdl)
+    (var)->(a;b;predict)
 end

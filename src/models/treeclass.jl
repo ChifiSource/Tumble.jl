@@ -31,7 +31,7 @@ function fit(::TREECLASS, X, y, rng = Random.GLOBAL_RNG, max_depth = 6, min_node
     return Result(sc, out_classes)
 end
 
-function predict(scr::Result, X)
+function rf_predict(scr::Result, X)
     d = scr.d
 
     n = length(d)
