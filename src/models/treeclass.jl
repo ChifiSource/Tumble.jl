@@ -272,7 +272,7 @@ end
 defaults = TreeParameters(typemax(UInt32), 1, 2, 0, 0)
 function DecisionTreeClassifier(X, Y, params = defaults)
     max_features = 64
-    n_samples, n_features = size(X)
+    n_samples, n_features = length(X)
     n_classes = length(Set(Y))
     meta = TreeMeta(n_classes, max_features)
     stop = StopCondition(
