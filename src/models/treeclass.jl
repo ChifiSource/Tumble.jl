@@ -168,8 +168,8 @@ end
 
 # To do: check that Y actually has
 # meta.n_classes classes
-function check_input(X    :: Array{Float32, 2},
-                     Y    :: Array{UInt32, 1},
+function check_input(X,
+                     Y,
                      meta :: TreeMeta,
                      stop :: StopCondition)
     n_samples, n_features = size(X)
