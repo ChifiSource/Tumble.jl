@@ -48,7 +48,7 @@ Base
 ==#
 include("stats/statbase.jl")
 export mean, ste, std, median, mode, variance, confints, ste
-export std, firstquar, secondquar, thirdquar, getranks, z
+export std, firstquar, secondquar, thirdquar, getranks, z, sample
 #==
 Distributions
 ==#
@@ -70,6 +70,11 @@ Validate
 ==#
 include("stats/validate.jl")
 export mae, mse, r2, catacc
+#==
+Samples
+==#
+include("stats/samples.jl")
+export Sampler, sample
 #==
 Macros
 ==#

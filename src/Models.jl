@@ -38,9 +38,10 @@ export SimpleLinearRegression
 #==
 Categorical Models
 ==#
-# Decision Tree Classifier
+# Decision Tree Classifier/ RF
 include("models/treeclass.jl")
 export DecisionTreeClassifier
+export RandomForestClassifier
 # Logistic Regression
 include("models/logistic.jl")
 export LogisticRegression

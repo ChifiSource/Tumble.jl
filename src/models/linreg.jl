@@ -1,4 +1,3 @@
-include("../Stats.jl")
 #==
 Linear
     Regression

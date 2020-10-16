@@ -1,6 +1,5 @@
 struct TREECLASS end
 using Random
-include("../Stats.jl")
 struct Result{T, S}
     sc::Vector{Node{T}}
     d::Vector{S}

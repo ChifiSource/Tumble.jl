@@ -4,21 +4,17 @@
       One hot encoder replaces a single feature with sub arrays containing
       boolean values (1 or 0) for each individual category.\n
       --------------------\n
-      df = DataFrame(:A => ['w','b','w'], :B => [5, 10, 15])\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(df,:A)\n
+      ==PARAMETERS==\n
+      (This function has no parameters)\n
+      --------------------\n
+      ==FUNCTIONS==\n
+      predict(df, symb) <- returns a copy of the dataframe with
        """
-function OneHotEncoder(df,symb)
-    copy = df
+function OneHotEncoder()
+    predict(df, symb) = _onehot(df,symb)
+    ()->(predict)
+end
 
-    predict() = _onehotdf(df,symb)
-    ()->(predict;df;symb)
-end
-function _onehotdf(df,symb)
-    for c in unique(copy[!,symb])
-        copy[!,Symbol(c)] = copy[!,symb] .== c
-    end
-    return(copy)
-end
 function _onehot(df,symb)
     copy = df
     copy = [copy[c] = copy[c] .== c for c in unique(copy)]

@@ -99,6 +99,9 @@ end
       predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
       """
 function Pipeline(steps)
-    predict(xt) = [object.predict(xt) for object in steps]
+    predict(xt) = pipe_predict(xt, steps)
     (var)->(steps;predict)
+end
+function pipe_predict(xt, steps)
+
 end

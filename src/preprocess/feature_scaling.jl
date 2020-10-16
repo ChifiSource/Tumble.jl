@@ -42,7 +42,7 @@ end
       predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
 function MeanNormalization(array)
-    avg = Lathe.stats.mean(array)
+    avg = mean(array)
     a = minimum(array)
     b = maximum(array)
     predict(array) = [i = (i-avg) / (b-a) for i in array]
@@ -65,8 +65,8 @@ end
       predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
 function Normalizer(array)
-    q = Lathe.stats.std(array)
-    avg = Lathe.stats.mean(array)
+    q = std(array)
+    avg = mean(array)
     predict(array) = [i = (i-avg) / q for i in array]
     (var) -> (predict)
 end

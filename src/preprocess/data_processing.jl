@@ -19,7 +19,10 @@ end
 @doc """
       Train test split is a method used to divide data into smaller fragments
        for testing, training, and validation. The method can take a dataframe
-           or an array.
+           or an array.\n
+      --------------------\n
+      df = DataFrame(:A => [5,10,15], :B => [5,10,15])\n
+      train, test = TrainTestSplit(df)
       --------------------\n
       PARAMETERS:\n
       data:: Iterable dictionary, dataframe, or Array.\n
@@ -49,8 +52,8 @@ function SortSplit(data, at = 0.25, rev=false)
 end
 # Unshuffled Split ----
 @doc """
-      Uniform Split does the exact same thing as ArraySplit(), but observations
-      are returned split, but unsorted and unshuffled.\n
+      Uniform Split does the exact same thing as TrainTestSplit, except
+      observations are returned unsorted and unshuffled.\n
       --------------------\n
       array = [5,10,15]\n
       test, train = Lathe.preprocess.UniformSplit(array,at = 0.75)\n

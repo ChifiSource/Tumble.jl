@@ -37,9 +37,9 @@ function LeastSquare(x,y,Type)
         sx = sum(x)
         sy = sum(y)
         # Calculate the slope:
-        slope = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
+        a = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
      # Calculate the y intercept
-        b = (sy - (slope*sx)) / n
+        b = (sy - (a*sx)) / n
     elseif Type == :WLS
 
     elseif Type == :OLS
@@ -48,7 +48,7 @@ function LeastSquare(x,y,Type)
     end
     predict(xt) =
     if Type == :LIN
-        (xt = [z = (slope * x) + b for x in xt])
+        (xt = [z = (a * x) + b for x in xt])
     end
-    (test)->(slope;b;predict)
+    (var)->(a;b;predict)
 end
