@@ -165,29 +165,6 @@ end
     node.r = Node(features, region[ind+1:end], node.depth + 1)
 end
 
-
-# To do: check that Y actually has
-# meta.n_classes classes
-function check_input(X,
-                     Y,
-                     meta :: TreeMeta,
-                     stop :: StopCondition)
-    n_samples, n_features = size(X)
-    if length(Y) != n_samples
-        throw("dimension mismatch between X and Y ($(size(X)) vs $(size(Y))")
-    elseif n_features < meta.max_features
-        throw("number of features $(n_features) ",
-              "is less than the number of ",
-              "max features $(meta.max_features)")
-    elseif stop.min_samples_leaf < 1
-        throw("min_samples_leaf must be a positive integer ",
-              "(given $(stop.min_samples_leaf))")
-    elseif stop.min_samples_split < 2
-        throw("min_samples_split must be at least 2 ",
-              "(given $(stop.min_samples_split))")
-    end
-end
-
 function assign(Y :: Array{T}) where T<:Any
     label_set = Set{T}()
     for y in Y
@@ -213,8 +190,6 @@ function build_tree(X,
                     stop :: StopCondition) where T <: Any
     n_samples, n_features = size(X)
     label_list, _Y = assign(Y)
-
-    check_input(X, _Y, meta, stop)
     indX = collect(UInt64(1):UInt64(n_samples))
     stack = Node[]
 
