@@ -207,8 +207,8 @@ function assign(Y :: Array{T}) where T<:Any
     return label_list, _Y
 end
 
-function build_tree(X    :: Array{Float32, 2},
-                    Y    :: Array{T},
+function build_tree(X,
+                    Y,
                     meta :: TreeMeta,
                     stop :: StopCondition) where T <: Any
     n_samples, n_features = size(X)
