@@ -199,9 +199,9 @@ function assign(Y :: Array{T}) where T<:Any
         label_dict[label_list[i]] = i
     end
 
-    _Y = Array{UInt32,length(Y)}
-    @inbounds for i in 1:length(Y)
-        _Y[i] = label_dict[Y[i]]
+    _Y = []
+    @inbounds for i in Y
+        append!(_Y, label_dict[i])
     end
 
     return label_list, _Y
