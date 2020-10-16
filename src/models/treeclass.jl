@@ -1,4 +1,5 @@
 include("tree_base.jl")
+include("../Stats.jl")
 struct TREECLASS end
 using Random
 using StatsBase
