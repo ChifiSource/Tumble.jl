@@ -1,4 +1,5 @@
 import Random: Sampler
+using Random
 function direct_sample!(rng::AbstractRNG, a::UnitRange, x::AbstractArray)
     s = Sampler(rng, 1:length(a))
     b = a[1] - 1
