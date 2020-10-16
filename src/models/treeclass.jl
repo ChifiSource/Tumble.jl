@@ -203,7 +203,7 @@ function assign(Y :: Array{T}) where T<:Any
     @inbounds for i in Y
         append!(_Y, label_dict[i])
     end
-
+    _Y = reshape(_Y, (1, length(Y)))
     return label_list, _Y
 end
 
