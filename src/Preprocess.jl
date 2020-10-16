@@ -22,7 +22,7 @@ Preprocessing
 module preprocess
 using Random
 using DataFrames
-using Lathe.stats
+using Lathe.lstats
 #==
 Data Processing
 ==#
