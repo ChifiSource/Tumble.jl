@@ -1,18 +1,19 @@
-using Lathe.stats
 #<----Mean---->
 """
-      Calculates the mean of a given array.\n
+    ## Mean
+    ### Description
+      Returns the mean of an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(mean)\n
-        10
+    ### Input
+      mean(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array to obtain the mean of.
+      --------------------\n
+     ### Output
+     mu:: The mean of the provided array.
        """
-function mean(array)
-    observations = length(array)
-    average = sum(array)/observations
-    return(average)
-end
+mean(x) = sum(x) / length(x)
 #<----Median---->
 """
       Calculates the median (numerical center) of a given array.\n
@@ -117,22 +118,10 @@ end
       array = [5,10,15]\n
       q1 = Lathe.stats.firstquar(array)\n
        """
-function firstquar(array)
+function q1(array)
     m = median(array)
     q1 = array * .5
     return(q1)
-end
-# - Second(median)
-"""
-      Returns the point in an array located at 50 percent of the sorted data.
-      The second quartile is also known as the median, or the middle of the sorted data.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q2 = Lathe.stats.secondquar(array)\n
-       """
-function secondquar(array)
-    m = median(array)
-    return(m)
 end
 # - Third
 """
@@ -141,7 +130,7 @@ end
       array = [5,10,15]\n
       q2 = Lathe.stats.secondquar(array)\n
        """
-function thirdquar(array)
+function q3(array)
     q = median(array)
     q3 = q * 1.5
     return(q3)
@@ -165,15 +154,26 @@ function getranks(array,rev = false)
     end
     return(list)
 end
-#<----Z score---->
-@doc """
-      Calculates the Z score of a given array.\n
+"""
+    ## Factorials
+    ### Description
+      Calculates the factorial of a number.\n
       --------------------\n
-      array = [5,10,15]\n
-      z = Lathe.stats.z(array)\n
+    ### Input
+      fact(n)\n
+      --------------------\n
+      #### Positional Arguments
+      Int64 - n:: The number for the factorial.\n
+      --------------------\n
+     ### Output
+     f:: Factorial of n
        """
-function z(array)
-    x̄ = mean(array)
-    σ = std(array)
-    return map(x -> (x - x̄) / σ, array)
+function fact(n)
+    if n == 1
+        return(1)
+    else
+        return n * fact(n-1)
+    end
 end
+
+is_prime(n) = φ(n) == n - 1

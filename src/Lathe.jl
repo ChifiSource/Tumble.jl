@@ -24,13 +24,13 @@ Random.jl
 ================================#
 @doc """
       |====== Lathe - Easily ML =====\n
-      |= = = = = v. 0.1.2 = = = = = |\n
+      |= = = = = v. 0.1.3 = = = = = |\n
       |==============================\n
       |__________Lathe.stats\n
       |__________Lathe.preprocess\n
       |__________Lathe.models\n
       |______________________________\n
-      Use ?(Lathe.package) for information!\n
+      Use ?(Lathe.package) for documentation.\n
       [uuid]\n
       38d8eb38-e7b1-11e9-0012-376b6c802672\n
       [deps]\n
@@ -38,24 +38,16 @@ Random.jl
       Random.jl\n
        """
 module Lathe
-# <------- PARTS ----->
-include("Stats.jl")
-include("Models.jl")
-include("Preprocess.jl")
-    println("=== Lathe 0.1.2 Butterball ===")
-    println("-0-0- Easily ML -0-0-")
-    println("Thank you for trying Lathe!")
-    println("-0-0- Contributors -0-0-")
-    println("emmettgb","stefanches7", "PallHaraldson")
-# <------- PARTS ----->
+#
 # <------- DEPS ----->
 using DataFrames
 using Random
 # <------- DEPS ----->
-
-#==
-This is the end of the main
-module, nothing is to be written
-beyond here
-==#
+#
+# <------- PARTS ----->
+include("Stats.jl")
+include("Models.jl")
+include("Preprocess.jl")
+# <------- PARTS ----->
+#
 end

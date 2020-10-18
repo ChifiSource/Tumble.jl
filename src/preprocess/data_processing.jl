@@ -8,53 +8,74 @@ function _dfTrainTestSplit(df,at = 0.75)
     testset = df[notsample, :]
     return(trainingset,testset)
 end
-function _ArraySplit(data, at = 0.7)
+function _ArraySplit(data, at = 0.75)
     n = length(data)
     idx = Random.shuffle(1:n)
     train_idx = view(idx, 1:floor(Int, at*n))
     test_idx = view(idx, (floor(Int, at*n)+1):n)
     data[train_idx,:], data[test_idx,:]
-    return(test_idx,train_idx)
+    return(train_idx, test_idx)
 end
-@doc """
-      TrainTestSplit takes either a DataFrame or an Array and splits it according to the at parameter.\n
+"""
+    ## TrainTestSplit
+    ### Description
+      Splits an array or dataframe into two smaller groups based on the
+      percentage provided in the at parameter.\n
       --------------------\n
-      [data] <- Iterable dictionary, dataframe, or Array.\n
-      a <- Percentage value used to determine a point to split the data.\n
-      -------------------\n
+    ### Input
+      TrainTestSplit(x, .75)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any}, DataFrame - data:: The data to split.\n
+      Float64 - at:: A percentage that determines where the data is split.
+      --------------------\n
+     ### Output
+     train:: The larger half of the split set.\n
+     test:: The smaller half of the split set.
        """
-TrainTestSplit(data::Array, at::Float64) = _ArraySplit(data,at)
-TrainTestSplit(data::DataFrame, at::Float64) = _dfTrainTestSplit(data,at)
+TrainTestSplit(data::Array, at::Float64=.75) = _ArraySplit(data,at)
+TrainTestSplit(data::DataFrame, at::Float64=.75) = _dfTrainTestSplit(data,at)
 # Sort-Split -------------
-@doc """
-      SortSplit sorts the data from least to greatest, and then splits it,
-      ideal for quartile calculations.\n
+"""
+    ## Sort Split
+    ### Description
+      Sorts an array, and then splits said array.\n
       --------------------\n
-      array = [5,10,15]\n
-      top25, lower75 = Lathe.preprocess.SortSplit(array,at = 0.75,rev = false)\n
-      -------------------\n
-      PARAMETERS:\n
-      at:: Percentage value used to determine a point to split the data.\n
-      rev:: Reverse, false by default, determines whether to sort least to
-      greatest, or greatest to least.\n
+    ### Input
+      SortSplit(x, .75, false)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - data:: The data to split.\n
+      Float64 - at:: A percentage that determines where the data is split.\n
+      Bool - rev:: Determines whether the order of the sort should be reversed.\n
+      --------------------\n
+     ### Output
+     train:: The larger half of the split set.\n
+     test:: The smaller half of the split set.
        """
 function SortSplit(data, at = 0.25, rev=false)
   n = length(data)
   sort!(data, rev=rev)  # Sort in-place
   train_idx = view(data, 1:floor(Int, at*n))
   test_idx = view(data, (floor(Int, at*n)+1):n)
-  return(test_idx,train_idx)
+  return(train_idx, test_idx)
 end
 # Unshuffled Split ----
-@doc """
-      Uniform Split does the exact same thing as ArraySplit(), but observations
-      are returned split, but unsorted and unshuffled.\n
+"""
+    ## Uniform Split
+    ### Description
+      Uniform Split will split an array without shuffling the data first.\n
       --------------------\n
-      array = [5,10,15]\n
-      test, train = Lathe.preprocess.UniformSplit(array,at = 0.75)\n
-      -------------------\n
-      PARAMETERS:\n
-      at:: Percentage value used to determine a point to split the data.
+    ### Input
+      UniformSplit(x, .75)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - data:: The data to split.\n
+      Float64 - at:: A percentage that determines where the data is split.\n
+      --------------------\n
+     ### Output
+     train:: The larger half of the split set.\n
+     test:: The smaller half of the split set.
        """
 function UniformSplit(data, at = 0.7)
     n = length(data)
@@ -62,5 +83,5 @@ function UniformSplit(data, at = 0.7)
     train_idx = view(idx, 1:floor(Int, at*n))
     test_idx = view(idx, (floor(Int, at*n)+1):n)
     data[train_idx,:], data[test_idx,:]
-    return(test_idx,train_idx)
+    return(train_idx, test_idx)
 end

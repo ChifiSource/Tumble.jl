@@ -1,83 +1,116 @@
 # ---- Rescalar (Standard Deviation) ---
 """
-      Rescalar scales a feature based on the minimum and maximum of the array.\n
+    ## Rescalar
+    ### Description
+      Rescales an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.Rescalar(array)\n
+    ### Input
+      Rescaler(x)\n
       --------------------\n
-      ==Functions==\n
-      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the original scaler should be based
+      off of.\n
+      --------------------\n
+     ### Output
+     scalar :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(xt) :: Applies the scaler to xt.\n
+     ---------------------\n
+     ### Data
+     min :: The minimum value in the array.\n
+     max :: The maximum value in the array.
        """
-function Rescalar(array)
+function Rescaler(array)
     min = minimum(array)
     max = maximum(array)
     predict(array) = [i = (i-min) / (max - min) for i in array]
-    (var) -> (predict)
+    (var) -> (predict;min;max)
 end
 # ---- Arbitrary Rescalar ----
 """
-      Arbitrary Rescaling scales a feature based on the minimum and maximum
-       of the array.\n
+    ## Arbitrary Rescaler
+    ### Description
+      Arbitrarily rescales an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.Rescalar(array)\n
+    ### Input
+      ArbitraryRescaler(x)\n
       --------------------\n
-      ==Functions==\n
-      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the original scaler should be based
+      off of.\n
+      --------------------\n
+     ### Output
+     scalar :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(xt) :: Applies the scaler to xt.\n
+     ---------------------\n
+     ### Data
+     a :: The minimum value in the array.\n
+     b :: The maximum value in the array.
        """
-function ArbitraryRescale(array)
+function ArbitraryRescaler(array)
     a = minimum(array)
     b = maximum(array)
     predict(array) = [x = a + ((i-a*i)*(b-a)) / (b-a) for x in array]
-    (var) -> (predict)
+    (var) -> (predict;a;b)
 end
 # ---- Mean Normalization ----
 """
-      Mean Normalization normalizes the data based on the mean.\n
+    ## Mean Normalizer
+    ### Description
+      Normalizes an array using the mean of the data.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.MeanNormalization(array)\n
+    ### Input
+      ArbitraryRescaler(x)\n
       --------------------\n
-      ==Functions==\n
-      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the original scaler should be based
+      off of.\n
+      --------------------\n
+     ### Output
+     scalar :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(xt) :: Applies the scaler to xt.\n
+     ---------------------\n
+     ### Data
+     a :: The minimum value in the array.\n
+     b :: The maximum value in the array.\n
+     avg :: The mean of the array.
        """
-function MeanNormalization(array)
-    avg = Lathe.stats.mean(array)
+function MeanNormalizer(array)
+    avg = mean(array)
     a = minimum(array)
     b = maximum(array)
     predict(array) = [i = (i-avg) / (b-a) for i in array]
-    (var) -> (predict)
-end
-# ---- Quartile Normalization ----
-function QuartileNormalization(array)
-    q1 = firstquar(array)
-    q2 = thirdquar(array)
-
+    (var) -> (predict;avg;a;b)
 end
 # ---- Z Normalization ----
 """
-      Standard Scalar z-score normalizes a feature.\n
+    ## Standard Scaler
+    ### Description
+      Normalizes an array using the z (Normal) distribution.\n
       --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.StandardScalar(array)\n
+    ### Input
+      StandardScaler(x)\n
       --------------------\n
-      ==Functions==\n
-      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the original scaler should be based
+      off of.\n
+      --------------------\n
+     ### Output
+     scalar :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(xt) :: Applies the scaler to xt.\n
+     ---------------------\n
+     ### Data
+     dist  :: Returns the normal distribution object for which this scaler uses.
        """
-function Normalizer(array)
-    q = Lathe.stats.std(array)
-    avg = Lathe.stats.mean(array)
-    predict(array) = [i = (i-avg) / q for i in array]
-    (var) -> (predict)
-end
-# ---- Unit L-Scale normalize ----
-"""
-      FUNCTION NOT YET WRITTEN\n
-      Unit L Scaling uses eigen values to normalize the data.\n
-      --------------------\n
-      array = [5,10,15]\n
-      scaled_feature = Lathe.preprocess.UnitLScale(array)\n
-       """
-function UnitLScale(array)
-
+function StandardScaler(array)
+    dist = NormalDist(array)
+    predict(xt) = dist.apply(xt)
+    (var) -> (predict;dist)
 end

@@ -1,39 +1,76 @@
 # <---- One Hot Encoder ---->
 
-@doc """
-      One hot encoder replaces a single feature with sub arrays containing
-      boolean values (1 or 0) for each individual category.\n
+"""
+    ## OneHotEncoder
+    ### Description
+      One Hot Encodes a dataframe column into a dataframe.\n
       --------------------\n
-      df = DataFrame(:A => ['w','b','w'], :B => [5, 10, 15])\n
-      scaled_feature = Lathe.preprocess.OneHotEncode(df,:A)\n
+    ### Input
+      OneHotEncoder()\n
+      --------------------\n
+     ### Output
+     encoder :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(df, symb) :: Applies the encoder to the dataframe key
+      corresponding with symb on DF, then returns a dataframe with encoded
+      results.
        """
-function OneHotEncoder(df,symb)
-    copy = df
+function OneHotEncoder()
+    predict(df, symb) = _onehot(df,symb)
+    ()->(predict)
+end
 
-    predict() = _onehotdf(df,symb)
-    ()->(predict;df;symb)
-end
-function _onehotdf(df,symb)
-    for c in unique(copy[!,symb])
-        copy[!,Symbol(c)] = copy[!,symb] .== c
-    end
-    return(copy)
-end
 function _onehot(df,symb)
-    copy = df
+    copy = copy(df)
     copy = [copy[c] = copy[c] .== c for c in unique(copy)]
     return(copy)
 end
+"""
+    ## Ordinal Encoder
+    ### Description
+     Ordinally Encodes an array.\n
+      --------------------\n
+    ### Input
+      OrdinalEncoder(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the original scaler should be based
+      off of.\n
+      --------------------\n
+     ### Output
+     encoder :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(xt) :: Returns an ordinally encoded xt.\n
+       """
 function OrdinalEncoder(array)
     uni = Set(array)
     lookup = Dict()
     [push!(lookup, (value => i)) for (i, value) in enumerate(uni)]
-    predict() = [row = lookup[row] for row in array]
+    predict(arr) = [row = lookup[row] for row in arr]
     ()->(predict)
 end
-function FloatEncoder(array)
+"""
+    ## Float Encoder
+    ### Description
+     Float/Label Encodes an array.\n
+      --------------------\n
+    ### Input
+      OneHotEncoder()\n
+      --------------------\n
+     ### Output
+     encoder :: A Lathe Preprocesser object.
+     ---------------------\n
+     ### Functions
+     Preprocesser.predict(xt) :: Returns an ordinally encoded xt.\n
+       """
+function FloatEncoder()
+    predict(xt) = _floatencode(xt)
+    ()->(predict)
+end
+function _floatencode(array)
     encoded_array = []
-
     for dim in array
         newnumber = 0
         for char in dim
@@ -41,6 +78,5 @@ function FloatEncoder(array)
         end
         append!(encoded_array, newnumber)
     end
-    predict() = encoded_array
-    ()->(predict)
+    return(encoded_array)
 end

@@ -7,40 +7,82 @@
       n = 10\n
       r = binomial_dist(positives,n)
        """
-function binomial_dist(positives,size)
+function binomial_dist(positives, size; mode = :REC)
     # p = n! / x!(n-x!)*π^x*(1-π)^N-x
     n = size
     x = positives
-    factn = factorial(big(n))
-    factx = factorial(big(x))
-    nx = factn / (factx * (n-x))
-    return(nx)
+    if mode != :REC
+        factn = factorial(big(n))
+        factx = factorial(big(x))
+    else
+        factn = fact(n)
+        factx = fact(x)
+    end
+    return(factn / (factx * (n-x)))
 end
 # ---- Normal Distribution ----
 """
-      Returns the normal distribution as an array.\n
+    ## Normal Distribution
+    ### Description
+      Calculates the normal distribution of an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      dist = normal_dist(array)
+    ### Input
+      NormalDist(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the normal distribution should use the
+      data from.\n
+      --------------------\n
+     ### Output
+     norm:: A Lathe distribution\n
+     ---------------------\n
+     ### Functions
+     Distribution.apply(xt) :: Applies the distribution to xt\n
+     Distribution.cdf(statistic, alpha, dof) :: Applies the distribution's
+     corresponding cummulitive distribution function.\n
+     ---------------------\n
+     ### Data
+     σ :: Standard Deviation of the input data.\n
+     μ :: Mean of the input data.
        """
-function normal_dist(array)
-    q = Lathe.stats.std(array)
-    avg = Lathe.stats.mean(array)
-    v = [i = (i-avg) / q for i in array]
-    return(v)
+function NormalDist(array)
+    σ = std(array)
+    μ = mean(array)
+    apply(xt) = [i = (i-μ) / σ for i in xt]
+    cdf = ""
+    (var) ->(σ;μ;cdf;apply)
 end
 # ---- T distribution ----
 """
-      Returns the T distribution as an array.\n
+    ## T Distribution
+    ### Description
+      Calculates the T distribution of an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      dist = t_dist(array)
+    ### Input
+      TDist(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the T distribution should use the
+      data from.\n
+      --------------------\n
+     ### Output
+     t:: A Lathe distribution\n
+     ---------------------\n
+     ### Functions
+     Distribution.apply(xt) :: Applies the distribution to xt\n
+     Distribution.cdf(statistic, alpha, dof) :: Applies the distribution's
+     corresponding cummulitive distribution function.\n
+     ---------------------\n
+     ### Data
+     μ :: Mean of the input data.\n
+     N :: The length of the input data.
        """
-function t_dist(sample, general)
-    x̅ = mean(sample)
+function TDist(general)
+    norm = NormalDist(general)
+    general = norm.apply(general)
     μ = mean(general)
-    s = std(sample)
     N = length(general)
-    arr = [obso = (x̅ - μ) / (s / sqrt(N)) for obso in sample]
-    return(arr)
+    apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
+    cdf = ""
+    (distribution)->(μ;N;apply;cdf)
 end
