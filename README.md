@@ -82,9 +82,8 @@ Lathe is written in 100-percent pure Julia. As a result, the package often takes
 <details class="details-overlay">
   <summary class="btn"><h2>Documentation</h2></summary>
 <div>
-
-(null)
- 
+  
+ # [Documentation on JuliaHub](https://juliahub.com/docs/Lathe/6rMNJ/0.1.2/)
 </div>
 </details>
 
