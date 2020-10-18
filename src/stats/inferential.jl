@@ -1,10 +1,18 @@
 #<---- correlation Coefficient --->
 """
-      Calculates the Correlation Coeffiecient of between two features\n
+    # Description
+      A correlation coefficient is a statistical value that can be used to
+      determine statistical correlation.\n
       --------------------\n
-      x = [5,10,15]\n
-      y = [5,10,15]\n
-      r = correlationcoeff(x,y)\n
+    # Input
+      correlationcoeff(x, y)\n
+      --------------------\n
+      ## Positional Arguments
+      x:: An array of values representing the general population.\n
+      y:: An array of values representing the sample population.\n
+      --------------------\n
+     # Output
+     r:: The correlation coefficient.
        """
 function correlationcoeff(x,y)
     n = length(x)
@@ -23,43 +31,55 @@ function correlationcoeff(x,y)
     r = ((n*sxy) - (sx * sy)) / (sqrt((((n*sx2)-(sx^2)) * ((n*sy2)-(sy^2)))))
     return(r)
 end
-#<---- Sign Test ---->
 """
-      The Sign test determines correlation through negative and positive
-      placement with binomial distribution.\n
+
+    # Description
+      The TwoTailed function takes a distribution, a sample, and a confidence
+          level, and will return a P value reflecting the probability of
+          statistical significance.\n
       --------------------\n
-      var1 = [5,10,15]\n
-      var2 = [19,25,30]\n
-      p = sign(var1,var2)\n
+    # Input
+      TwoTailed(Distribution, sample; c)\n
+      --------------------\n
+      ## Positional Arguments
+      Distribution:: A Lathe Distribution. <- Lathe Distribution\n
+      sample:: An array of values representing the sample that should be
+       tested. <- Array{Any}\n
+       ## Key-word Arguments\n
+       c:: Level of confidence for a given test in decimal form of a percentage.
+       <- Float64
+      --------------------\n
+     # Output
+     P:: P value representing the probability of A <= P >= - A
        """
-function sign(var1,var2)
-    sets = var1 .- var2
-    positives = []
-    negatives = []
-    zeros = []
-    for i in sets
-        if i == 0
-            append!(zeros,i)
-        elseif i > 0
-            append!(positives,i)
-        elseif i < 0
-            append!(negatives,i)
-        end
-    end
-    totalpos = length(positives)
-    totallen = length(sets)
-    ans = binomial_dist(totalpos,totallen)
-    return(ans)
-end
-# These two tests are incomplete, and need to call
-#    the cummulative functions for their respective distributions.
-# (Distribution.cdf)
 function TwoTailed(dist, sample; c = .95)
     a = 1 - c
     test_stat = dist.apply(sample)
     dof = dist.N - 1
     return(test_stat)
 end
+"""
+
+    # Description
+      The OneTailed test function takes a distribution, a sample, and a
+          confidence
+          level, and will return a P value reflecting the probability of
+          statistical significance.\n
+      --------------------\n
+    # Input
+      TwoTailed(Distribution, sample; c)\n
+      --------------------\n
+      ## Positional Arguments
+      Distribution:: A Lathe Distribution. <- Lathe Distribution\n
+      sample:: An array of values representing the sample that should be
+       tested. <- Array{Any}\n
+       ## Key-word Arguments\n
+       c:: Level of confidence for a given test in decimal form of a percentage.
+       <- Float64
+      --------------------\n
+     # Output
+     P:: P value representing the probability of A <= P >= - A
+       """
 function OneTailed(dist, sample; c = .95)
     a = 1 - c
     test_stat = dist.apply(sample)
