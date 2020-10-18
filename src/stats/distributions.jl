@@ -34,7 +34,7 @@ end
       data from.\n
       --------------------\n
      ### Output
-     norm:: A Lathe distribution
+     norm:: A Lathe distribution\n
      ---------------------\n
      ### Functions
      Distribution.apply(xt) :: Applies the distribution to xt\n
@@ -66,7 +66,7 @@ end
       data from.\n
       --------------------\n
      ### Output
-     t:: A Lathe distribution
+     t:: A Lathe distribution\n
      ---------------------\n
      ### Functions
      Distribution.apply(xt) :: Applies the distribution to xt\n
