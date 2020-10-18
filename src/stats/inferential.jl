@@ -32,24 +32,24 @@ function correlationcoeff(x,y)
     return(r)
 end
 """
-
-    # Description
+    # Two Tailed Test
+    ### Description
       The TwoTailed function takes a distribution, a sample, and a confidence
           level, and will return a P value reflecting the probability of
           statistical significance.\n
       --------------------\n
-    # Input
+    ### Input
       TwoTailed(Distribution, sample; c)\n
       --------------------\n
-      ## Positional Arguments
-      Distribution:: A Lathe Distribution. <- Lathe Distribution\n
-      sample:: An array of values representing the sample that should be
-       tested. <- Array{Any}\n
-       ## Key-word Arguments\n
-       c:: Level of confidence for a given test in decimal form of a percentage.
-       <- Float64
+      #### Positional Arguments
+      Lathe Distribution - Distribution:: A Lathe Distribution.\n
+      Array{Any} - sample:: An array of values representing the sample that should be
+       tested.\n
+       #### Key-word Arguments\n
+       Float64 - c:: Level of confidence for a given test in decimal form of a
+       percentage.\n
       --------------------\n
-     # Output
+     ### Output
      P:: P value representing the probability of A <= P >= - A
        """
 function TwoTailed(dist, sample; c = .95)
@@ -67,15 +67,15 @@ end
           statistical significance.\n
       --------------------\n
     # Input
-      TwoTailed(Distribution, sample; c)\n
+      OneTailed(Distribution, sample; c)\n
       --------------------\n
-      ## Positional Arguments
-      Distribution:: A Lathe Distribution. <- Lathe Distribution\n
-      sample:: An array of values representing the sample that should be
-       tested. <- Array{Any}\n
-       ## Key-word Arguments\n
-       c:: Level of confidence for a given test in decimal form of a percentage.
-       <- Float64
+      #### Positional Arguments
+      Lathe Distribution - Distribution:: A Lathe Distribution.\n
+      Array{Any} - sample:: An array of values representing the sample that should be
+       tested.\n
+       #### Key-word Arguments\n
+       Float64 - c:: Level of confidence for a given test in decimal form of a
+       percentage.\n
       --------------------\n
      # Output
      P:: P value representing the probability of A <= P >= - A

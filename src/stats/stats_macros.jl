@@ -36,58 +36,6 @@ macro r(x,y)
     correlationcoeff(x,y)
 end
 """
-      This macro calls Lathe.stats: independent_t. It takes sample and population arrays as
-          parameters and returns a P value from a T distribution.\n
-      --------------------\n
-      array = [5,10,15]\n
-      samparray = [5,10,15]\n
-      p = @t samparray array\n
-       """
-macro t(samp,gen)
-    samp = eval(samp)
-    gen = eval(gen)
-    independent_t(samp,gen)
-end
-"""
-      This macro calls Lathe.stats: f_test. It takes sample and population arrays as
-          parameters and returns a P value from an F distribution.\n
-      --------------------\n
-      array = [5,10,15]\n
-      samparray = [5,10,15]\n
-      p = @f samparray array\n
-       """
-macro f(samp,gen)
-    samp = eval(samp)
-    gen = eval(gen)
-    f_test(samp,gen)
-end
-"""
-      This macro calls Lathe.stats: signs. It takes sample and population arrays as
-          parameters and returns a P value from a binomial distribution.\n
-      --------------------\n
-      array = [5,10,15]\n
-      samparray = [5,10,15]\n
-      p = @- samparray array\n
-       """
-macro -(samp,gen)
-    samp = eval(samp)
-    gen = eval(gen)
-    sign(samp,gen)
-end
-"""
-      This macro calls Lathe.stats: sign. It takes sample and population arrays as
-          parameters and returns a P value from a chi distribution.\n
-      --------------------\n
-      array = [5,10,15]\n
-      samparray = [5,10,15]\n
-      p = @chi samparray array\n
-       """
-macro chi(samp,gen)
-    samp = eval(samp)
-    gen = eval(gen)
-    chisq(samp,gen)
-end
-"""
       This macro calls Lathe.stats: bay_ther. It takes probability, prior, and
           evidence as parameters parameter and returns a posterier.\n
       --------------------\n

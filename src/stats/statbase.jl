@@ -1,17 +1,19 @@
 #<----Mean---->
 """
-      Calculates the mean of a given array.\n
+    ## Mean
+    ### Description
+      Returns the mean of an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      mean = Lathe.stats.mean(array)\n
-      println(mean)\n
-        10
+    ### Input
+      mean(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array to obtain the mean of.
+      --------------------\n
+     ### Output
+     mu:: The mean of the provided array.
        """
-function mean(array)
-    observations = length(array)
-    average = sum(array)/observations
-    return(average)
-end
+mean(x) = sum(x) / length(x)
 #<----Median---->
 """
       Calculates the median (numerical center) of a given array.\n
@@ -152,13 +154,25 @@ function getranks(array,rev = false)
     end
     return(list)
 end
-
+"""
+    ## Factorials
+    ### Description
+      Calculates the factorial of a number.\n
+      --------------------\n
+    ### Input
+      fact(n)\n
+      --------------------\n
+      #### Positional Arguments
+      Int64 - n:: The number for the factorial.\n
+      --------------------\n
+     ### Output
+     f:: Factorial of n
+       """
 function fact(n)
     if n == 1
         return(1)
     else
         return n * fact(n-1)
-        println(n)
     end
 end
 

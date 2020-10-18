@@ -22,24 +22,60 @@ function binomial_dist(positives, size; mode = :REC)
 end
 # ---- Normal Distribution ----
 """
-      Returns the normal distribution as an array.\n
+    ## Normal Distribution
+    ### Description
+      Calculates the normal distribution of an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      dist = normal_dist(array)
+    ### Input
+      NormalDist(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the normal distribution should use the
+      data from.\n
+      --------------------\n
+     ### Output
+     norm:: A Lathe distribution
+     ---------------------\n
+     ### Functions
+     Distribution.apply(xt) :: Applies the distribution to xt\n
+     Distribution.cdf(statistic, alpha, dof) :: Applies the distribution's
+     corresponding cummulitive distribution function.\n
+     ---------------------\n
+     ### Data
+     σ :: Standard Deviation of the input data.\n
+     μ :: Mean of the input data.
        """
 function NormalDist(array)
     σ = std(array)
     μ = mean(array)
     apply(xt) = [i = (i-μ) / σ for i in xt]
     cdf = ""
-    (var) ->(σ;μ;cdf)
+    (var) ->(σ;μ;cdf;apply)
 end
 # ---- T distribution ----
 """
-      Returns the T distribution as an array.\n
+    ## T Distribution
+    ### Description
+      Calculates the T distribution of an array.\n
       --------------------\n
-      array = [5,10,15]\n
-      dist = t_dist(sample, general)
+    ### Input
+      TDist(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the T distribution should use the
+      data from.\n
+      --------------------\n
+     ### Output
+     t:: A Lathe distribution
+     ---------------------\n
+     ### Functions
+     Distribution.apply(xt) :: Applies the distribution to xt\n
+     Distribution.cdf(statistic, alpha, dof) :: Applies the distribution's
+     corresponding cummulitive distribution function.\n
+     ---------------------\n
+     ### Data
+     μ :: Mean of the input data.\n
+     N :: The length of the input data.
        """
 function TDist(general)
     norm = NormalDist(general)
