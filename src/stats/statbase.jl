@@ -116,22 +116,10 @@ end
       array = [5,10,15]\n
       q1 = Lathe.stats.firstquar(array)\n
        """
-function firstquar(array)
+function q1(array)
     m = median(array)
     q1 = array * .5
     return(q1)
-end
-# - Second(median)
-"""
-      Returns the point in an array located at 50 percent of the sorted data.
-      The second quartile is also known as the median, or the middle of the sorted data.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q2 = Lathe.stats.secondquar(array)\n
-       """
-function secondquar(array)
-    m = median(array)
-    return(m)
 end
 # - Third
 """
@@ -140,7 +128,7 @@ end
       array = [5,10,15]\n
       q2 = Lathe.stats.secondquar(array)\n
        """
-function thirdquar(array)
+function q3(array)
     q = median(array)
     q3 = q * 1.5
     return(q3)
@@ -164,15 +152,14 @@ function getranks(array,rev = false)
     end
     return(list)
 end
-#<----Z score---->
-@doc """
-      Calculates the Z score of a given array.\n
-      --------------------\n
-      array = [5,10,15]\n
-      z = Lathe.stats.z(array)\n
-       """
-function z(array)
-    x̄ = mean(array)
-    σ = std(array)
-    return map(x -> (x - x̄) / σ, array)
+
+function fact(n)
+    if n == 1
+        return(1)
+    else
+        return n * fact(n-1)
+        println(n)
+    end
 end
+
+is_prime(n) = φ(n) == n - 1
