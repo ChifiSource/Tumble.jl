@@ -22,27 +22,22 @@ Preprocessing
 module preprocess
 using Random
 using DataFrames
-using Lathe.lstats
+using Lathe.stats
 #==
 Data Processing
 ==#
 include("preprocess/data_processing.jl")
-export TrainTestSplit, SortSplit, UniformSplit
 #==
 Encoding
 ==#
 include("preprocess/encoding.jl")
-export OneHotEncoder, OrdinalEncoder, FloatEncoder
 #==
 Feature Scaling
 ==#
 include("preprocess/feature_scaling.jl")
-export Rescalar, ArbitraryRescale, MeanNormalization, QuartileNormalization
-export Standardize, UnitLScale
 #==
 Macros
 ==#
 include("preprocess/preprocess_macros.jl")
-export @tts, @norm, @onehot
 #-----------------------------
 end

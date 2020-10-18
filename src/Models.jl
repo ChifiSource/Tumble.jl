@@ -24,46 +24,37 @@ module models
 # [deps]
 using Random
 using DataFrames
-using Lathe.lstats
+using Lathe.stats
 # [deps]
 #==
 Continuous Models
 ==#
 # Least Square
 include("models/lsq.jl")
-export LeastSquare
 # Linear Regression
 include("models/linreg.jl")
-export SimpleLinearRegression
 #==
 Categorical Models
 ==#
 # Decision Tree Classifier/ RF
 include("models/treeclass.jl")
-export DecisionTreeClassifier
-export RandomForestClassifier
 # Logistic Regression
 include("models/logistic.jl")
-export LogisticRegression
 #==
 Unsupervised Models
 ==#
 include("models/kmeans.jl")
-export Kmeans
 #==
 Tools
 ==#
 include("models/toolbox.jl")
-export PowerLog, majClassBaseline, MeanBaseline, Pipeline
 #==
 Macros
 ==#
 include("models/model_macros.jl")
-export @predict
 #==
 Neural Networks
 ==#
 include("models/neural.jl")
-export Network
 #----------------------------------------------
 end
