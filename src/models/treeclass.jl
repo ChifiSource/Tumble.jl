@@ -46,6 +46,39 @@ function rf_predict(scr::Result, X)
     end
     return res
 end
+"""
+    ## Random Forest Classifier
+    ### Description
+      The Random Forest Classifier uses a multitude of decision trees to
+      solve classification problems.\n
+      --------------------\n
+    ### Input
+      RandomForestClassifier(x, y, rng ;
+      max_depth = 6, min_node_records = 1, n_trees = 100)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - X:: Array of x's for which the model will use to
+      predict y.\n
+      Array{Any} - Y:: Array of y's for which the x's are used to predict.\n
+      RandomNumberGenerator - rng:: Determines the seed for the given model.\n
+      #### Key-word Arguments
+      Int64 - max_depth:: Determines the max depth which the tree should use
+      as a stop parameter.\n
+      Int64 - min_node_records:: Determines the minimum number of nodes a
+      constructed node is allowed to have.\n
+      Int64 - n_trees:: Determines how many decision trees should be trained.
+      --------------------\n
+     ### Output
+     model:: A Lathe Model.\n
+     ---------------------\n
+     ### Functions
+     Model.predict(xt) :: Predicts a new y based on the data provided as xt and
+      the weights obtained from X.\n
+     ---------------------\n
+     ### Data
+     storedata :: A tree node type that contains the weights and their
+     corresponding values.
+       """
 function RandomForestClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
@@ -54,6 +87,38 @@ function RandomForestClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
     predict(xt) = rf_predict(storedata, xt)
     (var)->(predict;storedata)
 end
+"""
+    ## Decision Tree Classifier
+    ### Description
+      The decision tree classifier is a model ideal for solving most
+          classification problems.\n
+      --------------------\n
+    ### Input
+      DecisionTreeClassifier(x, y, rng ;
+      max_depth = 6, min_node_records = 1)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - X:: Array of x's for which the model will use to
+      predict y.\n
+      Array{Any} - Y:: Array of y's for which the x's are used to predict.\n
+      RandomNumberGenerator - rng:: Determines the seed for the given model.\n
+      #### Key-word Arguments
+      Int64 - max_depth:: Determines the max depth which the tree should use
+      as a stop parameter.\n
+      Int64 - min_node_records:: Determines the minimum number of nodes a
+      constructed node is allowed to have.\n
+      --------------------\n
+     ### Output
+     model:: A Lathe Model.\n
+     ---------------------\n
+     ### Functions
+     Model.predict(xt) :: Predicts a new y based on the data provided as xt and
+      the weights obtained from X.\n
+     ---------------------\n
+     ### Data
+     storedata :: A tree node type that contains the weights and their
+     corresponding values.
+       """
 function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))))

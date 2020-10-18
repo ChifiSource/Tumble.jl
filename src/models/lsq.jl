@@ -4,6 +4,7 @@ Linear
      Square
 ==#
 """
+
       Least Square regressors are ideal for predicting continous features.\n
       --------------------\n
       x = [7,6,5,6,5]\n
