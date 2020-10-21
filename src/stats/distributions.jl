@@ -1,3 +1,4 @@
+using Distributions: TDist
 """
       Binomial Distribution is a distribution well known for its use in
            statistical tests and decision making models. In order to calculate
@@ -77,12 +78,12 @@ end
      μ :: Mean of the input data.\n
      N :: The length of the input data.
        """
-function TDist(general)
+function T_Dist(general)
     norm = NormalDist(general)
     general = norm.apply(general)
     μ = mean(general)
     N = length(general)
     apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
-    cdf = ""
+    cdf(t, dog) = cf(TDist(dog), t)
     (distribution)->(μ;N;apply;cdf)
 end

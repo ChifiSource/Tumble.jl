@@ -1,4 +1,6 @@
 ## What is Lathe?
+Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.
+
 ```@contents
 ```
 

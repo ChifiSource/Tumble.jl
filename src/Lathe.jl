@@ -1,6 +1,6 @@
 #===============================
 <-----------Lathe.jl----------->
-~~~~~~ 0.1.2 "ButterBall" ~~~~~~
+~~~~~~ 0.1.4 "ButterBall" ~~~~~~
 Programmed by Emmett Boudreau
     <emmett@emmettboudreau.com>
         <http://emmettboudreau.com>
@@ -24,7 +24,7 @@ Random.jl
 ================================#
 @doc """
       |====== Lathe - Easily ML =====\n
-      |= = = = = v. 0.1.3 = = = = = |\n
+      |= = = = = v. 0.1.4 = = = = = |\n
       |==============================\n
       |__________Lathe.stats\n
       |__________Lathe.preprocess\n

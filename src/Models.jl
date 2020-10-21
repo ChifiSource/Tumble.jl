@@ -31,15 +31,19 @@ Continuous Models
 ==#
 # Least Square
 include("models/lsq.jl")
+export LeastSquare
 # Linear Regression
 include("models/linreg.jl")
+export SimpleLinearRegression
 #==
 Categorical Models
 ==#
 # Decision Tree Classifier/ RF
 include("models/treeclass.jl")
+export DecisionTreeClassifier, RandomForestClassifier
 # Logistic Regression
 include("models/logistic.jl")
+export LogisticRegression
 #==
 Unsupervised Models
 ==#
@@ -48,13 +52,11 @@ include("models/kmeans.jl")
 Tools
 ==#
 include("models/toolbox.jl")
-#==
-Macros
-==#
-include("models/model_macros.jl")
+export Pipeline, PowerLog, MeanBaseline, majClassBaseline
 #==
 Neural Networks
 ==#
 include("models/neural.jl")
+export Network
 #----------------------------------------------
 end
