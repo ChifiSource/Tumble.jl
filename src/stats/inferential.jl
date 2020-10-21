@@ -28,8 +28,7 @@ function correlationcoeff(x,y)
     y2 = y .^ 2
     sx2 = sum(x2)
     sy2 = sum(y2)
-    r = ((n*sxy) - (sx * sy)) / (sqrt((((n*sx2)-(sx^2)) * ((n*sy2)-(sy^2)))))
-    return(r)
+    ((n*sxy) - (sx * sy)) / (sqrt((((n*sx2)-(sx^2)) * ((n*sy2)-(sy^2)))))
 end
 """
     # Two Tailed Test
@@ -54,12 +53,17 @@ end
        """
 function TwoTailed(dist, sample; c = .95)
     a = 1 - c
-    test_stat = dist.apply(sample)
-    dof = dist.N - 1
-    return(test_stat)
+    t = dist.apply(sample)
+    v = dist.N - 1
+    P = dist.cdf(t, v)
+    if P <= a && P >= - a
+            return(true)
+        else
+            return(false)
+    end
 end
 """
-
+    One Tailed Test -- NOT IMPLEMENTED (0.1.4)
     # Description
       The OneTailed test function takes a distribution, a sample, and a
           confidence
@@ -81,8 +85,10 @@ end
      P:: P value representing the probability of A <= P >= - A
        """
 function OneTailed(dist, sample; c = .95)
+    throw("One Tailed tests have yet to be implemented!")
     a = 1 - c
     test_stat = dist.apply(sample)
     dof = dist.N - 1
     return(test_stat)
 end
+P(dist, sample; c = .95) = dist.cdf(dist.apply(sample), dist.N - 1)

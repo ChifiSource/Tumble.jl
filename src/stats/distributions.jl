@@ -1,3 +1,4 @@
+using Distributions
 """
       Binomial Distribution is a distribution well known for its use in
            statistical tests and decision making models. In order to calculate
@@ -86,3 +87,5 @@ function TDist(general)
     cdf = ""
     (distribution)->(μ;N;apply;cdf)
 end
+
+function t_cdf()
