@@ -49,7 +49,7 @@ end
        percentage.\n
       --------------------\n
      ### Output
-     P:: P value representing the probability of A <= P >= - A
+     T:: Bool type representing as to whether or not P <= a && P >= -a.
        """
 function TwoTailed(dist, sample; c = .95)
     a = 1 - c
@@ -91,4 +91,24 @@ function OneTailed(dist, sample; c = .95)
     dof = dist.N - 1
     return(test_stat)
 end
+"""
+    Probability\n
+    # Description
+    The P() function takes a distribution, sample, and confidence level and
+    will return the corresponding probability value.
+      --------------------\n
+    # Input
+      OneTailed(Distribution, sample; c)\n
+      --------------------\n
+      #### Positional Arguments
+      Lathe Distribution - Distribution:: A Lathe Distribution.\n
+      Array{Any} - sample:: An array of values representing the sample that should be
+       tested.\n
+       #### Key-word Arguments\n
+       Float64 - c:: Level of confidence for a given test in decimal form of a
+       percentage.\n
+      --------------------\n
+     # Output
+     P:: P value representing probability.
+       """
 P(dist, sample; c = .95) = dist.cdf(dist.apply(sample), dist.N - 1)
