@@ -10,7 +10,7 @@ export q3, getranks, fact, is_prime
 Distributions
 ==#
 include("stats/distributions.jl")
-export NormalDist, TDist
+export NormalDist, T_Dist
 #==
 Inferential
 ==#
