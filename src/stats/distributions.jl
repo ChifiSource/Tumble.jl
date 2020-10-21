@@ -1,4 +1,4 @@
-using Distributions
+using Distributions: TDist
 """
       Binomial Distribution is a distribution well known for its use in
            statistical tests and decision making models. In order to calculate
