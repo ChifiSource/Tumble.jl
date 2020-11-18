@@ -114,3 +114,11 @@ function StandardScaler(array)
     predict(xt) = dist.apply(xt)
     (var) -> (predict;dist)
 end
+
+function QuantileTransformer(array)
+    norm = NormalDist(array)
+    normalized = norm.apply(array)
+    dist = UniformDist(normalized)
+    predict(xt) = dist.cummulative(xt)
+    (var) -> (dist;predict;norm)
+end
