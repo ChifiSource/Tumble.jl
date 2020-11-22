@@ -50,7 +50,7 @@ end
 function NormalDist(array)
     σ = std(array)
     μ = mean(array)
-    apply(xt) = [i = (i-μ) / σ for i in xt]v
+    apply(xt) = [i = (i-μ) / σ for i in xt]
     (var) ->(σ;μ;cdf;apply)
 end
 # ---- T distribution ----
@@ -107,10 +107,7 @@ end
      Distribution.apply(xt) :: Applies the distribution to xt\n
      Distribution.cdf(xt) :: Applies the distribution's
      corresponding cummulitive distribution function.\n
-     ---------------------\n
-     ### Data
-     μ :: Mean of the input data.\n
-     N :: The length of the input data.
+     ---------------------
        """
 function UniformDist(array)
     dist = Uniform(minimum(array), maximum(array))
