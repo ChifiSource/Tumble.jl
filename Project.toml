@@ -9,5 +9,5 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 [compat]
 julia = "1.4.2"
-DataFrames = "0.21.1"
+DataFrames = "0.22"
 Distributions = "0.24.1"
