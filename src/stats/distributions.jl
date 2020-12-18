@@ -1,4 +1,5 @@
-using Distributions: TDist
+using Distributions: TDist, Uniform
+import Distributions: cdf
 """
       Binomial Distribution is a distribution well known for its use in
            statistical tests and decision making models. In order to calculate
@@ -50,7 +51,6 @@ function NormalDist(array)
     σ = std(array)
     μ = mean(array)
     apply(xt) = [i = (i-μ) / σ for i in xt]
-    cdf = ""
     (var) ->(σ;μ;cdf;apply)
 end
 # ---- T distribution ----
@@ -86,4 +86,32 @@ function T_Dist(general)
     apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
     cdf(t, dog) = cf(TDist(dog), t)
     (distribution)->(μ;N;apply;cdf)
+end
+# ---- Uniform Dist ----
+"""
+    ## Uniform Distribution
+    ### Description
+      Calculates the Uniform distribution of an array.\n
+      --------------------\n
+    ### Input
+      UniformDist(x)\n
+      --------------------\n
+      #### Positional Arguments
+      Array{Any} - x:: Array for which the T distribution should use the
+      data from.\n
+      --------------------\n
+     ### Output
+     t:: A Lathe distribution\n
+     ---------------------\n
+     ### Functions
+     Distribution.apply(xt) :: Applies the distribution to xt\n
+     Distribution.cdf(xt) :: Applies the distribution's
+     corresponding cummulitive distribution function.\n
+     ---------------------
+       """
+function UniformDist(array)
+    dist = Uniform(minimum(array), maximum(array))
+    apply(xt) = pdf(dist, xt)
+    cdf(x) = cdf(dist, x)
+    (var) ->(dist;cdf;apply)
 end
