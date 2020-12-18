@@ -49,7 +49,7 @@ function OrdinalEncoder(array)
     lookup = Dict()
     [push!(lookup, (value => i)) for (i, value) in enumerate(uni)]
     predict(arr) = [row = lookup[row] for row in arr]
-    ()->(predict)
+    ()->(predict;lookup)
 end
 """
     ## Float Encoder
