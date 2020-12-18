@@ -79,7 +79,7 @@ end
      storedata :: A tree node type that contains the weights and their
      corresponding values.
        """
-function RandomForestClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
+function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
     storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
@@ -126,4 +126,42 @@ function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
         Int(floor(sqrt(size(X, 2)))), 1)
     predict(xt) = rf_predict(storedata, xt)
     (var)->(predict;storedata)
+end
+
+function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
+     min_node_records = 1,
+    n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
+    classifiers = []
+    treec = 0
+    n_features = size(df)[1]
+    divamount = n_trees / n_features
+    for data in eachcol(X)
+        mdl = RandomForestClassifier(data, Y, n_trees = divamount)
+        push!(classifiers, mdl)
+    end
+    predict(xt) = compare_pred(classifiers, xt)
+    (var)->(predict;storedata;classifiers)
+end
+
+function compare_pred(models, xbar::DataFrame)
+    count = 0
+    preddict = Dict()
+    for model in models
+        preddict[count] = model.predict(xbar)
+        count += 1
+    end
+    count = 1
+    n_features = length(preddict)
+    encoder = OrdinalEncoder(preddict[1])
+    y_hat = encoder.predict(preddict[1])
+    for (key, value) in preddict
+       encoded = encoder.predict(value)
+        y_hat[count] = mean([y_hat[count], encoded[count]])
+        count += 1
+    end
+    y_hat = Array{Int64}(y_hat)
+    inv_lookup = Dict(value => key for (key, value) in encoder.lookup)
+    for x in y_hat
+        println(inv_lookup[x])
+    end
 end
