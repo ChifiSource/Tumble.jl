@@ -102,3 +102,26 @@ function Pipeline(steps)
     predict(xt) = [xt = step[xt] for step in steps]
     (var)->(steps;predict)
 end
+
+function _compare_predCat(models, xbar::DataFrame)
+    count = 0
+    preddict = Dict()
+    for model in models
+        preddict[count] = model.predict(xbar)
+        count += 1
+    end
+    count = 1
+    n_features = length(preddict)
+    encoder = OrdinalEncoder(preddict[1])
+    y_hat = encoder.predict(preddict[1])
+    for (key, value) in preddict
+       encoded = encoder.predict(value)
+        y_hat[count] = mean([y_hat[count], encoded[count]])
+        count += 1
+    end
+    y_hat = Array{Int64}(y_hat)
+    inv_lookup = Dict(value => key for (key, value) in encoder.lookup)
+    for x in y_hat
+        println(inv_lookup[x])
+    end
+end

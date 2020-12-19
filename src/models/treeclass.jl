@@ -1,4 +1,5 @@
 include("tree_base.jl")
+include("toolbox.jl")
 struct TREECLASS end
 using Random
 struct Result{T, S}
@@ -129,7 +130,7 @@ function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
 end
 
 function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
-     min_node_records = 1,
+     min_node_records = 1, weights = NoWeights(Dict()::Weights)
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
     classifiers = []
     treec = 0
@@ -139,29 +140,6 @@ function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
         mdl = RandomForestClassifier(data, Y, n_trees = divamount)
         push!(classifiers, mdl)
     end
-    predict(xt) = compare_pred(classifiers, xt)
+    predict(xt) = _compare_predCat(classifiers, xt)
     (var)->(predict;storedata;classifiers)
-end
-
-function compare_pred(models, xbar::DataFrame)
-    count = 0
-    preddict = Dict()
-    for model in models
-        preddict[count] = model.predict(xbar)
-        count += 1
-    end
-    count = 1
-    n_features = length(preddict)
-    encoder = OrdinalEncoder(preddict[1])
-    y_hat = encoder.predict(preddict[1])
-    for (key, value) in preddict
-       encoded = encoder.predict(value)
-        y_hat[count] = mean([y_hat[count], encoded[count]])
-        count += 1
-    end
-    y_hat = Array{Int64}(y_hat)
-    inv_lookup = Dict(value => key for (key, value) in encoder.lookup)
-    for x in y_hat
-        println(inv_lookup[x])
-    end
 end
