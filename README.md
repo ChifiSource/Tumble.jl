@@ -4,9 +4,9 @@
 <div align="left">
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.</p>
         </div>
-
-[![deps](https://juliahub.com/docs/Lathe/deps.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ?t=2)
+        
 [![version](https://juliahub.com/docs/Lathe/version.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
+[![deps](https://juliahub.com/docs/Lathe/deps.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ?t=2)
 [![pkgeval](https://juliahub.com/docs/Lathe/pkgeval.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
 
 <details class="details-overlay">
