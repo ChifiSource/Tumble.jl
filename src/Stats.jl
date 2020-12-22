@@ -1,5 +1,6 @@
 """Sample"""
 module lstats
+abstract type Distribution end
 #==
 Base
 ==#
@@ -31,10 +32,6 @@ Samples
 ==#
 include("stats/samples.jl")
 export sample, sample!
-#==
-Macros
-==#
-include("stats/stats_macros.jl")
 #==
 Functions
 ==#
