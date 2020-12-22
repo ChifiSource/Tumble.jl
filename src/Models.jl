@@ -26,6 +26,14 @@ using Random
 using DataFrames
 using Lathe.lstats
 # [deps]
+abstract type Model end
+# Supervised
+abstract type SupervisedModel <: Model end
+abstract type ContinuousModel <: SupervisedModel end
+abstract type LinearModel <: ContinuousModel end
+abstract type CategoricalModel <: Model end
+# Unsupervised
+abstract type UnsupervisedModel <: Model end
 #==
 Continuous Models
 ==#
