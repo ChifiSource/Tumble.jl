@@ -75,7 +75,7 @@ Majority
      counts() <- Returns a dictionary with the counts of all inserted keys.\n
      highest() <- Will return a Dictionary key with the count as well as the value for the most interpreted classification.
        """
-function majClassBaseline(y)
+function ClassBaseline(y)
     u=unique(y)
     d=Dict([(i,count(x->x==i,y)) for i in u])
     d = sort(collect(d), by=x->x[2])
