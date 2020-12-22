@@ -23,6 +23,11 @@ module preprocess
 using Random
 using DataFrames
 using Lathe.lstats
+abstract type Preprocessor end
+abstract type Encoder <: Preprocessor end
+abstract type Scaler <: Preprocessor end
+abstract type Splitter <: Preprocessor end
+abstract type Booster <: Preprocessor end
 #==
 Data Processing
 ==#
