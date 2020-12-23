@@ -16,6 +16,14 @@
       corresponding with symb on DF, then returns a dataframe with encoded
       results.
        """
+mutable struct OneHotEncoder{P} <: Encoder
+    predict::P
+    function OneHotEncoder()
+        predict(df::DataFrame, symb::Symbol) = _onehot(df, symb)
+        P =  typeof(predict)
+        return new{P}(predict)
+    end
+end
 function OneHotEncoder()
     predict(df, symb) = _onehot(df,symb)
     ()->(predict)
