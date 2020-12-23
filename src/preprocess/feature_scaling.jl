@@ -80,12 +80,20 @@ end
      b :: The maximum value in the array.\n
      avg :: The mean of the array.
        """
-function MeanNormalizer(array)
-    avg = mean(array)
-    a = minimum(array)
-    b = maximum(array)
-    predict(array) = [i = (i-avg) / (b-a) for i in array]
-    (var) -> (predict;avg;a;b)
+mutable struct MeanScaler{P} <: Scaler
+    predict::P
+    avg::Float64
+    a::Float64
+    b::Float64
+    function MeanScaler(array::Array)
+        avg = mean(array)
+        a = minimum(array)
+        b = maximum(array)
+        predict(array::Array) = [i = (i-avg) / (b-a) for i in array]
+        predict(df::DataFrame, symb::Symbol) = [i = (i-avg) / (b-a) for i in df[!, symb]]
+        P = typeof(predict)
+        return new{P}(predict, avg, a, b)
+    end
 end
 # ---- Z Normalization ----
 """
@@ -109,10 +117,16 @@ end
      ### Data
      dist  :: Returns the normal distribution object for which this scaler uses.
        """
-function StandardScaler(array)
-    dist = NormalDist(array)
-    predict(xt) = dist.apply(xt)
-    (var) -> (predict;dist)
+mutable struct StandardScaler{dist, predict} <: Scaler
+    dist::Distribution
+    predict::predict
+    function StandardScaler(x::Array)
+        dist = NormalDist(x)
+        predict(xt::Array) = dist.apply(xt)
+        predict(df::DataFrame, symb::Symbol) = dist.apply(df[!, symb])
+        D, P =  typeof(dist), typeof(predict)
+        return new{D, P}(dist, predict)
+    end
 end
 
 function QuantileTransformer(array)
