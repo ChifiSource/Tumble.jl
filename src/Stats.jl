@@ -1,12 +1,12 @@
 """Sample"""
-module lstats
+module stats
 abstract type Distribution end
 #==
 Base
 ==#
 include("stats/statbase.jl")
 export mean, median, mode, variance, confints, ste, std, q1
-export q3, getranks, fact, is_prime
+export q3, getranks, fact, is_prime, Σ
 #==
 Distributions
 ==#

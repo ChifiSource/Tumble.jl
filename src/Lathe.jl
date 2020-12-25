@@ -37,7 +37,7 @@ Random.jl
 - Distributions.jl
 ### Modules
 **Use ?(Module) for more information!**
-- lstats
+- stats
 - preprocess
 - models
        """

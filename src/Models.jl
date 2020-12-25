@@ -33,12 +33,9 @@ abstract type UnsupervisedModel <: Model end
 #==
 Continuous Models
 ==#
-# Least Square
-include("models/lsq.jl")
-export LeastSquare
-# Linear Regression
-include("models/linreg.jl")
-export SimpleLinearRegression
+include("models/regressors.jl")
+export LinearLeastSquare
+export LinearRegression
 #==
 Categorical Models
 ==#
