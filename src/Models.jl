@@ -19,7 +19,7 @@ module models
 # [deps]
 using Random
 using DataFrames
-using Lathe.lstats
+using Lathe.stats
 # [deps]
 # Type heirarchy
 abstract type Model end
