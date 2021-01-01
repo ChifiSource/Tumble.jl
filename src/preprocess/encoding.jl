@@ -1,5 +1,4 @@
 # <---- One Hot Encoder ---->
-
 """
     ## OneHotEncoder
     ### Description
@@ -52,16 +51,15 @@ end
      ### Functions
      Preprocesser.predict(xt) :: Returns an ordinally encoded xt.\n
        """
-mutable struct OrdinalEncoder{lookup,predict} <: Encoder
+mutable struct OrdinalEncoder{P} <: Encoder
     predict::P
     lookup::Dict
     function OrdinalEncoder(array::Array)
         lookup = Dict(v => i for (i,v) in array |> unique |> enumerate)
         predict(arr::Array) = map(x->lookup[x], arr)
         predict(df::DataFrame, symb::Symbol) = map(x->lookup[x], df[!, symb])
-        symb::Array{Symbol}) = DataFrame(map(x->lookup[x], arr) for )
-        D, P =  typeof(lookup), typeof(predict)
-        return new{D,P}(lookup, predict)
+        P =  typeof(lookup), typeof(predict)
+        return new{P}(predict, lookup)
     end
 end
 """

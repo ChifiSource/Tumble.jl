@@ -1,3 +1,4 @@
+using Lathe.lstats: Distribution
 # ---- Rescalar (Standard Deviation) ---
 """
     ## Rescalar
@@ -24,7 +25,7 @@
 mutable struct Rescaler{P} <: Scaler
     predict::P
     min::Float64
-    max::Float66
+    max::Float64
     function Rescalar(x::Array)
         a = minimum(x)
         b = maximum(x)
