@@ -1,4 +1,4 @@
-using Lathe.lstats: Distribution
+using Lathe.stats: Distribution
 # ---- Rescalar (Standard Deviation) ---
 """
     ## Rescalar
