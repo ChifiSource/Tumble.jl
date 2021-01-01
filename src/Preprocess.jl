@@ -22,11 +22,11 @@ Preprocessing
 module preprocess
 using Random
 using DataFrames
-using Lathe.lstats
+using Lathe.stats
 abstract type Preprocessor end
 abstract type Encoder <: Preprocessor end
 abstract type Scaler <: Preprocessor end
-abstract type Transformer <: Preprocesser end
+abstract type Transformer <: Preprocessor end
 abstract type Manager <: Preprocessor end
 abstract type Booster <: Preprocessor end
 #==

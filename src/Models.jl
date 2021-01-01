@@ -21,14 +21,15 @@ using Random
 using DataFrames
 using Lathe.lstats
 # [deps]
+# Type heirarchy
 abstract type Model end
-# Supervised
 abstract type SupervisedModel <: Model end
 abstract type ContinuousModel <: SupervisedModel end
-abstract type LinearModel <: ContinuousModel end
+abstract type Regressor <: ContinuousModel end
+abstract type LinearModel <: Regressor end
 abstract type CategoricalModel <: Model end
 abstract type BaselineModel <: Model end
-# Unsupervised
+abstract type Tool <: Model end
 abstract type UnsupervisedModel <: Model end
 #==
 Continuous Models

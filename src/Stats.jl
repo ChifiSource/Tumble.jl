@@ -1,6 +1,7 @@
 """Sample"""
 module stats
 abstract type Distribution end
+export Distribution
 #==
 Base
 ==#
