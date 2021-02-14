@@ -1,10 +1,13 @@
 <div align="center"><img src="https://github.com/emmettgb/Lathe.jl/blob/Unstable/lathelogo.png" />
-  <h1>0.1.5 "ButterBall"</h1>
+  <h1>0.1.6 "ButterBall"</h1>
 </div>
 <div align="left">
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.</p>
         </div>
-
+        
+[![version](https://juliahub.com/docs/Lathe/version.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
+[![deps](https://juliahub.com/docs/Lathe/deps.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ?t=2)
+[![pkgeval](https://juliahub.com/docs/Lathe/pkgeval.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
 
 <details class="details-overlay">
   <summary class="btn"><h2>Add Lathe</h2></summary>
