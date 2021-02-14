@@ -29,7 +29,7 @@ function OneHotEncoder()
 end
 
 function _onehot(df,symb)
-    copy = [df[c] = df[c] .== c for c in unique(df[!, symb])]
+    copy = [df[!, c] = df[!, c] .== c for c in unique(df[!, symb])]
     return(copy)
 end
 """
