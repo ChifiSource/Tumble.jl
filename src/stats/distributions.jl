@@ -1,4 +1,4 @@
-using Distributions: TDist, Uniform, Normal
+using Distributions: TDist, Uniform, Normal, cf
 import Distributions: cdf
 """
       Binomial Distribution is a distribution well known for its use in
@@ -47,12 +47,20 @@ end
      σ :: Standard Deviation of the input data.\n
      μ :: Mean of the input data.
        """
-function NormalDist(array)
-    σ = std(array)
-    μ = mean(array)
-    apply(xt) = [i = (i-μ) / σ for i in xt]
-	cdf(xt) = bvnuppercdf(σ, μ, xt)
-    (var) ->(σ;μ;cdf;apply)
+struct NormalDist{c, p} <: Distribution
+           σ::Float64
+           μ::Float64
+           N::Int64
+           cdf::c
+           apply::p
+           function NormalDist(array)
+              N = length(array)
+               σ = std(array)
+               μ = mean(array)
+               apply(xt) = Array{Real}([i = (i-μ) / σ for i in xt])
+               cdf(xt) = bvnuppercdf(σ, μ, xt)
+               new{typeof(cdf), typeof(apply)}(σ, μ, N, cdf, apply)
+            end
 end
 # ---- T distribution ----
 """
@@ -79,14 +87,21 @@ end
      μ :: Mean of the input data.\n
      N :: The length of the input data.
        """
+struct T_Dist{c, p} <: Distribution
+μ::Float64
+N::Int64
+apply::p
+cdf::c
+
 function T_Dist(general)
-    norm = NormalDist(general)
-    general = norm.apply(general)
-    μ = mean(general)
-    N = length(general)
-    apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
-    cdf(t, dog) = cf(TDist(dog), t)
-    (distribution)->(μ;N;apply;cdf)
+  norm = NormalDist(general)
+  general = norm.apply(general)
+  μ = mean(general)
+  N = length(general)
+  apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
+  cdf(t, dog) = cf(TDist(dog), Real(t))
+  new{typeof(cdf), typeof(apply)}(μ, N, apply, cdf)
+  end
 end
 # ---- Uniform Dist ----
 """
