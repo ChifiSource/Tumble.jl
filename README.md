@@ -1,4 +1,4 @@
-<div align="center"><img src="https://github.com/emmettgb/Lathe.jl/blob/Unstable/assets/lathelogo.png" />
+<div align="center"><img src="https://github.com/ChifiSource/Lathe.jl/blob/Unstable/assets/lathelogo.png" />
   <h1>0.1.6 "ButterBall"</h1>
 </div>
 <div align="left">
