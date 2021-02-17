@@ -107,7 +107,7 @@ function std(array3)
     m = mean(array3)
     [i = (i-m) ^ 2 for i in array3]
     m = mean(array3)
-    m = sqrt(Complex(m))
+    m = sqrt(m)
     return(m)
 end
 #<----Quartiles---->
