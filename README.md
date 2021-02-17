@@ -14,10 +14,6 @@
 <div>
 
 **(press ] in the Julia REPL to go to Pkg REPL)**
- #### LTS (Long-term support, reccommended):
- ```julia
- (v1.3) pkg> add Lathe#Butterball
- ```
  #### Latest (Get the latest stable developments):
  ```julia
  (v1.3) pkg> add Lathe
