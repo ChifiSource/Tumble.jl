@@ -1,7 +1,7 @@
 #==
 Power Log
 ==#
-@doc """
+"""
       A powerlog can be used to perform a one-tailed test, as well as get the proper sample size for a testing population.\n
       --------------------\n
       ==PARAMETERS==\n
