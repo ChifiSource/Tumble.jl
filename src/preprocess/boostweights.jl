@@ -1,4 +1,5 @@
 abstract type AbstractWeights end
+using dataframes
 mutable struct Weights <: AbstractWeights
     lookup::Dict
 end
@@ -13,7 +14,7 @@ function NormalWeight(df::DataFrame, y::Array{Any})
     dist = NormalDist(y)
     norm = dist.apply(y)
     for val in y
-        
+
     end
 end
 function ManualWeights(pairs::Array)
