@@ -2,6 +2,7 @@ include("../preprocess/boostweights.jl")
 include("tree_base.jl")
 using Random
 using CUDA
+using DataFrames
 struct TREECLASS end
 struct Result{T, S}
     sc::Vector{Node{T}}
@@ -103,7 +104,7 @@ function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
      n_trees = 100)
     classifiers = []
     treec = 0
-    n_features = size(df)[1]
+    n_features = size(X)[1]
     divamount = n_trees / n_features
     if cuda == true
         Y = CuArray(Y)
