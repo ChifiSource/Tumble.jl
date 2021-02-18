@@ -99,7 +99,7 @@ end
 function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
     max_depth = 6,
      min_node_records = 1,
-     weights = NoWeights(Dict()),
+     weights = NoWeights(Dict()), cuda = false,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))),
      n_trees = 100)
     classifiers = []
