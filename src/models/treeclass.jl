@@ -1,6 +1,6 @@
 include("tree_base.jl")
 include("toolbox.jl")
-using Lathe.preprocess: Weights, NoWeights
+abstract type NoWeights end
 using Random
 using CUDA
 struct TREECLASS end
