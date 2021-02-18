@@ -1,7 +1,9 @@
 include("tree_base.jl")
 include("toolbox.jl")
-struct TREECLASS end
+using Lathe.preprocess: Weights, NoWeights, 
 using Random
+using CUDA
+struct TREECLASS end
 struct Result{T, S}
     sc::Vector{Node{T}}
     d::Vector{S}
@@ -80,13 +82,43 @@ end
      storedata :: A tree node type that contains the weights and their
      corresponding values.
        """
+mutable struct RandomForestClassifier{P} <: Classifier
+    predict::P
+    storedata::Result
 function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
-    n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100)
+    n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100, cuda = false)
+    if cuda == true
+        X = CuArray(X)
+        Y = CuArray(Y)
+    end
     storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
         Int(floor(sqrt(size(X, 2)))), n_trees)
-    predict(xt) = rf_predict(storedata, xt)
-    (var)->(predict;storedata)
+    new{typeof(predict)}(predict, storedata)
+end
+function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
+    max_depth = 6,
+     min_node_records = 1,
+     weights = NoWeights(Dict()),
+    n_features_per_node = Int(floor(sqrt(size(X, 2)))),
+     n_trees = 100)
+    classifiers = []
+    treec = 0
+    n_features = size(df)[1]
+    divamount = n_trees / n_features
+    if cuda == true
+        Y = CuArray(Y)
+    end
+    for data in eachcol(X)
+        if cuda == true
+            data = CuArray(data)
+        end
+        mdl = RandomForestClassifier(data, Y, n_trees = divamount)
+        push!(classifiers, mdl)
+    end
+    predict(xt) = _compare_predCat(classifiers, xt)
+    new{typeof(predict)}(predict, result)
+end
 end
 """
     ## Decision Tree Classifier
@@ -127,22 +159,4 @@ function DecisionTreeClassifier(X, Y, rng = Random.GLOBAL_RNG; max_depth = 6,
         Int(floor(sqrt(size(X, 2)))), 1)
     predict(xt) = rf_predict(storedata, xt)
     (var)->(predict;storedata)
-end
-
-function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
-    max_depth = 6,
-     min_node_records = 1,
-     weights = NoWeights(Dict()),
-    n_features_per_node = Int(floor(sqrt(size(X, 2)))),
-     n_trees = 100)
-    classifiers = []
-    treec = 0
-    n_features = size(df)[1]
-    divamount = n_trees / n_features
-    for data in eachcol(X)
-        mdl = RandomForestClassifier(data, Y, n_trees = divamount)
-        push!(classifiers, mdl)
-    end
-    predict(xt) = _compare_predCat(classifiers, xt)
-    (var)->(predict;storedata;classifiers)
 end
