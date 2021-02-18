@@ -8,11 +8,7 @@
 [![version](https://juliahub.com/docs/Lathe/version.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
 [![deps](https://juliahub.com/docs/Lathe/deps.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ?t=2)
 [![pkgeval](https://juliahub.com/docs/Lathe/pkgeval.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
-
-<details class="details-overlay">
-  <summary class="btn"><h2>Add Lathe</h2></summary>
-<div>
-
+## Add Lathe
 **(press ] in the Julia REPL to go to Pkg REPL)**
  #### Latest (Get the latest stable developments):
  ```julia
@@ -22,9 +18,6 @@
  ```julia
  (v1.3) pkg> add Lathe#Unstable
  ```
- 
-</div>
-</details>
 
 
 <details class="details-overlay">
