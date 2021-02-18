@@ -1,5 +1,5 @@
 abstract type AbstractWeights end
-using Dataframes
+using DataFrames
 mutable struct Weights <: AbstractWeights
     lookup::Dict
 end
