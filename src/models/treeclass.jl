@@ -1,4 +1,5 @@
 include("../preprocess/boostweights.jl")
+include("tree_base.jl")
 using Random
 using CUDA
 struct TREECLASS end
