@@ -31,6 +31,7 @@ abstract type CategoricalModel <: Model end
 abstract type BaselineModel <: Model end
 abstract type Tool <: Model end
 abstract type UnsupervisedModel <: Model end
+abstract type Classifier <: CategoricalModel end
 #==
 Continuous Models
 ==#

@@ -1,13 +1,10 @@
-abstract type Weights end
-
-struct NormalWeights <: Weights
-    weights
+abstract type AbstractWeights end
+using DataFrames
+mutable struct Weights <: AbstractWeights
+    lookup::Dict
 end
-struct BinomialWeight <: Weights
-    weights
-end
-struct NoWeights <: Weights
-    weights
+mutable struct NoWeights <: AbstractWeights
+    lookup::Dict
 end
 function NormalWeight(df::DataFrame, y::Array{Any})
     features = eachcol(df)
@@ -15,7 +12,11 @@ function NormalWeight(df::DataFrame, y::Array{Any})
     categories = Set(y)
     y = OrdinalEncoder(y).predict(y)
     dist = NormalDist(y)
-end
-function BinomialWeight(df::DataFrame)
+    norm = dist.apply(y)
+    for val in y
 
+    end
+end
+function ManualWeights(pairs::Array)
+    return(Weights(Dict(pairs)))
 end

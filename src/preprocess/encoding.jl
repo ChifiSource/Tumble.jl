@@ -23,14 +23,12 @@ mutable struct OneHotEncoder{P} <: Encoder
         return new{P}(predict)
     end
 end
-function OneHotEncoder()
-    predict(df, symb) = _onehot(df,symb)
-    ()->(predict)
-end
 
 function _onehot(df,symb)
-    copy = copy(df)
-    copy = [copy[c] = copy[c] .== c for c in unique(copy)]
+    copy = df
+    for c in unique(copy[!,symb])
+        copy[!,Symbol(c)] = copy[!,symb] .== c
+    end
     return(copy)
 end
 """
@@ -58,7 +56,7 @@ mutable struct OrdinalEncoder{P} <: Encoder
         lookup = Dict(v => i for (i,v) in array |> unique |> enumerate)
         predict(arr::Array) = map(x->lookup[x], arr)
         predict(df::DataFrame, symb::Symbol) = map(x->lookup[x], df[!, symb])
-        P =  typeof(lookup), typeof(predict)
+        P =  typeof(predict)
         return new{P}(predict, lookup)
     end
 end

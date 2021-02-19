@@ -1,6 +1,6 @@
 #===============================
 <-----------Lathe.jl----------->
-~~~~~~ 0.1.6 "ButterBall" ~~~~~~
+~~~~~~ 0.1.7 "ButterBall" ~~~~~~
 Programmed by Emmett Boudreau
     <emmett@emmettboudreau.com>
         <http://emmettboudreau.com>
