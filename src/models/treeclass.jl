@@ -85,7 +85,7 @@ end
 mutable struct RandomForestClassifier{P} <: Classifier
     predict::P
     storedata::Result
-function RandomForestClassifier(X::Array{Int64}, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
+function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100, cuda = false)
     if cuda == true
@@ -97,19 +97,7 @@ function RandomForestClassifier(X::Array{Int64}, Y::Array, rng = Random.GLOBAL_R
     predict(xt::Array) = rf_predict(storedata, xt)
     new{typeof(predict)}(predict, storedata)
 end
-function RandomForestClassifier(X::Array{Float64}, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
-     min_node_records = 1,
-    n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100, cuda = false)
-    if cuda == true
-        X = CuArray(X)
-        Y = CuArray(Y)
-    end
-    storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
-        Int(floor(sqrt(size(X, 2)))), n_trees)
-    predict(xt::Array) = rf_predict(storedata, xt)
-    new{typeof(predict)}(predict, storedata)
-end
-function RandomForestClassifier(X::Array{Array}, Y::Array, rng = Random.GLOBAL_RNG;
+function RandomForestClassifier(X::Vector, Y::Array, rng = Random.GLOBAL_RNG;
     max_depth = 6,
      min_node_records = 1,
      weights = NoWeights(Dict()), cuda = false,
@@ -117,7 +105,7 @@ function RandomForestClassifier(X::Array{Array}, Y::Array, rng = Random.GLOBAL_R
      n_trees = 100)
     classifiers = []
     treec = 0
-    n_features = length(X)[1]
+    n_features = length(X[1])
     divamount = n_trees / n_features
     if cuda == true
         Y = CuArray(Y)
@@ -129,7 +117,7 @@ function RandomForestClassifier(X::Array{Array}, Y::Array, rng = Random.GLOBAL_R
         mdl = RandomForestClassifier(data, Y, n_trees = divamount)
         push!(classifiers, mdl)
     end
-    predict(xt) = _compare_predCat(classifiers, xt)
+    predict(xt::Array{Array}) = _compare_predCat(classifiers, xt)
     new{typeof(predict)}(predict, result)
 end
 end
