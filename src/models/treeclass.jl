@@ -97,7 +97,7 @@ function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max
     predict(xt::Array) = rf_predict(storedata, xt)
     new{typeof(predict)}(predict, storedata)
 end
-function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
+function RandomForestClassifier(X::Array{Array}, Y::Array, rng = Random.GLOBAL_RNG;
     max_depth = 6,
      min_node_records = 1,
      weights = NoWeights(Dict()), cuda = false,
@@ -105,12 +105,12 @@ function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
      n_trees = 100)
     classifiers = []
     treec = 0
-    n_features = size(X)[1]
+    n_features = length(X)[1]
     divamount = n_trees / n_features
     if cuda == true
         Y = CuArray(Y)
     end
-    for data in eachcol(X)
+    for data in X
         if cuda == true
             data = CuArray(data)
         end
