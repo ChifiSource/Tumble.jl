@@ -103,7 +103,7 @@ function Pipeline(steps)
     (var)->(steps;predict)
 end
 
-function _compare_predCat(models, xbar::DataFrame)
+function _compare_predCat(models, xbar::Array{Array})
     count = 0
     preddict = Dict()
     for model in models
