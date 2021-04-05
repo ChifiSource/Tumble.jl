@@ -20,15 +20,18 @@ Preprocessing
 
        """ ->
 module preprocess
-abstract type Preprocessor end
+# [deps]
+using Random
+using DataFrames
+using Lathe.stats
+using Lathe: LatheObject
+# [deps]
+abstract type Preprocessor <: LatheObject end
 abstract type Encoder <: Preprocessor end
 abstract type Scaler <: Preprocessor end
 abstract type Transformer <: Preprocessor end
 abstract type Manager <: Preprocessor end
 abstract type Booster <: Preprocessor end
-using Random
-using DataFrames
-using Lathe.stats
 #==
 Data Processing
 ==#
