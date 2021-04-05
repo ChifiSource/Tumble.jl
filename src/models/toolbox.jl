@@ -1,3 +1,4 @@
+import Base: +, -
 #==
 Power Log
 ==#
@@ -108,7 +109,8 @@ end
               new{typeof(predict)}(steps, predict)
           end
       end
-
+-(p::Pipeline, n::Int64) = deleteat!(p.steps, n)
++(p::Pipeline, step::LatheObject) = push!(p.steps, step)
 function _compare_predCat(models, xbar)
     count = 0
     preddict = Dict()
