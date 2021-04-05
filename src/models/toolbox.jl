@@ -104,7 +104,7 @@ end
           predict::P
           function Pipeline(steps::LatheObject ...)
               steps = [step for step in steps]
-              predict(xt) = [xt = step[xt] for step in steps]
+              predict(xt) = [xt = step.predict(xt) for step in steps]
               new{typeof(predict)}(steps, predict)
           end
       end
