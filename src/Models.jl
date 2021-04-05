@@ -20,9 +20,9 @@ module models
 using Random
 using DataFrames
 using Lathe.stats
-using Lathe: LatheObject
 # [deps]
 # Type heirarchy
+abstract type LatheObject end
 abstract type Model <: LatheObject end
 abstract type SupervisedModel <: Model end
 abstract type ContinuousModel <: SupervisedModel end

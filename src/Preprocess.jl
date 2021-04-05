@@ -24,8 +24,8 @@ module preprocess
 using Random
 using DataFrames
 using Lathe.stats
-using Lathe: LatheObject
 # [deps]
+abstract type LatheObject end
 abstract type Preprocessor <: LatheObject end
 abstract type Encoder <: Preprocessor end
 abstract type Scaler <: Preprocessor end

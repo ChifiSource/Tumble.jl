@@ -48,10 +48,6 @@ using DataFrames
 using Random
 # <------- DEPS ----->
 #
-# Types
-abstract type LatheObject end
-export LatheObject
-# Types
 # <------- PARTS ----->
 include("Stats.jl")
 include("Models.jl")
