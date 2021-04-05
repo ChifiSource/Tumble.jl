@@ -22,7 +22,6 @@ using DataFrames
 using Lathe.stats
 # [deps]
 # Type heirarchy
-abstract type LatheObject end
 abstract type Model <: LatheObject end
 abstract type SupervisedModel <: Model end
 abstract type ContinuousModel <: SupervisedModel end

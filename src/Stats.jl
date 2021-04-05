@@ -1,7 +1,9 @@
 """Sample"""
 module stats
 abstract type Distribution end
+abstract type LatheObject end
 export Distribution
+export LatheObject
 #==
 Base
 ==#

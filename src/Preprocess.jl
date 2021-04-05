@@ -25,7 +25,6 @@ using Random
 using DataFrames
 using Lathe.stats
 # [deps]
-abstract type LatheObject end
 abstract type Preprocessor <: LatheObject end
 abstract type Encoder <: Preprocessor end
 abstract type Scaler <: Preprocessor end
