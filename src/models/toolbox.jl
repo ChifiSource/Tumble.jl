@@ -91,17 +91,23 @@ end
       into the iterable steps, and then putting your Lathe model in.\n
       --------------------\n
       ==PARAMETERS==\n
-      [steps] <- An iterable list of methods to call for X modification. These mutations should
+      steps <- An infinite list of Lathe Objects as arguments
+      to call for X modification. These mutations should
       have ALREADY BEEN MADE TO THE TRAIN X.\n
       pipl = Pipeline([StandardScalar(),LinearRegression(trainX,trainy)])\n
       --------------------\n
       ==Functions==\n
       predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
       """
-function Pipeline(steps)
-    predict(xt) = [xt = step[xt] for step in steps]
-    (var)->(steps;predict)
-end
+      mutable struct Pipeline{P} <: Tool
+          steps::Array{LatheObject}
+          predict::P
+          function Pipeline(steps::LatheObject ...)
+              steps = [step for step in steps]
+              predict(xt) = [xt = step[xt] for step in steps]
+              new{typeof(predict)}(steps, P)
+          end
+      end
 
 function _compare_predCat(models, xbar)
     count = 0
