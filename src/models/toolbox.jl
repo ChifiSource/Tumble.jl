@@ -128,6 +128,7 @@ end
       end
 -(p::Pipeline, n::Int64) = deleteat!(p.steps, n)
 +(p::Pipeline, step::LatheObject) = push!(p.steps, step)
++(m1::LatheObject, m2::LatheObject) = Pipeline(m1, m2)
 function _compare_predCat(models, xbar)
     count = 0
     preddict = Dict()
