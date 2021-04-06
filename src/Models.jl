@@ -4,15 +4,15 @@ Predictive
         Models
 ================#
 @doc """
-| Model Type | Model Name |
-|:---------- | ---------- |
-| Baseline    | MeanBaseline |
-| Baseline    | ClassBaseline |
-| Continuous    | LinearRegression |
-| Continuous    | LinearLeastSquare  |
-| Categorical    | RandomForestClassifier  |
-| Categorical    | DecisionTree  |
-| Tools    | Pipeline  |
+| Model Type | Model Name |\n
+|:---------- | ---------- |\n
+| Baseline    | MeanBaseline |\n
+| Baseline    | ClassBaseline |\n
+| Continuous    | LinearRegression |\n
+| Continuous    | LinearLeastSquare  |\n
+| Categorical    | RandomForestClassifier  |\n
+| Categorical    | DecisionTree  |\n
+| Tools    | Pipeline  |\n
 | Tools    | PowerLog  |
        """
 module models
@@ -22,7 +22,7 @@ using DataFrames
 using Lathe.stats
 # [deps]
 # Type heirarchy
-abstract type Model end
+abstract type Model <: LatheObject end
 abstract type SupervisedModel <: Model end
 abstract type ContinuousModel <: SupervisedModel end
 abstract type Regressor <: ContinuousModel end

@@ -94,6 +94,7 @@ function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max
     end
     storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
         Int(floor(sqrt(size(X, 2)))), n_trees)
+    predict(xt::Array) = rf_predict(storedata, xt)
     new{typeof(predict)}(predict, storedata)
 end
 function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
