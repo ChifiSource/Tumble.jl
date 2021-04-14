@@ -38,6 +38,7 @@ Continuous Models
 include("models/regressors.jl")
 export LinearLeastSquare
 export LinearRegression
+export LassoRegression
 #==
 Categorical Models
 ==#
