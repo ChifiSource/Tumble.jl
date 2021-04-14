@@ -131,16 +131,22 @@ function gradientDescent(X, Y, B, learningRate, numIterations, alp)
     return B
 end
 mutable struct LassoRegression{P}
+    x::Array
+    y::Array
     predict::P
-    newB::Array
     lambda::Float64
-    function LassoRegression(x, y, lambda = 0, i = 10 ^ 6)
-        costm = 10 ^ 30
-        newB = zeros(size(y))
+    i::Float64
+    LearningRate::Float64
+    n_iterations::Int64
+    function LassoRegression(x, y, lambda = 0; lr = .01, n_iterations = 1200)
         i = 10 ^ 6
-        while i > 0.001
-             learningRate = 0.01
-             B = [0.1 for i in x]
+        predict(xt) = pred_lasso(x, y, xt, i, learningRate = lr, n_iterations = n_iterations)
+        new{typeof(predict)}(x, y, predict, lambda, i, lr, n_iterations)
+    end
+    function pred_lasso(x, y, B, i; learningRate = .01, n_iterations = 1200)
+        costm = 10 ^ 30
+        newB = zeros(size(B))
+          while i > 0.001
              B1 = gradientDescent(x, y, B, learningRate, 1200,i)
              cost = lasso_cost(x, y, B1, i)
             if (cost < costm)
@@ -150,7 +156,6 @@ mutable struct LassoRegression{P}
             end
          i=i/2
         end
-        predict(xt) = xt .* newB
-        new{typeof(predict)}(predict, newB, lambda)
+        return(B .* newB)
     end
 end
