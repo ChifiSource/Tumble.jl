@@ -1,6 +1,6 @@
 #===============================
 <-----------Lathe.jl----------->
-~~~~~~ 0.1.7 "ButterBall" ~~~~~~
+~~~~~~ 0.1.8 "ButterBall" ~~~~~~
 Programmed by Emmett Boudreau
     <emmett@emmettboudreau.com>
         <http://emmettboudreau.com>
@@ -23,7 +23,7 @@ DataFrames.jl
 Random.jl
 ================================#
 @doc """
-# Lathe.jl 0.1.6 Butterball
+# Lathe.jl 0.1.8 Butterball
 ## Easily ML
 38d8eb38-e7b1-11e9-0012-376b6c802672
 
