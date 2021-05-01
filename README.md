@@ -61,8 +61,6 @@ Lathe.jl is a relatively immature package, but is still making considerable leap
 ### Models
 - Pipelines
 - Powerlog
-- Logistic Regression
-- Kmeans Clustering
 - Random Forest Classifier
 - Decision Tree Classifier
 - Pipelines
