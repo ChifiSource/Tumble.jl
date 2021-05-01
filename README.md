@@ -25,7 +25,7 @@
   <summary class="btn"><h2>What's great about Lathe?</h2></summary>
 <div>
 
-#### Easy To Use
+#### Easily ML
 Lathe brings an entirely different methodology to the Julia language. Types are created to adhere to the object-oriented programming paradigm, and syntax is akin to that of Pythonic machine-learning packages, like SkLearn.
 #### Fully Featured
 Lathe includes many of the tools commonly used by machine-learning engineers and scientists out of the box, rather than relying on more dependencies to do so.
@@ -35,7 +35,10 @@ Lathe models can be easily serialized and deployed onto production servers using
 Lathe uses a faster methodology than most other Julia packages for machine-learning. Furthermore, the package also takes advantage of the natural ability of the language to be fast. As a result, Lathe is also faster than most similar packages for other high-level statistical programming languages.
 #### Julian
 Lathe is written in 100-percent pure Julia. As a result, the package often takes advantage of very Julian methods of dealing with problems, such as dispatch, macros, and syntactical expressions.
-
+#### Compatible
+Lathe.jl has DataFrames.jl support, making it incredibly easy to put your data to work!
+#### Improving
+Lathe.jl is a relatively immature package, but is still making considerable leaps in the Julia ecosystem! Lathe is constantly improving, and that is a great thing if you happen to be utilizing the package!
 </div>
 </details>
 
