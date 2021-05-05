@@ -49,18 +49,9 @@ export DecisionTreeClassifier, RandomForestClassifier
 include("models/logistic.jl")
 export LogisticRegression
 #==
-Unsupervised Models
-==#
-include("models/kmeans.jl")
-#==
 Tools
 ==#
 include("models/toolbox.jl")
 export Pipeline, PowerLog, MeanBaseline, majClassBaseline
-#==
-Neural Networks
-==#
-include("models/neural.jl")
-export Network
 #----------------------------------------------
 end
