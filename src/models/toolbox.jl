@@ -131,11 +131,12 @@ end
               new{typeof(predict), typeof(show)}(steps, predict, show)
           end
           function _show(steps::Array{LatheObject})
-              println("====Pipeline Steps====")
               count = 0
               for step in steps
                   count += 1
-                  println(count, " = = > ", typeof(step))
+                  typetitle = string(typeof(step))
+                  name = split(z, '{')[1]
+                  println(count, " = = > ", typeof(name))
               end
           end
           function pipe_predict(xt, steps)
