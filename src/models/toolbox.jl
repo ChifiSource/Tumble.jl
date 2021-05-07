@@ -122,8 +122,14 @@ end
           predict::P
           function Pipeline(steps::LatheObject ...)
               steps = [step for step in steps]
-              predict(xt) = [xt = step.predict(xt) for step in steps]
+              predict(xt::Array) = pipe_predict(xt, steps)
               new{typeof(predict)}(steps, predict)
+          end
+          function pipe_predict(xt, steps)
+              for step in steps
+                  xt = step.predict(xt)
+              end
+              return(xt)
           end
       end
 -(p::Pipeline, n::Int64) = deleteat!(p.steps, n)
