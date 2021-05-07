@@ -135,7 +135,7 @@ end
               for step in steps
                   count += 1
                   typetitle = string(typeof(step))
-                  name = split(z, '{')[1]
+                  name = split(typetitle, '{')[1]
                   println(count, " = = > ", typeof(name))
               end
           end
