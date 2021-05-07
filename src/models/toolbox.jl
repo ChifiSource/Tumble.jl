@@ -124,6 +124,7 @@ end
           predict::P
           show::S
           function Pipeline(steps::LatheObject ...)
+              steps = [step for step in steps]
               show() = _show(steps)
               predict(xt::Array) = pipe_predict(xt, steps)
               predict(xt::DataFrame) = pipe_predict(xt, steps)
