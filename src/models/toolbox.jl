@@ -136,7 +136,7 @@ end
                   count += 1
                   typetitle = string(typeof(step))
                   name = split(typetitle, '{')[1]
-                  println(count, " = = > ", typeof(name))
+                  println(count, " = = > ", name)
               end
           end
           function pipe_predict(xt, steps)
