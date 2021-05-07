@@ -1,12 +1,12 @@
 using Documenter
-using Lathe: models, lstats, preprocess
+using Lathe: models, stats, preprocess
 using Lathe
 Documenter.makedocs(root = "./",
        source = "src",
        build = "build",
        clean = true,
        doctest = true,
-       modules = Module[Lathe,models,lstats,preprocess],
+       modules = Module[Lathe,models,stats,preprocess],
        repo = "https://github.com/emmettgb/Lathe.jl/",
        highlightsig = true,
        sitename = "Lathe.jl",

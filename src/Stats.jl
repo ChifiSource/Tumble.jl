@@ -35,10 +35,5 @@ Samples
 ==#
 include("stats/samples.jl")
 export sample, sample!
-#==
-Functions
-==#
-include("stats/functions.jl")
-export φ
 #---------------------------
 end

@@ -82,5 +82,16 @@ function catacc(testy,yhat)
     end
     acc = score / n
 end
+macro accuracy(testy, yhat)
+    originallen = length(testy)
+    sets = Set(testy)
+    if originallen * .10 > sets
+        println("MAE ", mae(testy, yhat))
+        println("MSE ", mse(testy, yhat))
+        println("r2 ", r2(testy, yhats), "%")
+    else
+        println("Accuracy ", catacc(testy, yhat), "%")
+    end
+end
 #--------------------------------------------
 # End

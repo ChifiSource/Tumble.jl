@@ -107,6 +107,55 @@ function LinearLeastSquare(x,y)
     predict(xt) = (xt = [z = (a * x) + b for x in xt])
     (var)->(a;b;predict)
 end
-function train(m::LinearModel, xt::Array)
-
+#==
+Lasso
+    Regression
+==#
+function lasso_cost(X, Y, B, alp)
+     m = length(Y)
+     cost = (sum(((X .* B) - Y).^2)/2) +(sum(broadcast(abs, B)))*alp/2
+     return cost
+end
+function gradientDescent(X, Y, B, learningRate, numIterations, alp)
+    m = length(Y)
+    for iteration in 1:numIterations
+        loss = (X .* B) - Y
+        for i in 1:length(X)
+            if(B[i]==0)
+                B[i]=1
+            end
+        end
+        gradient = ((X' * loss) .+ (alp .* (broadcast(abs, B) ./ B))) / m
+        B = B - learningRate * gradient
+    end
+    return B
+end
+mutable struct LassoRegression{P}
+    x::Array
+    y::Array
+    predict::P
+    lambda::Float64
+    i::Float64
+    LearningRate::Float64
+    n_iterations::Int64
+    function LassoRegression(x, y, lambda = 0; lr = .01, n_iterations = 1200)
+        i = 10 ^ 6
+        predict(xt) = pred_lasso(x, y, xt, i, learningRate = lr, n_iterations = n_iterations)
+        new{typeof(predict)}(x, y, predict, lambda, i, lr, n_iterations)
+    end
+    function pred_lasso(x, y, B, i; learningRate = .01, n_iterations = 1200)
+        costm = 10 ^ 30
+        newB = zeros(size(B))
+          while i > 0.001
+             B1 = gradientDescent(x, y, B, learningRate, 1200,i)
+             cost = lasso_cost(x, y, B1, i)
+            if (cost < costm)
+                costm = cost
+                newB = B1
+                lambda = i
+            end
+         i=i/2
+        end
+        return(B .* newB)
+    end
 end

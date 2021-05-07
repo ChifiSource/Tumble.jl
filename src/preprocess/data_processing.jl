@@ -35,6 +35,14 @@ end
        """
 TrainTestSplit(data::Array, at::Float64=.75) = _ArraySplit(data,at)
 TrainTestSplit(data::DataFrame, at::Float64=.75) = _dfTrainTestSplit(data,at)
+mutable struct Splitter{P} <: Manager
+    at::Float64
+    predict::P
+    function Splitter(at::Float64)
+        predict(x) = TrainTestSplit(x, at)
+        new{typeof(predict)}(at, predict)
+    end
+end
 # Sort-Split -------------
 """
     ## Sort Split
