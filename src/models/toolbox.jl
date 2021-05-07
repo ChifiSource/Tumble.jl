@@ -106,6 +106,8 @@ end
            ### Functions
            Pipeline.predict(xt) :: Applies the steps inside of the pipeline
            to xt.\n
+           Pipeline.show() :: shows all of the steps inside of the pipeline
+           in order, along with their respective count.\n
            ---------------------\n
            ### Data
            steps - An array of LatheObject types that are predicted with usng
@@ -117,13 +119,23 @@ end
            Base.- - The - operator can be used to remove steps from a pipeline.\n
            Pipeline - Int64(Position in steps)
              """
-      mutable struct Pipeline{P} <: Tool
+      mutable struct Pipeline{P, S} <: Tool
           steps::Array{LatheObject}
           predict::P
+          show::S
           function Pipeline(steps::LatheObject ...)
-              steps = [step for step in steps]
+              show() = _show(steps)
               predict(xt::Array) = pipe_predict(xt, steps)
-              new{typeof(predict)}(steps, predict)
+              predict(xt::DataFrame) = pipe_predict(xt, steps)
+              new{typeof(predict), typeof(show)}(steps, predict, show)
+          end
+          function _show(steps::Array{LatheObject})
+              println("====Pipeline Steps====")
+              count = 0
+              for step in steps
+                  count += 1
+                  println(count, " = = > ", typeof(step))
+              end
           end
           function pipe_predict(xt, steps)
               for step in steps
