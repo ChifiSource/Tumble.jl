@@ -1,7 +1,7 @@
 name = "Lathe"
 uuid = "38d8eb38-e7b1-11e9-0012-376b6c802672"
 authors = ["emmett emmett@emmettboudreau.com"]
-version = "0.1.8"
+version = "0.1.9"
 
 [deps]
 CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
