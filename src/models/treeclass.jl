@@ -88,10 +88,9 @@ mutable struct RandomForestClassifier{P} <: Classifier
 function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
     n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100, cuda = false)
-    if cuda == true
-        X = CuArray(X)
-        Y = CuArray(Y)
-    end
+    vals = cudacheck([X, Y], cuda)
+    X, Y = vals[1], vals[2]
+    checkdims(X, Y)
     storedata = fit(TREECLASS(), X, Y, rng, max_depth, min_node_records,
         Int(floor(sqrt(size(X, 2)))), n_trees)
     predict(xt::Array) = rf_predict(storedata, xt)
