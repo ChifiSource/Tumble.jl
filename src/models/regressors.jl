@@ -91,7 +91,7 @@ mutable struct LinearLeastSquare{P} <: LinearModel
     end
     function LinearLeastSquare(x::DataFrame, y::AbstractArray, cuda = false)
         vals = cudacheck([x, y], cuda)
-        x, y = vals[1], vals[2]
+        x, y = Array(vals[1]), Array(vals[2])
         regressors = [LinearLeastSquare(Array(feature),
          y) for feature in eachcol(x)]
         a = nothing
