@@ -18,40 +18,26 @@ mutable struct LinearRegression{P} <: LinearModel
     B::Float64
     predict::P
     regressors::Array{LinearModel}
-    function LinearRegression(x::Array,y::Array)
+    function LinearRegression(x::Array, y::Array; cuda = false)
         # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
         # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
         regressors = []
-        if length(x) != length(y)
-            throw(ArgumentError("The array shape does not match!"))
-        end
-        # Get our Summations:
-        Σx = sum(x)
-        Σy = sum(y)
-        # dot x and y
-        xy = x .* y
-        # ∑dot x and y
-        Σxy = sum(xy)
-        # dotsquare x
-        x2 = x .^ 2
-        # ∑ dotsquare x
-        Σx2 = sum(x2)
-        # n = sample size
+        vals = cudacheck([x, y], cuda)
+        x, y = vals[1], vals[2]
+        checkdims(x, y)
+        xy, x2 = x .* y, x .^ 2
+        Σx, Σy, Σxy, Σx2  = sum(x), sum(y), sum(xy), sum(x2)
         n = length(x)
-        # Calculate a
-        a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2))-(Σx^2))
-        # Calculate b
-        b = ((n*(Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
+        a = (((Σy) * (Σx2)) - ((Σx * (Σxy)))) / ((n * (Σx2)) - (Σx ^ 2))
+        b = ((n * (Σxy)) - (Σx * Σy)) / ((n * (Σx2)) - (Σx ^ 2))
         predict(xt::Array) = (xt = [i = a + (b * i) for i in xt])
         P = typeof(predict)
         return new{P}(a, b, predict, [])
     end
-        function LinearRegression(x::DataFrame,y::Array)
-            # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
-            # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
+        function LinearRegression(x::DataFrame, y::Array; cuda = false)
             regressors = []
-            count = 1
-            [push!(regressors, LinearRegression(feature, y) for feature in x)]
+            [push!(regressors, LinearRegression(Array(feature),
+             y) for feature in eachcol(x))]
             a = nothing
             b = nothing
             for m in regressors
@@ -89,23 +75,42 @@ Linear
       ==Functions==\n
       predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
-function LinearLeastSquare(x,y)
-    if length(x) != length(y)
-        throw(ArgumentError("The array shape does not match!"))
-    end
-        xy = x .* y
-        sxy = sum(xy)
+mutable struct LinearLeastSquare{P} <: LinearModel
+    a::Float64
+    b::Float64
+    predict::P
+    regressors::Array{LinearModel}
+    function LinearLeastSquare(x::AbstractArray, y::AbstractArray)
+        checkdims(x, y)
+        xy, x2 = x .* y, x .^ 2
+        Σxy, Σx2, Σx, Σy = sum(xy), sum(x2), sum(x), sum(y)
         n = length(x)
-        x2 = x .^ 2
-        sx2 = sum(x2)
-        sx = sum(x)
-        sy = sum(y)
-        # Calculate the slope:
-        a = ((n*sxy) - (sx * sy)) / ((n * sx2) - (sx)^2)
-     # Calculate the y intercept
-        b = (sy - (a*sx)) / n
-    predict(xt) = (xt = [z = (a * x) + b for x in xt])
-    (var)->(a;b;predict)
+        a = ((n * Σxy) - (Σx * Σy)) / ((n * Σx2) - (Σx) ^ 2)
+        b = (Σy - (a * Σx)) / n
+        predict(xt) = [z = (a * x) + b for x in xt]
+        new{typeof(predict)}(a, b, predict, [])
+    end
+    function LinearLeastSquare(x::DataFrame, y::AbstractArray, cuda = false)
+        vals = cudacheck([x, y], cuda)
+        x, y = vals[1], vals[2]
+        regressors = []
+        [push!(regressors, LinearLeastSquare(Array(feature),
+         y) for feature in eachcol(x))]
+        a = nothing
+        b = nothing
+        for m in regressors
+            if a != nothing
+                a = mean(a, m.a)
+                b = mean(b, m.b)
+            else
+                a = m.a
+                b = m.b
+            end
+        end
+        predict(xt::DataFrame) = _compare_predCon(models, xt)
+        P = typeof(predict)
+        new{typeof(predict)}(a, b, predict, regressors)
+end
 end
 #==
 Lasso
