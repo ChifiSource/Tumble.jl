@@ -53,5 +53,6 @@ Tools
 ==#
 include("models/toolbox.jl")
 export Pipeline, PowerLog, MeanBaseline, majClassBaseline
+include("models/throws.jl")
 #----------------------------------------------
 end
