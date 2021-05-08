@@ -170,7 +170,7 @@ mutable struct Router{P} <: LatheObject
         return([res for res in preds])
     end
 end
-function _compare_predCat(models, xbar)
+function _compcat(models, xbar)
     count = 0
     preddict = Dict()
     for model in models
@@ -191,4 +191,19 @@ function _compare_predCat(models, xbar)
     for x in y_hat
         println(inv_lookup[x])
     end
+end
+function _compcon(models, xt)
+    count = 0
+    yhat = []
+    arrs = [Array(x) for x in xt]
+    for model in models
+        count += 1
+        if count == 1
+            yhat = model.predict(arrs[count])
+        else
+            newpred = model.predict(arrs[count])
+            yhat = [mean([x, y]) for (x, y) in zip(yhat, newpred)]
+        end
+    end
+    return(yhat)
 end

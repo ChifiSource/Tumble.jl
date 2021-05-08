@@ -37,18 +37,7 @@ mutable struct LinearRegression{P} <: LinearModel
         function LinearRegression(x::DataFrame, y::Array; cuda = false)
             regressors = [LinearRegression(Array(feature),
              y) for feature in eachcol(x)]
-            a = nothing
-            b = nothing
-            for m in regressors
-                if a != nothing
-                    a = mean(a, m.a)
-                    b = mean(b, m.b)
-                else
-                    a = m.a
-                    b = m.b
-                end
-            end
-            predict(xt::DataFrame) = _compare_predCon(models, xt)
+            predict(xt::DataFrame) = _complinear(regressors, xt)
             P = typeof(predict)
             return new{P}(a, b, predict, regressors)
     end
@@ -98,8 +87,8 @@ mutable struct LinearLeastSquare{P} <: LinearModel
         b = nothing
         for m in regressors
             if a != nothing
-                a = mean(a, m.a)
-                b = mean(b, m.b)
+                a = mean([a, m.a])
+                b = mean([b, m.b])
             else
                 a = m.a
                 b = m.b

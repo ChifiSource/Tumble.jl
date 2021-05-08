@@ -85,9 +85,11 @@ end
 mutable struct RandomForestClassifier{P} <: Classifier
     predict::P
     storedata::Result
-function RandomForestClassifier(X::Array, Y::Array, rng = Random.GLOBAL_RNG; max_depth = 6,
+function RandomForestClassifier(X::Array, Y::Array,
+     rng = Random.GLOBAL_RNG; max_depth = 6,
      min_node_records = 1,
-    n_features_per_node = Int(floor(sqrt(size(X, 2)))), n_trees = 100, cuda = false)
+    n_features_per_node = Int(floor(sqrt(size(X, 2)))),
+     n_trees = 100, cuda = false)
     vals = cudacheck([X, Y], cuda)
     X, Y = vals[1], vals[2]
     checkdims(X, Y)
@@ -116,7 +118,7 @@ function RandomForestClassifier(X::DataFrame, Y::Array, rng = Random.GLOBAL_RNG;
         mdl = RandomForestClassifier(data, Y, n_trees = divamount)
         push!(classifiers, mdl)
     end
-    predict(xt) = _compare_predCat(classifiers, xt)
+    predict(xt) = _compcat(classifiers, xt)
     new{typeof(predict)}(predict, result)
 end
 end
