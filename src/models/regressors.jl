@@ -39,7 +39,7 @@ mutable struct LinearRegression{P} <: LinearModel
              y) for feature in eachcol(x)]
             predict(xt::DataFrame) = _complinear(regressors, xt)
             P = typeof(predict)
-            return new{P}(a, b, predict, regressors)
+            return new{P}(regressors[1].a, regressors[1].b, predict, regressors)
     end
 end
 #==
