@@ -37,7 +37,7 @@ mutable struct LinearRegression{P} <: LinearModel
         function LinearRegression(x::DataFrame, y::Array; cuda = false)
             regressors = [LinearRegression(Array(feature),
              y) for feature in eachcol(x)]
-            predict(xt::DataFrame) = _complinear(regressors, xt)
+            predict(xt::DataFrame) = _compcon(regressors, xt)
             P = typeof(predict)
             return new{P}(regressors[1].a, regressors[1].b, predict, regressors)
     end
