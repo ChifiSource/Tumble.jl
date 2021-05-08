@@ -14,8 +14,8 @@ Linear
      predict(xt) <- Returns a prediction from the model based on the xtrain value passed (xt)
        """
 mutable struct LinearRegression{P} <: LinearModel
-    A::Float64
-    B::Float64
+    a::Float64
+    b::Float64
     predict::P
     regressors::Array{LinearModel}
     function LinearRegression(x::Array, y::Array; cuda = false)
