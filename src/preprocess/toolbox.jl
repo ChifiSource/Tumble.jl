@@ -131,12 +131,13 @@ end
               new{typeof(predict), typeof(show)}(steps, predict, show)
           end
           function _show(steps::Array{LatheObject})
+              println("====Pipeline Steps====")
               count = 0
               for step in steps
                   count += 1
                   typetitle = string(typeof(step))
-                  name = split(typetitle, '{')[1]
-                  println(count, " = = > ", name)
+                  name = split(z, '{')[1]
+                  println(count, " = = > ", typeof(name))
               end
           end
           function pipe_predict(xt, steps)
@@ -145,31 +146,10 @@ end
               end
               return(xt)
           end
-end
+      end
 -(p::Pipeline, n::Int64) = deleteat!(p.steps, n)
 +(p::Pipeline, step::LatheObject) = push!(p.steps, step)
 +(m1::LatheObject, m2::LatheObject) = Pipeline(m1, m2)
-mutable struct Router{P} <: LatheObject
-    fn::Function
-    components::Array{LatheObject}
-    predict::P
-    function Router(components::LatheObject ...; fn::Function)
-        components = Array([comp for comp in components])
-        predict(xt) = router_load(xt, fn, components)
-        new{typeof(predict)}(fn, components, predict)
-    end
-    function router_load(data, fn, components)
-        returns = fn(data)
-        preds = []
-        count = 0
-        for cp in components
-            count += 1
-            res = cp.predict(returns[count])
-            push!(preds, res)
-        end
-        return([res for res in preds])
-    end
-end
 function _compare_predCat(models, xbar)
     count = 0
     preddict = Dict()
