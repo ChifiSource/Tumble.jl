@@ -22,7 +22,7 @@ mutable struct LinearRegression{P} <: LinearModel
         # a = ((∑y)(∑x^2)-(∑x)(∑xy)) / (n(∑x^2) - (∑x)^2)
         # b = (x(∑xy) - (∑x)(∑y)) / n(∑x^2) - (∑x)^2
         regressors = []
-        vals = cudacheck([x, y], cuda)
+        vals = cudacheck([Array(x), Array(y)], cuda)
         x, y = vals[1], vals[2]
         checkdims(x, y)
         xy, x2 = x .* y, x .^ 2
@@ -35,9 +35,8 @@ mutable struct LinearRegression{P} <: LinearModel
         return new{P}(a, b, predict, [])
     end
         function LinearRegression(x::DataFrame, y::Array; cuda = false)
-            regressors = []
-            [push!(regressors, LinearRegression(Array(feature),
-             y) for feature in eachcol(x))]
+            regressors = [LinearRegression(Array(feature),
+             y) for feature in eachcol(x)]
             a = nothing
             b = nothing
             for m in regressors
@@ -81,7 +80,7 @@ mutable struct LinearLeastSquare{P} <: LinearModel
     predict::P
     regressors::Array{LinearModel}
     function LinearLeastSquare(x::AbstractArray, y::AbstractArray)
-        checkdims(x, y)
+        checkdims(Array(x), Array(y))
         xy, x2 = x .* y, x .^ 2
         Σxy, Σx2, Σx, Σy = sum(xy), sum(x2), sum(x), sum(y)
         n = length(x)
@@ -93,9 +92,8 @@ mutable struct LinearLeastSquare{P} <: LinearModel
     function LinearLeastSquare(x::DataFrame, y::AbstractArray, cuda = false)
         vals = cudacheck([x, y], cuda)
         x, y = vals[1], vals[2]
-        regressors = []
-        [push!(regressors, LinearLeastSquare(Array(feature),
-         y) for feature in eachcol(x))]
+        regressors = [LinearLeastSquare(Array(feature),
+         y) for feature in eachcol(x)]
         a = nothing
         b = nothing
         for m in regressors
