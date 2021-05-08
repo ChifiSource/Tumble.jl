@@ -195,7 +195,7 @@ end
 function _compcon(models, xt)
     count = 0
     yhat = []
-    arrs = [Array(x) for x in xt]
+    arrs = [Array(x) for x in eachcol(xt)]
     for model in models
         count += 1
         if count == 1
