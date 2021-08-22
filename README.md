@@ -1,5 +1,5 @@
-<div align="center"><img src="https://github.com/ChifiSource/Lathe.jl/blob/Unstable/assets/lathegingerbread.png" />
-  <h1>Gingerbread</h1>
+<div align="center"><img src="https://github.com/ChifiSource/Lathe.jl/blob/Unstable/assets/lathegingerbread.png" height = 200 width = 200/>
+  <h1>Lathe Gingerbread (0.2.0)</h1>
 </div>
 <div align="left">
   <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.</p>
@@ -10,16 +10,29 @@
 [![deps](https://juliahub.com/docs/Lathe/deps.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ?t=2)
 [![pkgeval](https://juliahub.com/docs/Lathe/pkgeval.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
 ## Add Lathe
-**(press ] in the Julia REPL to go to Pkg REPL)**
- #### Latest (Get the latest stable developments):
+<h4>Gingerbread (0.2.0) </h4><img src="https://github.com/ChifiSource/Lathe.jl/blob/Unstable/assets/spingerbread.gif" />
+
+
  ```julia
  (v1.3) pkg> add Lathe
+ julia> using Pkg; Pkg.add("Lathe")
+ ```
+ 
+ 
+**To enter Pkg REPL, press ] from the Julia REPL.**
+ #### Latest (Get the latest stable developments):
+ ```julia
+ (v1.3) pkg> add Lathe#Stable
  ```
  #### Unstable (Get the latest undocumented and unstable developments):
  ```julia
  (v1.3) pkg> add Lathe#Unstable
  ```
-
+#### Older versions
+##### 0.1.0
+ ```julia
+ (v1.3) pkg> add Lathe#Butterball
+ ```
 
 <details class="details-overlay">
   <summary class="btn"><h2>What's great about Lathe?</h2></summary>
