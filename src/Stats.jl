@@ -8,8 +8,8 @@ export LatheObject
 Base
 ==#
 include("stats/statbase.jl")
-export mean, median, mode, variance, confints, ste, std, q1
-export q3, getranks, fact, is_prime, Σ
+export mean, median, mode, variance, confints, ste, std, quantile
+export getranks, fact, Σ, mu
 #==
 Distributions
 ==#
