@@ -31,6 +31,7 @@ abstract type Scaler <: Preprocessor end
 abstract type Transformer <: Preprocessor end
 abstract type Manager <: Preprocessor end
 abstract type Booster <: Preprocessor end
+abstract type Normalizer <: Preprocessor end
 #==
 Data Processing
 ==#
@@ -44,12 +45,12 @@ Feature Scaling
 ==#
 include("preprocess/feature_scaling.jl")
 #==
-Macros
-==#
-include("preprocess/preprocess_macros.jl")
-#==
 Decompisition
 ==#
 include("preprocess/decomp.jl")
+#==
+Normalizers
+==#
+include("preprocess/normalizers.jl")
 #-----------------------------
 end
