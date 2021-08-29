@@ -23,20 +23,20 @@ mean(x) = sum(x) / length(x)
       println(median)\n
         10
        """
-function median(array)
-    n = length(array)
-    half = n / 2
-    current = 1
-    sorted = sort!(array,rev = false)
-    median = 0
-    for i in sorted
-        if current >= half
-            median = i
-        else
-        current = current + 1
+median(x::Array) = quantile(x, .5)
+
+function quantile(x::Array, q::Real = .5)
+    qdict = Dict(1 => .25, 2 => .5, 3 => .75)
+    if q >= 1
+        try
+            q = qdict[q]
+        catch
+            throw(ArgumentError(" The quantile parameter is not set to a percentage, or quantile!"))
+        end
     end
-    end
-    return(median)
+    sorted = sort(x)
+    div = length(x)
+    return(x[Int64(round(div * q))])
 end
 #<----Mode---->
 """
@@ -114,50 +114,6 @@ function std(array3)
     end
     return(m)
 end
-#<----Quartiles---->
-# - First
-"""
-      Returns the point in an array located at 25 percent of the sorted data.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q1 = Lathe.stats.firstquar(array)\n
-       """
-function q1(array)
-    m = median(array)
-    q1 = array * .5
-    return(q1)
-end
-# - Third
-"""
-      Returns the point in an array located at 75 percent of the sorted data.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q2 = Lathe.stats.secondquar(array)\n
-       """
-function q3(array)
-    q = median(array)
-    q3 = q * 1.5
-    return(q3)
-end
-# <---- Rank ---->
-"""
-      Ranks indices in an array based on quantitative weight (count of the
-      numbers) and returns a new array of the ranks of each column. This
-      function is made primarily for the Wilcox Rank-Sum test.\n
-      --------------------\n
-      array = [5,10,15]\n
-      q2 = Lathe.stats.secondquar(array)\n
-       """
-function getranks(array,rev = false)
-    sortedar = sort(array,rev=rev)
-    num = 1
-    list = []
-    for i in sortedar
-        append!(list,i)
-        num = num + 1
-    end
-    return(list)
-end
 """
     ## Factorials
     ### Description
@@ -180,4 +136,5 @@ function fact(n)
     end
 end
 
-is_prime(n) = φ(n) == n - 1
+Σ(x) = sum(x)
+mu(x) = mean(x)
