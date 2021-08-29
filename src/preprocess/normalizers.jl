@@ -1,4 +1,4 @@
-mutable struct QuantileNormalizer <: LatheObject
+mutable struct QuantileNormalizer <: Normalizer
     q1::Real
     q3::Real
     predict::Function
@@ -14,7 +14,7 @@ mutable struct QuantileNormalizer <: LatheObject
             else x[current] = i end for (current, i) in enumerate(x)]
     end
 end
-mutable struct ZNormalizer <: LatheObject
+mutable struct ZNormalizer <: Normalizer
     scaler::LatheObject
     predict::Function
     function ZNormalizer(x::Array)
