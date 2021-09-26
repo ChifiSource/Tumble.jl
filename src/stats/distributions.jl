@@ -1,5 +1,3 @@
-using Distributions: TDist, Uniform, Normal, cf
-import Distributions: cdf
 """
       Binomial Distribution is a distribution well known for its use in
            statistical tests and decision making models. In order to calculate
@@ -87,22 +85,22 @@ end
      μ :: Mean of the input data.\n
      N :: The length of the input data.
        """
-struct T_Dist{c, p} <: Distribution
-μ::Float64
-N::Int64
-apply::p
-cdf::c
+#struct T_Dist{c, p} <: Distribution
+#μ::Float64
+#N::Int64
+#apply::p
+#cdf::c
 
-function T_Dist(general)
-  norm = NormalDist(general)
-  general = norm.apply(general)
-  μ = mean(general)
-  N = length(general)
-  apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
-  cdf(t, dog) = cf(TDist(dog), Real(t))
-  new{typeof(cdf), typeof(apply)}(μ, N, apply, cdf)
-  end
-end
+#function T_Dist(general)
+#  norm = NormalDist(general)
+#  general = norm.apply(general)
+#  μ = mean(general)
+#  N = length(general)
+#  apply(xt) = (mean(norm.apply(xt)) - μ) / (std(norm.apply(xt)) / sqrt(N))
+#  cdf(t, dog) = cf(TDist(dog), Real(t))
+#  new{typeof(cdf), typeof(apply)}(μ, N, apply, cdf)
+#  end
+#end
 # ---- Uniform Dist ----
 """
     ## Uniform Distribution
@@ -125,12 +123,12 @@ end
      corresponding cummulitive distribution function.\n
      ---------------------
        """
-function UniformDist(array)
-    dist = Uniform(minimum(array), maximum(array))
-    apply(xt) = pdf(dist, xt)
-    cdf(x) = cdf(dist, x)
-    (var) ->(dist;cdf;apply)
-end
+#function UniformDist(array)
+#    dist = Uniform(minimum(array), maximum(array))
+#    apply(xt) = pdf(dist, xt)
+#    cdf(x) = cdf(dist, x)
+#    (var) ->(dist;cdf;apply)
+#end
 
 function bvnuppercdf(dh::Float64, dk::Float64, r::Float64)
 	if abs(r) < 0.3
