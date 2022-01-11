@@ -1,21 +1,6 @@
 using Random
 using DataFrames
 # Train-Test-Split-----
-function _dfTrainTestSplit(df,at = 0.75)
-    sample = randsubseq(1:size(df,1), at)
-    trainingset = df[sample, :]
-    notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
-    testset = df[notsample, :]
-    return(trainingset,testset)
-end
-function _ArraySplit(data, at = 0.75)
-    n = length(data)
-    idx = Random.shuffle(1:n)
-    train_idx = view(idx, 1:floor(Int, at*n))
-    test_idx = view(idx, (floor(Int, at*n)+1):n)
-    data[train_idx,:], data[test_idx,:]
-    return(train_idx, test_idx)
-end
 """
     ## TrainTestSplit
     ### Description
@@ -33,8 +18,28 @@ end
      train:: The larger half of the split set.\n
      test:: The smaller half of the split set.
        """
-TrainTestSplit(data::Array, at::Float64=.75) = _ArraySplit(data,at)
-TrainTestSplit(data::DataFrame, at::Float64=.75) = _dfTrainTestSplit(data,at)
+function TrainTestSplit(df::DataFrame,at::Int64 = 0.75)
+    sample = randsubseq(1:size(df,1), at)
+    trainingset = df[sample, :]
+    notsample = [i for i in 1:size(df,1) if isempty(searchsorted(sample, i))]
+    testset = df[notsample, :]
+    return(trainingset, testset)
+end
+function TrainTestSplit(data::Array, at::Int64 = 0.75)
+    n = length(data)
+    idx = Random.shuffle(1:n)
+    train_idx = view(idx, 1:floor(Int, at*n))
+    test_idx = view(idx, (floor(Int, at*n)+1):n)
+    data[train_idx,:], data[test_idx,:]
+    return(train_idx, test_idx)
+end
+function TrainTestSplit(od::OddFrame, at::Int64 = 0.75)
+    sample = randsubseq(1:size(od,1), at)
+    trainingset = df[sample, :]
+    notsample = [i for i in 1:size(od,1) if isempty(searchsorted(sample, i))]
+    testset = od[notsample, :]
+    return(trainingset, testset)
+end
 mutable struct Splitter{P} <: Manager
     at::Float64
     predict::P

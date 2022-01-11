@@ -15,16 +15,22 @@
       corresponding with symb on DF, then returns a dataframe with encoded
       results.
        """
-mutable struct OneHotEncoder{P} <: Encoder
+mutable struct OneHotEncoder <: Encoder
     predict::P
     function OneHotEncoder()
         predict(df::DataFrame, symb::Symbol) = _onehot(df, symb)
-        P =  typeof(predict)
-        return new{P}(predict)
+        ppredict
+        return new(predict)
     end
 end
-
-function _onehot(df,symb)
+function _onehot(od::OddFrame, symb::Symbol)
+    copy = copy(od)
+    for c in unique(copy[symb])
+        copy[!,Symbol(c)] = copy[symb] .== c
+    end
+    return(copy)
+end
+function _onehot(df::DataFrame, symb::Symbol)
     copy = df
     for c in unique(copy[!,symb])
         copy[!,Symbol(c)] = copy[!,symb] .== c
@@ -49,15 +55,15 @@ end
      ### Functions
      Preprocesser.predict(xt) :: Returns an ordinally encoded xt.\n
        """
-mutable struct OrdinalEncoder{P} <: Encoder
-    predict::P
+mutable struct OrdinalEncoder <: Encoder
+    predict::Function
     lookup::Dict
     function OrdinalEncoder(array::Array)
         lookup = Dict(v => i for (i,v) in array |> unique |> enumerate)
         predict(arr::Array) = map(x->lookup[x], arr)
         predict(df::DataFrame, symb::Symbol) = map(x->lookup[x], df[!, symb])
-        P =  typeof(predict)
-        return new{P}(predict, lookup)
+        predict(df::OddFrame, symb::Symbol) = map(x->lookup[x], od[symb])
+        return new(predict, lookup)
     end
 end
 """
@@ -75,12 +81,11 @@ end
      Preprocesser.predict(xt) :: Returns an ordinally encoded xt.\n
        """
 mutable struct FloatEncoder{P} <: Encoder
-    predict::P
+    predict::Function
     function FloatEncoder()
         predict(array::Array) = _floatencode(array)
         predict(df::DataFrame, symb::Symbol) = _floatencoder(df[!, symb])
-        P = typeof(predict)
-        return new{P}(predict)
+        new(predict)
     end
 end
 
