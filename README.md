@@ -1,10 +1,12 @@
-<div align="center"><img src="https://github.com/ChifiSource/Lathe.jl/blob/Unstable/assets/lathegingerbread.png" height = 200 width = 200/>
-  <h1>Lathe Gingerbread (0.2.0)</h1>
+<div align="center"><img src="https://github.com/ChifiSource/Lathe.jl/blob/Unstable/assets/lathelogo.png" height = 200 width = 300/>
+  <h2>Lathe Gingerbread (0.2.0)</h2>
 </div>
 <div align="left">
-  <p> Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented programming methodologies using Julia's dispatch.</p>
-  <h4>https://lathe.ai/</h4>
-        </div>
+</div>
+
+
+Lathe.jl is an all-in-one package for predictive modeling in Julia. It comes packaged with a Stats Library, Preprocessing Tools, Distributions, Machine-Learning Models, and Model Validation. Lathe features easy object-oriented types, Python-like syntax, and declarative modeling calls. Furthermore, there is support for both
+### [Website](https://lathe.ai/)
 
 [![version](https://juliahub.com/docs/Lathe/version.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ)
 [![deps](https://juliahub.com/docs/Lathe/deps.svg)](https://juliahub.com/ui/Packages/Lathe/6rMNJ?t=2)
@@ -23,7 +25,12 @@
  #### Latest (Get the latest stable developments):
  ```julia
  (v1.3) pkg> add Lathe#Stable
- ```
+ ```![spingerbread](https://user-images.githubusercontent.com/52672675/149045262-fa535c1c-811a-42ca-a3aa-963912411748.gif)![spingerbread](https://user-images.githubusercontent.com/52672675/149045266-0c9dbc2e-00dd-46a4-91df-fd6d14853775.gif)![spingerbread](https://user-images.githubusercontent.com/52672675/149045267-c84a2875-c078-45c0-a485-ca96dde3d35a.gif)![spingerbread](https://user-images.githubusercontent.com/52672675/149045268-7a0d6409-65eb-40f1-ab4d-33940e43c990.gif)![spingerbread](https://user-images.githubusercontent.com/52672675/149045274-bc5a5692-4295-4b95-bc7e-714b2ff28282.gif)
+
+
+
+
+
  #### Unstable (Get the latest undocumented and unstable developments):
  ```julia
  (v1.3) pkg> add Lathe#Unstable
@@ -49,7 +56,7 @@ Lathe uses a faster methodology than most other Julia packages for machine-learn
 #### Julian
 Lathe is written in 100-percent pure Julia. As a result, the package often takes advantage of very Julian methods of dealing with problems, such as dispatch, macros, and syntactical expressions.
 #### Compatible
-Lathe.jl has DataFrames.jl support, making it incredibly easy to put your data to work!
+Lathe.jl has DataFrames.jl, OddFrames.jl, and pure Julian type support. Lathe can nearly always get the job done!
 #### Improving
 Lathe.jl is a relatively immature package, but is still making considerable leaps in the Julia ecosystem! Lathe is constantly improving, and that is a great thing if you happen to be utilizing the package!
 </div>
